@@ -1,33 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
 
 public class FillManager: Singleton<FillManager>
 {
-    public int probeCountPerSecond;
-    [HideInInspector] public System.Action<bool> tryHitEvent;
+    public System.Action<float> finishedCalulatingAreaFractionEvent;
+    public System.Action<float> finishedAreaCalculationFrame;
 
+    [SerializeField] int numberOfEvalutionTries;
     private ObjectPool hitPool;
 
     Vector2 minBoundCoordinatesCorner;
     Vector2 maxBoundCoordinatesCorner;
 
-    int skippedFixedUpdateCounter;
-    int numberOfFixedUpdatesToSkip;
+    int hits;
+    int tries;
     void Start()
     {
-        CalculateSkipCount();
-        skippedFixedUpdateCounter = 0;
         hitPool = GetComponentInChildren<ObjectPool>();
         SetupBounds();
     }
-    void FixedUpdate()
+    private void OnEnable()
     {
-        if (skippedFixedUpdateCounter % numberOfFixedUpdatesToSkip == 0)
+        DragManager.Instance.dragFinishedEvent += StartCalculateCoveredAreaFractionCoroutine;
+        BlockManager.Instance.blockSpawnedEvent += (GameObject g) => StartCalculateCoveredAreaFractionCoroutine();
+    }
+    private void OnDisable()
+    {
+        if (DragManager.Instance)
         {
-            TryHit();
+            DragManager.Instance.dragFinishedEvent -= StartCalculateCoveredAreaFractionCoroutine;
         }
-        skippedFixedUpdateCounter++;
+        if (BlockManager.Instance)
+        {
+            BlockManager.Instance.blockSpawnedEvent -= (GameObject g) => StartCalculateCoveredAreaFractionCoroutine();
+        }
     }
     void SetupBounds()
     {
@@ -44,21 +52,50 @@ public class FillManager: Singleton<FillManager>
         }
         else
         {
-            Debug.LogWarning("Missing Level Object!");
+            UnityEngine.Debug.LogWarning("Missing Level Object!");
         }
     }
-    void TryHit()
+    void StartCalculateCoveredAreaFractionCoroutine()
+    {
+        StartCoroutine(CalculateCoveredAreaFraction());
+    }
+    IEnumerator CalculateCoveredAreaFraction()
+    {
+        hits = 0;
+        tries = 0;
+        var sw = new Stopwatch();
+        sw.Start();
+        bool done = false;
+        while (!done)
+        {
+            sw.Restart();
+            while (sw.Elapsed.TotalSeconds < Time.fixedDeltaTime)
+            {
+                bool hit = TryHit();
+                if (hit)
+                {
+                    hits++;
+                }
+                tries++;
+                if(tries >= numberOfEvalutionTries)
+                {
+                    done = true;
+                    break;
+                }
+            }
+            finishedAreaCalculationFrame(1.0f * hits / tries);
+            UnityEngine.Debug.Log(hits + " " + tries + " " + sw.Elapsed.TotalSeconds + " "+ Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+        }
+        finishedCalulatingAreaFractionEvent(1.0f * hits / tries);
+    }
+    bool TryHit()
     {
         float randomX = Random.Range(minBoundCoordinatesCorner.x, maxBoundCoordinatesCorner.x);
         float randomY = Random.Range(minBoundCoordinatesCorner.y, maxBoundCoordinatesCorner.y);
         Vector2 randomPoint = new Vector2(randomX, randomY);
         Collider2D col = Physics2D.OverlapPoint(randomPoint);
-        tryHitEvent(col);
-    }
-    void CalculateSkipCount()
-    {
-        float defaultProbeRate = 1.0f / Time.fixedDeltaTime;
-        numberOfFixedUpdatesToSkip = Mathf.RoundToInt(defaultProbeRate / probeCountPerSecond);
+        return col != null;
     }
 
 }

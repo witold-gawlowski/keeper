@@ -23,14 +23,18 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     }
     private void OnEnable()
     {
-        ScoreManager.Instance.scoreUpdatedEvent += UpdateScore;
+        FillManager.Instance.finishedAreaCalculationFrame += UpdateScore;
         ScoreManager.Instance.targetFractionHitEvent += HandleTargetFrationHit;
     }
     private void OnDisable()
     {
+        if (FillManager.Instance)
+        {
+            FillManager.Instance.finishedAreaCalculationFrame += UpdateScore;
+        }
         if (ScoreManager.Instance)
         {
-            ScoreManager.Instance.scoreUpdatedEvent -= UpdateScore;
+            ScoreManager.Instance.targetFractionHitEvent -= HandleTargetFrationHit;
         }
     }
     void SetBinPosition()
@@ -52,9 +56,9 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
             }
         }
     }
-    void UpdateScore(int value, int total)
+    void UpdateScore(float value)
     {
-        scoreSlider.value = value * 1.0f / total;
+        scoreSlider.value = value;
     }
     void HandleTargetFrationHit()
     {

@@ -12,7 +12,10 @@ public class ScoreManager : Singleton<ScoreManager>
     }
     private void OnDisable()
     {
-        FillManager.Instance.finishedCalulatingAreaFractionEvent -= HandleFinishedAreaCalculation;
+        if (FillManager.Instance)
+        {
+            FillManager.Instance.finishedCalulatingAreaFractionEvent -= HandleFinishedAreaCalculation;
+        }
     }
     void HandleFinishedAreaCalculation(float fraction)
     {

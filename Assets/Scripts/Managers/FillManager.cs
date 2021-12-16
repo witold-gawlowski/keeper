@@ -29,7 +29,7 @@ public class FillManager: Singleton<FillManager>
     private void OnEnable()
     {
         DragManager.Instance.dragFinishedEvent += StartCalculateCoveredAreaFractionCoroutine;
-        BlockManager.Instance.blockSpawnedEvent += (GameObject g) => StartCalculateCoveredAreaFractionCoroutine();
+        BlockManager.Instance.blockSpawnedEvent += StartCalculateCoveredAreaFractionCoroutine;  
     }
     private void OnDisable()
     {
@@ -39,8 +39,12 @@ public class FillManager: Singleton<FillManager>
         }
         if (BlockManager.Instance)
         {
-            BlockManager.Instance.blockSpawnedEvent -= (GameObject g) => StartCalculateCoveredAreaFractionCoroutine();
+            BlockManager.Instance.blockSpawnedEvent -= StartCalculateCoveredAreaFractionCoroutine;
         }
+    }
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
     void SetupBounds()
     {
@@ -63,6 +67,10 @@ public class FillManager: Singleton<FillManager>
     void StartCalculateCoveredAreaFractionCoroutine()
     {
         StartCoroutine(CalculateCoveredAreaFraction());
+    }
+    void StartCalculateCoveredAreaFractionCoroutine(GameObject _)
+    {
+        StartCalculateCoveredAreaFractionCoroutine();
     }
     IEnumerator CalculateCoveredAreaFraction()
     {

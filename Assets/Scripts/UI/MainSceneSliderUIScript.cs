@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainSceneSliderScript : MonoBehaviour
+public class MainSceneSliderUIScript : MonoBehaviour
 {
     [SerializeField] Image marker;
     [SerializeField] RectTransform parent;

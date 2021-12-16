@@ -14,12 +14,17 @@ public class FillManager: Singleton<FillManager>
     Vector2 minBoundCoordinatesCorner;
     Vector2 maxBoundCoordinatesCorner;
 
+    int levelMask;
+    int blockMask;
+
     int hits;
     int tries;
     void Start()
     {
         hitPool = GetComponentInChildren<ObjectPool>();
         SetupBounds();
+        levelMask = Helpers.GetSingleLayerMask(Constants.levelLayer);
+        blockMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
     private void OnEnable()
     {
@@ -39,7 +44,7 @@ public class FillManager: Singleton<FillManager>
     }
     void SetupBounds()
     {
-        GameObject levelGO = GameObject.FindWithTag(Constants.levelTag);
+        GameObject levelGO = GameObject.FindWithTag(Constants.levelLayer);
         if (levelGO)
         {
             Collider2D levelCol = levelGO.GetComponent<Collider2D>();
@@ -71,12 +76,17 @@ public class FillManager: Singleton<FillManager>
             sw.Restart();
             while (sw.Elapsed.TotalSeconds < Time.fixedDeltaTime)
             {
-                bool hit = TryHit();
-                if (hit)
+                Vector2 randomPoint = GetRandomPointInBounds();
+                var hitLevel = Physics2D.OverlapPoint(randomPoint, levelMask);
+                if (hitLevel != null)
                 {
-                    hits++;
+                    tries++;
+                    var hitBlock = Physics2D.OverlapPoint(randomPoint, blockMask);
+                    if (hitBlock != null)
+                    { 
+                        hits++;
+                    }
                 }
-                tries++;
                 if(tries >= numberOfEvalutionTries)
                 {
                     done = true;
@@ -84,18 +94,14 @@ public class FillManager: Singleton<FillManager>
                 }
             }
             finishedAreaCalculationFrame(1.0f * hits / tries);
-            UnityEngine.Debug.Log(hits + " " + tries + " " + sw.Elapsed.TotalSeconds + " "+ Time.fixedDeltaTime);
             yield return new WaitForFixedUpdate();
         }
         finishedCalulatingAreaFractionEvent(1.0f * hits / tries);
     }
-    bool TryHit()
+    Vector2 GetRandomPointInBounds()
     {
         float randomX = Random.Range(minBoundCoordinatesCorner.x, maxBoundCoordinatesCorner.x);
         float randomY = Random.Range(minBoundCoordinatesCorner.y, maxBoundCoordinatesCorner.y);
-        Vector2 randomPoint = new Vector2(randomX, randomY);
-        Collider2D col = Physics2D.OverlapPoint(randomPoint);
-        return col != null;
+        return new Vector2(randomX, randomY);
     }
-
 }

@@ -16,10 +16,12 @@ public class InputManager : MonoBehaviour
     bool rPressed;
     Vector3 mousePositionScreen;
     Camera mainCamera;
+    int blockLayerMask;
     private void Start()
     {
         rPressed = false;
         mainCamera = Camera.main;
+        blockLayerMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
     void Update()
     {
@@ -30,7 +32,7 @@ public class InputManager : MonoBehaviour
             mouse0PressedEvent(mousePositionWorld);
             if (Input.GetMouseButtonDown(0))
             {
-                Collider2D hit = Physics2D.OverlapPoint(mousePositionWorld);
+                Collider2D hit = Physics2D.OverlapPoint(mousePositionWorld, blockLayerMask);
                 if (Input.GetKey(KeyCode.D))
                 {
                     mouse0DownEventWithDPressed(mousePositionWorld, hit);

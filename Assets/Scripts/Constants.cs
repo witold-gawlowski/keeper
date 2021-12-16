@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Constants
 {
-    public static string levelTag = "Level";
+    public static string levelLayer = "Level";
     public static string blockTag = "Block";
+    public static string blockLayer = "Block";
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 using TMPro;
 public class MainSceneUIManager : Singleton<MainSceneUIManager>
 {
-    public System.Action SurrenderPressedEvent;
-    public System.Action<GameObject> BlockSelectedForDeletionEvent;
-    public System.Action LevelCompletedConfirmPressedEvent;
+    public System.Action surrenderPressedEvent;
+    public System.Action<GameObject> blockSelectedForDeletionEvent;
+    public System.Action levelCompletedConfirmPressedEvent;
     public System.Action verdictPressedEvent;
 
     [SerializeField] GameObject levelCompletedBox;
@@ -36,7 +36,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     #region Custom public functions
     public void LevelCompletedConfimPress()
     {
-        LevelCompletedConfirmPressedEvent();
+        levelCompletedConfirmPressedEvent();
     }
     public void OnVerdictPress()
     {
@@ -44,7 +44,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     }
     public void OnSurrender()
     {
-        SurrenderPressedEvent();
+        surrenderPressedEvent();
     }
     #endregion
     #region Custom private functions
@@ -75,7 +75,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
         {
             if (col.tag == Constants.blockTag)
             {
-                BlockSelectedForDeletionEvent(col.gameObject);
+                blockSelectedForDeletionEvent(col.gameObject);
             }
         }
     }

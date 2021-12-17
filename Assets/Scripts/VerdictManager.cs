@@ -8,6 +8,7 @@ public class VerdictManager : Singleton<VerdictManager>
 
     [SerializeField] private float numberOfVerdictPointPerUnit = 5.0f;
     [SerializeField] private float dispersionRadius = 0.4f;
+    [SerializeField] private float probeInterval = 0.1f;
 
     private ObjectPool hitPool;
     private PolygonCollider2D levelCollider;
@@ -26,13 +27,13 @@ public class VerdictManager : Singleton<VerdictManager>
     }
     private void OnEnable()
     {
-        MainSceneUIManager.Instance.verdictPressedEvent += StartVerdict;
+        MainSceneManager.Instance.verdictStartedEvent += StartRunVerdictCoroutine;
     }
     private void OnDisable()
     {
         if (MainMenuUIManager.Instance)
         {
-            MainSceneUIManager.Instance.verdictPressedEvent -= StartVerdict;
+            MainSceneManager.Instance.verdictStartedEvent -= StartRunVerdictCoroutine;
         }
     }
     void InitLevelCollider()
@@ -41,7 +42,11 @@ public class VerdictManager : Singleton<VerdictManager>
         levelCollider = levelObject.GetComponent<PolygonCollider2D>();
         pathCount = levelCollider.pathCount;
     }
-    void StartVerdict()
+    void StartRunVerdictCoroutine()
+    {
+        StartCoroutine(RunVerdict());
+    }
+    IEnumerator RunVerdict()
     {
         for(int i=0; i<pathCount; i++)
         {
@@ -75,6 +80,7 @@ public class VerdictManager : Singleton<VerdictManager>
                             Debug.Log("handle miss");
                             hit.HandleMiss();
                         }
+                        yield return new WaitForSeconds(probeInterval);
                     }
                 }
             }

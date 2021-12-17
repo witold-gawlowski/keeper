@@ -12,9 +12,13 @@ public class VerdictManager : Singleton<VerdictManager>
     private ObjectPool hitPool;
     private PolygonCollider2D levelCollider;
     int pathCount;
+    int levelLayerMask;
+    int blockLayerMask;
     private void Awake()
     {
         hitPool = GetComponentInChildren<ObjectPool>();
+        levelLayerMask = Helpers.GetSingleLayerMask(Constants.levelLayer);
+        blockLayerMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
     private void Start()
     {
@@ -51,8 +55,23 @@ public class VerdictManager : Singleton<VerdictManager>
                 var length = (pointB - pointA).magnitude;
                 var numberOfVerdictPoints = length * numberOfVerdictPointPerUnit;
                 var unitVector = (pointB - pointA).normalized;
-                hitPool.Spawn(path[j]);
-
+                for(int k=0; k<numberOfVerdictPoints; k++)
+                {
+                    var basePosition = unitVector * k + pointA;
+                    var randomX = Random.RandomRange(-dispersionRadius, dispersionRadius);
+                    var randomY = Random.RandomRange(-dispersionRadius, dispersionRadius);
+                    var dispersionVector = new Vector2(randomX, randomY);
+                    var dispersedPosition = basePosition + dispersionVector;
+                    var levelColliderHit = Physics2D.OverlapPoint(dispersedPosition, levelLayerMask);
+                    if (levelColliderHit==null)
+                    {
+                        var blockColliderHit = Physics2D.OverlapPoint(dispersedPosition, blockLayerMask);
+                        if(blockColliderHit != null)
+                        {
+                            hitPool.Spawn(dispersedPosition);
+                        }
+                    }
+                }
             }
         }
     }

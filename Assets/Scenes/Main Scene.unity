@@ -1758,7 +1758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c69121e3e2d648749b8acee4269e8a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfVerdictPointPerUnit: 5
+  numberOfVerdictPointPerUnit: 1
   dispersionRadius: 1
 --- !u!1 &1420494317
 GameObject:

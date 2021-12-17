@@ -12,7 +12,7 @@ using UnityEngine;
 // TODO: update unity version
 // TODO: clear obvious names such as pooled prefab
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPool : Singleton<ObjectPool>
 {
     public GameObject pooledPrefab;
     private Stack<Poolable> container = new Stack<Poolable>();

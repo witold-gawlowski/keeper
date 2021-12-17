@@ -43,11 +43,9 @@ public class VerdictManager : Singleton<VerdictManager>
     }
     void StartVerdict()
     {
-        Debug.Log("Start Verdict");
         for(int i=0; i<pathCount; i++)
         {
             var path = levelCollider.GetPath(i);
-            Debug.Log("pathcount " + path.Length);
             for (int j=0; j<path.Length; j++)
             {
                 var pointA = path[j];
@@ -58,17 +56,24 @@ public class VerdictManager : Singleton<VerdictManager>
                 for(int k=0; k<numberOfVerdictPoints; k++)
                 {
                     var basePosition = unitVector * k + pointA;
-                    var randomX = Random.RandomRange(-dispersionRadius, dispersionRadius);
-                    var randomY = Random.RandomRange(-dispersionRadius, dispersionRadius);
+                    var randomX = Random.Range(-dispersionRadius, dispersionRadius);
+                    var randomY = Random.Range(-dispersionRadius, dispersionRadius);
                     var dispersionVector = new Vector2(randomX, randomY);
                     var dispersedPosition = basePosition + dispersionVector;
                     var levelColliderHit = Physics2D.OverlapPoint(dispersedPosition, levelLayerMask);
-                    if (levelColliderHit==null)
+                    if (levelColliderHit == null)
                     {
                         var blockColliderHit = Physics2D.OverlapPoint(dispersedPosition, blockLayerMask);
-                        if(blockColliderHit != null)
+                        var hit = hitPool.Spawn(dispersedPosition) as ProbeScript;
+                        if (blockColliderHit != null)
                         {
-                            hitPool.Spawn(dispersedPosition);
+                            Debug.Log("handle hit");
+                            hit.HandleHit();
+                        }
+                        else
+                        {
+                            Debug.Log("handle miss");
+                            hit.HandleMiss();
                         }
                     }
                 }

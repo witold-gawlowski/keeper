@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7077774473525931785}
   - component: {fileID: -8643811292225662388}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: Probe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,3 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e746cdb14fd5cd469f22cb574632c06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missStartColor: {r: 1, g: 0, b: 0, a: 1}
+  missEndColor: {r: 1, g: 0, b: 0, a: 0}
+  hitColor: {r: 0, g: 0, b: 0, a: 1}
+  animationLength: 1

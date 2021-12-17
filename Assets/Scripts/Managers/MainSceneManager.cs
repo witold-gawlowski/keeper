@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainSceneManager : MonoBehaviour
+public class MainSceneManager : Singleton<MainSceneManager>
 {
+    public GameObject LevelObject { get; private set; }
     private void Awake()
     {
-        Instantiate(GameManager.Instance.SelectedLevel.prefab, transform);
+        LevelObject = Instantiate(GameManager.Instance.SelectedLevel.prefab, transform);
     }
 }

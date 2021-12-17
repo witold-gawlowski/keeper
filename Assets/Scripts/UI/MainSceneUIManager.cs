@@ -7,12 +7,16 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     public System.Action SurrenderPressedEvent;
     public System.Action<GameObject> BlockSelectedForDeletionEvent;
     public System.Action LevelCompletedConfirmPressedEvent;
+    public System.Action verdictPressedEvent;
 
     [SerializeField] GameObject levelCompletedBox;
     [SerializeField] UnityEngine.UI.Image bin;
     [SerializeField] UnityEngine.UI.Slider scoreSlider;
+    [SerializeField] UnityEngine.UI.Button verdictButton;
 
     private Vector2 binPositionWorld;
+
+    #region Unity functions
     void Start()
     {
         SetBinPosition();
@@ -25,25 +29,44 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     {
         FillManager.Instance.finishedAreaCalculationFrame += UpdateScore;
         ScoreManager.Instance.targetFractionHitEvent += HandleTargetFrationHit;
+        DragManager.Instance.dragStartedEvent += DisableVerdict;
+        BlockManager.Instance.blockSpawnedEvent += DisableVerdict;
     }
-    private void OnDisable()
+    #endregion
+    #region Custom public functions
+    public void LevelCompletedConfimPress()
     {
-        if (FillManager.Instance)
-        {
-            FillManager.Instance.finishedAreaCalculationFrame += UpdateScore;
-        }
-        if (ScoreManager.Instance)
-        {
-            ScoreManager.Instance.targetFractionHitEvent -= HandleTargetFrationHit;
-        }
+        LevelCompletedConfirmPressedEvent();
     }
-    void SetBinPosition()
+    public void OnVerdictPress()
     {
-        binPositionWorld = Camera.main.ScreenToWorldPoint(bin.transform.position);
+        verdictPressedEvent();
     }
     public void OnSurrender()
     {
         SurrenderPressedEvent();
+    }
+    #endregion
+    #region Custom private functions
+    void SetBinPosition()
+    {
+        binPositionWorld = Camera.main.ScreenToWorldPoint(bin.transform.position);
+    }
+    void UpdateScore(float value)
+    {
+        scoreSlider.value = value;
+    }
+    void HandleTargetFrationHit()
+    {
+        verdictButton.interactable = true;
+    }
+    void DisableVerdict(GameObject _)
+    {
+        DisableVerdict();
+    }
+    void DisableVerdict()
+    {
+        verdictButton.interactable = false;
     }
     void CheckForBlockToRemove()
     {
@@ -56,16 +79,24 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
             }
         }
     }
-    void UpdateScore(float value)
+    #endregion
+    private void OnDisable()
     {
-        scoreSlider.value = value;
-    }
-    void HandleTargetFrationHit()
-    {
-        levelCompletedBox.SetActive(true);
-    }
-    public void LevelCompletedConfimPress()
-    {
-        LevelCompletedConfirmPressedEvent();
+        if (FillManager.Instance)
+        {
+            FillManager.Instance.finishedAreaCalculationFrame -= UpdateScore;
+        }
+        if (ScoreManager.Instance)
+        {
+            ScoreManager.Instance.targetFractionHitEvent -= HandleTargetFrationHit;
+        }
+        if (DragManager.Instance)
+        {
+            DragManager.Instance.dragStartedEvent -= DisableVerdict;
+        }
+        if (BlockManager.Instance)
+        {
+            BlockManager.Instance.blockSpawnedEvent -= DisableVerdict;
+        }
     }
 }

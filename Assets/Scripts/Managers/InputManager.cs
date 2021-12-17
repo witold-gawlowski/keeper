@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 public class InputManager : MonoBehaviour
 {
     public static System.Action<Vector2, Collider2D> mouse0DownEvent;
@@ -39,7 +39,10 @@ public class InputManager : MonoBehaviour
                 }
                 else
                 {
-                    mouse0DownEvent(mousePositionWorld, hit);
+                    if (!EventSystem.current.IsPointerOverGameObject())
+                    {
+                        mouse0DownEvent(mousePositionWorld, hit);
+                    }
                 }
             }
         }

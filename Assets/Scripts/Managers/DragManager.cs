@@ -5,6 +5,7 @@ using UnityEngine;
 public class DragManager : Singleton<DragManager>
 {
     public System.Action dragFinishedEvent;
+    public System.Action dragStartedEvent;
 
     [SerializeField] float dragForce = 5;
     GameObject draggedBlock;
@@ -45,6 +46,7 @@ public class DragManager : Singleton<DragManager>
             draggedRB.constraints = RigidbodyConstraints2D.FreezeRotation;
             draggedBlock = block.gameObject;
             pointerOffset = (Vector2)draggedBlock.transform.position - worldPos;
+            dragStartedEvent?.Invoke();
         }
     }
 

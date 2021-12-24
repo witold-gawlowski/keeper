@@ -14,13 +14,13 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
     [SerializeField] Button nextLevelButton;
     private void OnEnable()
     {
-        LevelManager.Instance.selectedLevelUpdatedEvent += HandleSelectedLevelUpdatedEvent;
+        MapManager.Instance.selectedMapUpdatedEvent += HandleSelectedLevelUpdatedEvent;
     }
     private void OnDisable()
     {
-        if (LevelManager.Instance)
+        if (MapManager.Instance)
         {
-            LevelManager.Instance.selectedLevelUpdatedEvent -= HandleSelectedLevelUpdatedEvent;
+            MapManager.Instance.selectedMapUpdatedEvent -= HandleSelectedLevelUpdatedEvent;
         }
     }
     void HandleSelectedLevelUpdatedEvent(int currentLevel)
@@ -30,7 +30,7 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
             previousLevelButton.interactable = false;
             nextLevelButton.interactable = true;
         }
-        else if(currentLevel == LevelManager.Instance.MaxLevels - 1)
+        else if(currentLevel == MapManager.Instance.MaxMaps - 1)
         {
             previousLevelButton.interactable = true;
             nextLevelButton.interactable = false;

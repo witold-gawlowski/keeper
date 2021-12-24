@@ -7,7 +7,8 @@ public class GameManager : Singleton<GameManager>
 {
     public System.Action mainSceneStartedEvent;
     public System.Action surrenderEvent;
-    public LevelSO SelectedLevel { get; private set; }
+    public LevelSO SelectedMap { get; private set; }
+    public int Level { get; private set; }
 
     [SerializeField] private UnityEditor.SceneAsset mainScene;
     [SerializeField] private UnityEditor.SceneAsset menuScene;
@@ -15,16 +16,25 @@ public class GameManager : Singleton<GameManager>
 
     private Dictionary<string, System.Action> sceneLoadedHandlers;
     private Dictionary<string, System.Action> sceneUnloadedHandlers;
+
+    #region Unity Functions
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        InitializeSceneLoadedHandlers();
+        Init();
     }
     void Start()
     {
-        InitializeSceneLoadedHandlers();
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
+        SceneManager.sceneLoaded += SceneLoadedHandler;
+        SceneManager.sceneUnloaded += SceneUnloadedHandler;
         MenuSceneLoadedHandler();
+    }
+    #endregion
+    #region Custom Private Functions
+    void Init()
+    {
+        Level = 1;
     }
     void InitializeSceneLoadedHandlers()
     {
@@ -41,29 +51,18 @@ public class GameManager : Singleton<GameManager>
             { mainScene.name,  MainSceneUnloadedHandler },
         };
     }
-    void OnSceneLoaded(Scene scene, LoadSceneMode _)
-    {
-        sceneLoadedHandlers[scene.name]?.Invoke();
-    }
-    void OnSceneUnloaded(Scene scene)
-    {
-        sceneUnloadedHandlers[scene.name]?.Invoke();
-    }
     void SubscribeToLevelSelectionEvents()
     {
         LevelSelectionUIManager.Instance.BackButtonPressedEvent += HandleBackToMainMenu;
-        LevelManager.Instance.levelConfirmedEvent += HandleLevelConfirmed;
+        MapManager.Instance.mapConfirmedEvent += HandleLevelConfirmed;
     }
     void UnsubscribeFromLevelSelectionEvents()
     {
-        if (LevelSelectionUIManager.Instance) {
+        if (LevelSelectionUIManager.Instance)
+        {
             LevelSelectionUIManager.Instance.BackButtonPressedEvent -= HandleBackToMainMenu;
-            LevelManager.Instance.levelConfirmedEvent -= HandleLevelConfirmed;
+            MapManager.Instance.mapConfirmedEvent -= HandleLevelConfirmed;
         }
-    }
-    void MenuSceneLoadedHandler()
-    {
-        MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent += HandleLevelSelectionOpen;
     }
     void UnsubscribeFromMainMenuEvents()
     {
@@ -72,21 +71,14 @@ public class GameManager : Singleton<GameManager>
             MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent -= HandleLevelSelectionOpen;
         }
     }
-    void MainSceneLoadedHandler()
-    {
-        SubscribeToMainSceneEvents();
-        mainSceneStartedEvent();
-    }
     void SubscribeToMainSceneEvents()
     {
         BlockManager.Instance.SubscribeToMainSceneEvents();
         MainSceneUIManager.Instance.surrenderPressedEvent += HandleSurrenderEvent;
         MainSceneUIManager.Instance.levelCompletedConfirmPressedEvent += HandleLevelCompletedEvent;
+        MainSceneManager.Instance.levelCompleted += HandleLevelCompleted;
     }
-    void MainSceneUnloadedHandler()
-    {   
-        UnsubscribeFromMainSceneEvents();
-    }
+
     void UnsubscribeFromMainSceneEvents()
     {
         BlockManager.Instance.UnsubscribeFromMainSceneEvents();
@@ -94,7 +86,41 @@ public class GameManager : Singleton<GameManager>
         {
             MainSceneUIManager.Instance.surrenderPressedEvent -= HandleSurrenderEvent;
         }
+        if (MainSceneManager.Instance)
+        {
+            MainSceneManager.Instance.levelCompleted -= HandleLevelCompleted;
+        }
     }
+    #endregion
+    #region Handlers
+    void SceneLoadedHandler(Scene scene, LoadSceneMode _)
+    {
+        sceneLoadedHandlers[scene.name]?.Invoke();
+    }
+    void SceneUnloadedHandler(Scene scene)
+    {
+        sceneUnloadedHandlers[scene.name]?.Invoke();
+    }
+    void HandleLevelCompleted()
+    {
+        Level++;
+    }
+    void MenuSceneLoadedHandler()
+    {
+        Debug.Log("menu scene loaded handler");
+        MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent += HandleLevelSelectionOpen;
+    }
+
+    void MainSceneLoadedHandler()
+    {
+        SubscribeToMainSceneEvents();
+        mainSceneStartedEvent();
+    }
+    void MainSceneUnloadedHandler()
+    {
+        UnsubscribeFromMainSceneEvents();
+    }
+   
     void HandleSurrenderEvent()
     {
         surrenderEvent?.Invoke();
@@ -104,7 +130,7 @@ public class GameManager : Singleton<GameManager>
     void HandleBackToMainMenu() => SceneManager.LoadScene(menuScene.name);
     void HandleLevelConfirmed(LevelSO level)
     {
-        SelectedLevel = level;
+        SelectedMap = level;
         SceneManager.LoadScene(mainScene.name);
     }
     void HandleLevelCompletedEvent()
@@ -112,3 +138,4 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene(menuScene.name);
     }
 }
+#endregion

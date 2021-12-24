@@ -11,7 +11,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     public GameObject LevelObject { get; private set; }
     private void Awake()
     {
-        LevelObject = Instantiate(GameManager.Instance.SelectedLevel.prefab, transform);
+        LevelObject = Instantiate(GameManager.Instance.SelectedMap.prefab, transform);
     }
     private void OnEnable()
     {
@@ -21,7 +21,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     void HandleFinishedAreaCalculation(float fraction)
     {
-        float targetCompletionFraction = GameManager.Instance.SelectedLevel.targetCompletionFraction;
+        float targetCompletionFraction = GameManager.Instance.SelectedMap.targetCompletionFraction;
         if (fraction >= targetCompletionFraction)
         {
             targetFractionHitEvent();
@@ -29,7 +29,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     void HandleVerdictFinished(int hits)
     {
-        var maxHits = GameManager.Instance.SelectedLevel.maxNumberOfHits;
+        var maxHits = GameManager.Instance.SelectedMap.maxNumberOfHits;
         if(hits <= maxHits)
         {
             levelCompleted?.Invoke();

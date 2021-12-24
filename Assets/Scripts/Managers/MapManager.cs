@@ -2,36 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManager : Singleton<LevelManager>
+public class MapManager : Singleton<MapManager>
 {
-    public System.Action<int> selectedLevelUpdatedEvent;
-    public System.Action<LevelSO> levelConfirmedEvent;
-    public int MaxLevels { get; private set; }
-    public LevelSO SelectedLevel => levelSOs[selectedLevelIndex];
+    public System.Action<int> selectedMapUpdatedEvent;
+    public System.Action<LevelSO> mapConfirmedEvent;
+    public int MaxMaps { get; private set; }
+    public LevelSO SelectedLevel => mapSOs[selectedMapIndex];
 
-    [SerializeField] List<LevelSO> levelSOs;
-    List<GameObject> levelGOs;
-    int selectedLevelIndex;
+    List<LevelSO> mapSOs;
+    List<GameObject> mapGOs;
+    int selectedMapIndex;
     private void OnEnable()
     {
         LevelSelectionUIManager.Instance.PreviousLevelButtonPressedEvent += HandlePreviousLevelSelectedEvent;
         LevelSelectionUIManager.Instance.NextLevelButtonPressedEvent += HandleNextLevelSelectedEvent;
         LevelSelectionUIManager.Instance.StartButtonPressedEvent += HandleSelectedLevelConfirm;
     }
-    void Start()
+    void Awake()
     {
+        var level = GameManager.Instance.Level;
+        mapSOs = LevelScheduler.Instance.GetMaps(level);
         InitializeLevels();
     }
     void InitializeLevels()
     {
-        levelGOs = new List<GameObject>();
-        foreach (var level in levelSOs)
+        mapGOs = new List<GameObject>();
+        foreach (var level in mapSOs)
         {
             var newLevel = Instantiate(level.prefab);
             newLevel.SetActive(false);
-            levelGOs.Add(newLevel);
+            mapGOs.Add(newLevel);
         }
-        MaxLevels = levelGOs.Count;
+        MaxMaps = mapGOs.Count;
         SetSelectedLevel(0);
     }
     void OnDisable()
@@ -45,25 +47,25 @@ public class LevelManager : Singleton<LevelManager>
     }
     void HandlePreviousLevelSelectedEvent()
     {
-        SetSelectedLevel((selectedLevelIndex - 1 + MaxLevels) % MaxLevels);
-        selectedLevelUpdatedEvent(selectedLevelIndex);
+        SetSelectedLevel((selectedMapIndex - 1 + MaxMaps) % MaxMaps);
+        selectedMapUpdatedEvent(selectedMapIndex);
     }
     void HandleNextLevelSelectedEvent()
     {
-        SetSelectedLevel((selectedLevelIndex + 1 + MaxLevels) % MaxLevels);
-        selectedLevelUpdatedEvent(selectedLevelIndex);
+        SetSelectedLevel((selectedMapIndex + 1 + MaxMaps) % MaxMaps);
+        selectedMapUpdatedEvent(selectedMapIndex);
     }
     void SetSelectedLevel(int index)
     {
-        foreach (var l in levelGOs)
+        foreach (var l in mapGOs)
         {
             l.SetActive(false);
         }
-        levelGOs[index].SetActive(true);
-        selectedLevelIndex = index;
+        mapGOs[index].SetActive(true);
+        selectedMapIndex = index;
     }
     void HandleSelectedLevelConfirm()
     {
-        levelConfirmedEvent(levelSOs[selectedLevelIndex]);
+        mapConfirmedEvent(mapSOs[selectedMapIndex]);
     }
 }

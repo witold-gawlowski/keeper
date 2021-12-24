@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed42a0de141444547adf29a0b09d940f, type: 3}
-  m_Name: Level3
+  m_Name: Map1
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7773270141513653564, guid: 60161685cde23a84da7d615595bd1d59, type: 3}
-  targetCompletionFraction: 0.8
-  maxNumberOfHits: 4
+  prefab: {fileID: 5991863233526848571, guid: de151b453f54c1c428d0640072f97df4, type: 3}
+  targetCompletionFraction: 0.4
+  maxNumberOfHits: 5
+  progressIndex: 24

@@ -10,9 +10,11 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     public System.Action verdictPressedEvent;
 
     [SerializeField] GameObject levelCompletedBox;
+    [SerializeField] GameObject levelFailedBox;
     [SerializeField] UnityEngine.UI.Image bin;
     [SerializeField] UnityEngine.UI.Slider scoreSlider;
     [SerializeField] UnityEngine.UI.Button verdictButton;
+    [SerializeField] UnityEngine.UI.Button surrenderButton;
 
     private Vector2 binPositionWorld;
 
@@ -27,10 +29,13 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     }
     private void OnEnable()
     {
+        MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStarted;
         FillManager.Instance.finishedAreaCalculationFrame += UpdateScore;
-        ScoreManager.Instance.targetFractionHitEvent += HandleTargetFrationHit;
+        MainSceneManager.Instance.targetFractionHitEvent += HandleTargetFrationHit;
         DragManager.Instance.dragStartedEvent += DisableVerdict;
         BlockManager.Instance.blockSpawnedEvent += DisableVerdict;
+        MainSceneManager.Instance.levelCompleted += HandleLevelCompleted;
+        MainSceneManager.Instance.levelFailed += HandleLevelFailed;
     }
     #endregion
     #region Custom public functions
@@ -56,9 +61,23 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     {
         scoreSlider.value = value;
     }
+    void HandleLevelCompleted()
+    {
+        levelCompletedBox.SetActive(true);
+    }
+    void HandleLevelFailed()
+    {
+        levelFailedBox.SetActive(true);
+    }
     void HandleTargetFrationHit()
     {
         verdictButton.interactable = true;
+    }
+    void HandleVerdictStarted()
+    {
+        surrenderButton.gameObject.SetActive(false);
+        verdictButton.gameObject.SetActive(false);
+        bin.gameObject.SetActive(false);
     }
     void DisableVerdict(GameObject _)
     {
@@ -82,13 +101,16 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     #endregion
     private void OnDisable()
     {
+        if (MainSceneManager.Instance)
+        {
+            MainSceneManager.Instance.verdictStartedEvent -= HandleVerdictStarted;
+            MainSceneManager.Instance.targetFractionHitEvent -= HandleTargetFrationHit;
+            MainSceneManager.Instance.levelCompleted -= HandleLevelCompleted;
+            MainSceneManager.Instance.levelFailed -= HandleLevelFailed;
+        }
         if (FillManager.Instance)
         {
             FillManager.Instance.finishedAreaCalculationFrame -= UpdateScore;
-        }
-        if (ScoreManager.Instance)
-        {
-            ScoreManager.Instance.targetFractionHitEvent -= HandleTargetFrationHit;
         }
         if (DragManager.Instance)
         {

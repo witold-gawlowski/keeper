@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VerdictManager : Singleton<VerdictManager>
 {
-    public System.Action<bool> verdictEvent;
+    public System.Action<int> resultEvent;
 
     [SerializeField] private float numberOfVerdictPointPerUnit = 5.0f;
     [SerializeField] private float dispersionRadius = 0.4f;
@@ -15,6 +15,7 @@ public class VerdictManager : Singleton<VerdictManager>
     int pathCount;
     int levelLayerMask;
     int blockLayerMask;
+    int hitCounter;
     private void Awake()
     {
         hitPool = GetComponentInChildren<ObjectPool>();
@@ -48,7 +49,8 @@ public class VerdictManager : Singleton<VerdictManager>
     }
     IEnumerator RunVerdict()
     {
-        for(int i=0; i<pathCount; i++)
+        hitCounter = 0;
+        for (int i=0; i<pathCount; i++)
         {
             var path = levelCollider.GetPath(i);
             for (int j=0; j<path.Length; j++)
@@ -72,12 +74,11 @@ public class VerdictManager : Singleton<VerdictManager>
                         var hit = hitPool.Spawn(dispersedPosition) as ProbeScript;
                         if (blockColliderHit != null)
                         {
-                            Debug.Log("handle hit");
                             hit.HandleHit();
+                            hitCounter++;
                         }
                         else
                         {
-                            Debug.Log("handle miss");
                             hit.HandleMiss();
                         }
                         yield return new WaitForSeconds(probeInterval);
@@ -85,5 +86,6 @@ public class VerdictManager : Singleton<VerdictManager>
                 }
             }
         }
+        resultEvent(hitCounter);
     }
 }

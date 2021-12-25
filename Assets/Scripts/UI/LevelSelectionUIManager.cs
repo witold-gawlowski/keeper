@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
 {
@@ -10,51 +11,96 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
     public System.Action StartButtonPressedEvent;
     public System.Action BackButtonPressedEvent;
 
-    [SerializeField] Button previousLevelButton;
-    [SerializeField] Button nextLevelButton;
+    [SerializeField] GameObject rewardIconPrefab;
+    [SerializeField] Button previousMapButton;
+    [SerializeField] Button nextMapButton;
+    [SerializeField] TMP_Text levelText;
+    [SerializeField] Transform rewardImageParent;
+    [SerializeField] List<RewardIconScript> rewardIcons;
     private void OnEnable()
     {
-        MapManager.Instance.selectedMapUpdatedEvent += HandleSelectedLevelUpdatedEvent;
+        MapManager.Instance.selectedMapUpdatedEvent += HandleSelectedMapUpdatedEvent;
     }
     private void OnDisable()
     {
         if (MapManager.Instance)
         {
-            MapManager.Instance.selectedMapUpdatedEvent -= HandleSelectedLevelUpdatedEvent;
+            MapManager.Instance.selectedMapUpdatedEvent -= HandleSelectedMapUpdatedEvent;
         }
     }
-    void HandleSelectedLevelUpdatedEvent(int currentLevel)
+  
+    public void Init()
     {
-        if(currentLevel == 0)
+        levelText.text = "Level " + GameManager.Instance.Level;
+        HandleSelectedMapUpdatedEvent(0);
+    }
+    void HandleSelectedMapUpdatedEvent(int currentMap)
+    {
+        UpdateSelectionButtonsInteractivity(currentMap);
+        UpdateRewards(currentMap);
+    }
+    void UpdateSelectionButtonsInteractivity(int currentMap)
+    {
+        if (currentMap == 0)
         {
-            previousLevelButton.interactable = false;
-            nextLevelButton.interactable = true;
+            previousMapButton.interactable = false;
+            nextMapButton.interactable = true;
         }
-        else if(currentLevel == MapManager.Instance.MaxMaps - 1)
+        else if (currentMap == MapManager.Instance.MaxMaps - 1)
         {
-            previousLevelButton.interactable = true;
-            nextLevelButton.interactable = false;
+            previousMapButton.interactable = true;
+            nextMapButton.interactable = false;
         }
         else
         {
-            previousLevelButton.interactable = true;
-            nextLevelButton.interactable = true;
+            previousMapButton.interactable = true;
+            nextMapButton.interactable = true;
         }
     }
-    public void HandlePreviousLevelButtonPress()
+    void HandlePreviousLevelButtonPress()
     {
         PreviousLevelButtonPressedEvent?.Invoke();
     }
-    public void HandleNextLevelButtonPress()
+    void HandleNextLevelButtonPress()
     {
         NextLevelButtonPressedEvent?.Invoke();
     }
-    public void HandleStartPress()
+    void HandleStartPress()
     {
         StartButtonPressedEvent();
     }
-    public void HandleBackPress()
+    void HandleBackPress()
     {
         BackButtonPressedEvent();
+    }
+    void UpdateRewards(int currentMapIndex)
+    {
+        foreach(Transform icon in rewardImageParent)
+        {
+            if (icon != rewardImageParent)
+            {
+                icon.gameObject.SetActive(false);
+            }
+        }
+        var rewards = LevelScheduler.Instance.CurrentLevelRewards;
+        var selectedMapRewards = rewards[currentMapIndex];
+        foreach (var r in selectedMapRewards)
+        {
+            AddReward(r.Sprite, r.count);
+        }
+    }
+    void AddReward(Sprite s, int count)
+    {
+        foreach(Transform icon in rewardImageParent)
+        {
+            if(icon != rewardImageParent && icon.gameObject.activeSelf == false)
+            {
+                icon.gameObject.SetActive(true);
+                var rewardIconScript = icon.GetComponent<RewardIconScript>();
+                rewardIconScript.SetSprite(s);
+                rewardIconScript.SetCount(count);
+                return;
+            }
+        }
     }
 }

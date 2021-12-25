@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed42a0de141444547adf29a0b09d940f, type: 3}
+  m_Script: {fileID: 11500000, guid: 179c620157824664285a897e6b6b7812, type: 3}
   m_Name: Map4
   m_EditorClassIdentifier: 
   prefab: {fileID: 1134651120889527720, guid: ccfdd74c4cc25fa47b9e6a1d22544070, type: 3}
   targetCompletionFraction: 0.55
-  maxNumberOfHits: 3
-  progressIndex: 12
+  maxNumberOfHits: 5
+  progressIndex: 27

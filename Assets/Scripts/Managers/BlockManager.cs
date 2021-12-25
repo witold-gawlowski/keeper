@@ -77,7 +77,7 @@ public class BlockManager : Singleton<BlockManager>
         blocks = new List<GameObject>();
         foreach (var item in inventory)
         {
-            for (int i = 0; i < item.count; i++)
+            for (int i = 0; i < item.countInInventory; i++)
             {
                 var block = Instantiate(item.prefab, transform);
                 block.SetActive(false);

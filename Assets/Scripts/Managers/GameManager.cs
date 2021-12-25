@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
     public System.Action mainSceneStartedEvent;
     public System.Action surrenderEvent;
-    public LevelSO SelectedMap { get; private set; }
+    public MapSO SelectedMap { get; private set; }
     public int Level { get; private set; }
 
     [SerializeField] private UnityEditor.SceneAsset mainScene;
@@ -93,33 +93,20 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
     #region Handlers
-    void SceneLoadedHandler(Scene scene, LoadSceneMode _)
-    {
-        sceneLoadedHandlers[scene.name]?.Invoke();
-    }
-    void SceneUnloadedHandler(Scene scene)
-    {
-        sceneUnloadedHandlers[scene.name]?.Invoke();
-    }
-    void HandleLevelCompleted()
-    {
-        Level++;
-    }
+    void SceneLoadedHandler(Scene scene, LoadSceneMode _) => sceneLoadedHandlers[scene.name]?.Invoke();
+    void SceneUnloadedHandler(Scene scene) => sceneUnloadedHandlers[scene.name]?.Invoke();
+    void HandleLevelCompleted() => Level++;
     void MenuSceneLoadedHandler()
     {
         Debug.Log("menu scene loaded handler");
         MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent += HandleLevelSelectionOpen;
     }
-
     void MainSceneLoadedHandler()
     {
         SubscribeToMainSceneEvents();
         mainSceneStartedEvent();
     }
-    void MainSceneUnloadedHandler()
-    {
-        UnsubscribeFromMainSceneEvents();
-    }
+    void MainSceneUnloadedHandler() => UnsubscribeFromMainSceneEvents();
    
     void HandleSurrenderEvent()
     {
@@ -128,14 +115,11 @@ public class GameManager : Singleton<GameManager>
     }
     void HandleLevelSelectionOpen() => SceneManager.LoadScene(levelSelectionScene.name);
     void HandleBackToMainMenu() => SceneManager.LoadScene(menuScene.name);
-    void HandleLevelConfirmed(LevelSO level)
+    void HandleLevelConfirmed(MapSO level)
     {
         SelectedMap = level;
         SceneManager.LoadScene(mainScene.name);
     }
-    void HandleLevelCompletedEvent()
-    {
-        SceneManager.LoadScene(menuScene.name);
-    }
+    void HandleLevelCompletedEvent() => SceneManager.LoadScene(menuScene.name);
 }
 #endregion

@@ -43,3 +43,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ced488062f09f13469c25a82f85e96a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  availableMaps:
+  - {fileID: 11400000, guid: 88937c6178290f844abe137ab85c8e67, type: 2}
+  - {fileID: 11400000, guid: 78c497b5507d8164ebe326d1874035ee, type: 2}
+  - {fileID: 11400000, guid: a0562c29ecc1d384d8f521d898d7b688, type: 2}
+  - {fileID: 11400000, guid: 99c413b43b804ba41b96d4e34c85cdac, type: 2}
+  availableBlocks: []
+  mapsPerLevel: 2
+  minRewardItemsCount: 1
+  maxRewardItemsCount: 3
+  minRewardItemMultiplicity: 1
+  maxRewadItemMultiplicity: 3

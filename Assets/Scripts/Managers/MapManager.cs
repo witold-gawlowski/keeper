@@ -5,11 +5,11 @@ using UnityEngine;
 public class MapManager : Singleton<MapManager>
 {
     public System.Action<int> selectedMapUpdatedEvent;
-    public System.Action<LevelSO> mapConfirmedEvent;
+    public System.Action<MapSO> mapConfirmedEvent;
     public int MaxMaps { get; private set; }
-    public LevelSO SelectedLevel => mapSOs[selectedMapIndex];
+    public MapSO SelectedLevel => mapSOs[selectedMapIndex];
 
-    List<LevelSO> mapSOs;
+    List<MapSO> mapSOs;
     List<GameObject> mapGOs;
     int selectedMapIndex;
     private void OnEnable()
@@ -18,23 +18,24 @@ public class MapManager : Singleton<MapManager>
         LevelSelectionUIManager.Instance.NextLevelButtonPressedEvent += HandleNextLevelSelectedEvent;
         LevelSelectionUIManager.Instance.StartButtonPressedEvent += HandleSelectedLevelConfirm;
     }
-    void Awake()
+    public void Init()
     {
         var level = GameManager.Instance.Level;
-        mapSOs = LevelScheduler.Instance.GetMaps(level);
-        InitializeLevels();
+        mapSOs = LevelScheduler.Instance.CurrentLevelMaps;
+        InitializeMapGOs();
     }
-    void InitializeLevels()
+
+    void InitializeMapGOs()
     {
         mapGOs = new List<GameObject>();
-        foreach (var level in mapSOs)
+        foreach (var map in mapSOs)
         {
-            var newLevel = Instantiate(level.prefab);
-            newLevel.SetActive(false);
-            mapGOs.Add(newLevel);
+            var newMap = Instantiate(map.prefab);
+            newMap.SetActive(false);
+            mapGOs.Add(newMap);
         }
         MaxMaps = mapGOs.Count;
-        SetSelectedLevel(0);
+        SetSelectedMap(0);
     }
     void OnDisable()
     {
@@ -47,15 +48,15 @@ public class MapManager : Singleton<MapManager>
     }
     void HandlePreviousLevelSelectedEvent()
     {
-        SetSelectedLevel((selectedMapIndex - 1 + MaxMaps) % MaxMaps);
+        SetSelectedMap((selectedMapIndex - 1 + MaxMaps) % MaxMaps);
         selectedMapUpdatedEvent(selectedMapIndex);
     }
     void HandleNextLevelSelectedEvent()
     {
-        SetSelectedLevel((selectedMapIndex + 1 + MaxMaps) % MaxMaps);
+        SetSelectedMap((selectedMapIndex + 1 + MaxMaps) % MaxMaps);
         selectedMapUpdatedEvent(selectedMapIndex);
     }
-    void SetSelectedLevel(int index)
+    void SetSelectedMap(int index)
     {
         foreach (var l in mapGOs)
         {

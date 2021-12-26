@@ -6,7 +6,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
 {
     public System.Action onLevelSelectionButtonPressEvent;
     [SerializeField] private List<InventoryItemUIScript> inventoryIcons;
-    private void Awake()
+    private void Start()
     {
         UpdateInventory();
     }

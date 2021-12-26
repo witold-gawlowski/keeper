@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
     public System.Action mainSceneStartedEvent;
+    public System.Action mainSceneEndedEvent;
     public System.Action surrenderEvent;
-    public MapSO SelectedMap { get; private set; }
+    public MapData SelectedMapData { get; private set; }
     public int Level { get; private set; }
 
     [SerializeField] private UnityEditor.SceneAsset mainScene;
@@ -21,13 +22,13 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += SceneLoadedHandler;
+        SceneManager.sceneUnloaded += SceneUnloadedHandler;
         InitializeSceneLoadedHandlers();
         Init();
     }
     void Start()
     {
-        SceneManager.sceneLoaded += SceneLoadedHandler;
-        SceneManager.sceneUnloaded += SceneUnloadedHandler;
         MenuSceneLoadedHandler();
     }
     #endregion
@@ -51,6 +52,7 @@ public class GameManager : Singleton<GameManager>
             { mainScene.name,  MainSceneUnloadedHandler },
         };
     }
+    void MainSceneUnloadedHandler() => UnsubscribeFromMainSceneEvents();
     void SubscribeToLevelSelectionEvents()
     {
         LevelSelectionUIManager.Instance.BackButtonPressedEvent += HandleBackToMainMenu;
@@ -93,33 +95,47 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
     #region Handlers
-    void SceneLoadedHandler(Scene scene, LoadSceneMode _) => sceneLoadedHandlers[scene.name]?.Invoke();
-    void SceneUnloadedHandler(Scene scene) => sceneUnloadedHandlers[scene.name]?.Invoke();
+    void SceneLoadedHandler(Scene scene, LoadSceneMode _)
+    {
+        if (sceneLoadedHandlers.ContainsKey(scene.name))
+        {
+            sceneLoadedHandlers[scene.name]?.Invoke();
+        }
+    }
+    void SceneUnloadedHandler(Scene scene)
+    {
+        if (sceneUnloadedHandlers.ContainsKey(scene.name))
+        {
+            sceneUnloadedHandlers[scene.name]?.Invoke();
+        }
+    }
     void HandleLevelCompleted() => Level++;
     void MenuSceneLoadedHandler()
     {
-        Debug.Log("menu scene loaded handler");
         MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent += HandleLevelSelectionOpen;
     }
     void MainSceneLoadedHandler()
     {
         SubscribeToMainSceneEvents();
         mainSceneStartedEvent();
-    }
-    void MainSceneUnloadedHandler() => UnsubscribeFromMainSceneEvents();
-   
+    }   
     void HandleSurrenderEvent()
     {
         surrenderEvent?.Invoke();
+        mainSceneEndedEvent?.Invoke();
         SceneManager.LoadScene(menuScene.name);
     }
     void HandleLevelSelectionOpen() => SceneManager.LoadScene(levelSelectionScene.name);
     void HandleBackToMainMenu() => SceneManager.LoadScene(menuScene.name);
-    void HandleLevelConfirmed(MapSO level)
+    void HandleLevelConfirmed(MapData data)
     {
-        SelectedMap = level;
+        SelectedMapData = data;
         SceneManager.LoadScene(mainScene.name);
     }
-    void HandleLevelCompletedEvent() => SceneManager.LoadScene(menuScene.name);
+    void HandleLevelCompletedEvent()
+    {
+        mainSceneEndedEvent?.Invoke();
+        SceneManager.LoadScene(menuScene.name);
+    }
 }
 #endregion

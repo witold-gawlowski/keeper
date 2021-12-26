@@ -4,21 +4,7 @@ using UnityEngine;
 
 public class LevelScheduler : Singleton<LevelScheduler>
 {
-    public class RewardItem
-    {
-        public BlockSO block;
-        public int count;
-        [HideInInspector]public Sprite Sprite { get; private set; }
-        public RewardItem(BlockSO block, int count)
-        {
-            this.block = block;
-            this.count = count;
-            var blockScript = block.prefab.GetComponent<BlockScript>();
-            Sprite = blockScript.GetSprite();
-        }
-    }
-    public List<MapSO> CurrentLevelMaps { get; private set; }
-    public List<List<LevelScheduler.RewardItem>> CurrentLevelRewards { get; private set; }
+    public List<MapData> CurrentLevelData { get; private set; }
 
     [SerializeField] private List<MapSO> availableMaps;
     [SerializeField] private List<BlockSO> availableBlocks;
@@ -44,31 +30,21 @@ public class LevelScheduler : Singleton<LevelScheduler>
     }
     public void CreateCurrentLevelData()
     {
-        CreateMaps();
-        CreateRewards();
+        CurrentLevelData = new List<MapData>();
+        for(int i=0; i<mapsPerLevel; i++)
+        {
+            var mapData = GetMap(i);
+            var rewards = CreateReward();
+            var data = new MapData(mapData, rewards);
+            CurrentLevelData.Add(data);
+        }
     }
-    public void CreateMaps()
+    public MapSO GetMap(int index)
     {
         var level = GameManager.Instance.Level;
         var rangeStartIndex = (level - 1) * mapsPerLevel;
-        var mapCount = availableMaps.Count;
-        try
-        {
-            CurrentLevelMaps = availableMaps.GetRange(rangeStartIndex, mapsPerLevel);
-        }
-        catch (System.ArgumentException ex)
-        {
-            Debug.Log(ex.Message);
-        }
-    }
-    void CreateRewards()
-    {
-        CurrentLevelRewards = new List<List<LevelScheduler.RewardItem>>();
-        foreach (var map in CurrentLevelMaps)
-        {
-            var reward = CreateReward();
-            CurrentLevelRewards.Add(reward);
-        }
+        var result = availableMaps[rangeStartIndex + index];
+        return result;
     }
     public List<RewardItem> CreateReward()
     {

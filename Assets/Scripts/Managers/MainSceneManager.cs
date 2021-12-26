@@ -9,9 +9,11 @@ public class MainSceneManager : Singleton<MainSceneManager>
     public System.Action levelCompleted;
     public System.Action levelFailed;
     public GameObject LevelObject { get; private set; }
+    MapData mapData;
     private void Awake()
     {
-        LevelObject = Instantiate(GameManager.Instance.SelectedMap.prefab, transform);
+        mapData = GameManager.Instance.SelectedMapData;
+        LevelObject = Instantiate(mapData.map.prefab, transform);
     }
     private void OnEnable()
     {
@@ -21,7 +23,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     void HandleFinishedAreaCalculation(float fraction)
     {
-        float targetCompletionFraction = GameManager.Instance.SelectedMap.targetCompletionFraction;
+        float targetCompletionFraction = mapData.map.targetCompletionFraction;
         if (fraction >= targetCompletionFraction)
         {
             targetFractionHitEvent();
@@ -29,7 +31,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     void HandleVerdictFinished(int hits)
     {
-        var maxHits = GameManager.Instance.SelectedMap.maxNumberOfHits;
+        var maxHits = mapData.map.maxNumberOfHits;
         if(hits <= maxHits)
         {
             levelCompleted?.Invoke();

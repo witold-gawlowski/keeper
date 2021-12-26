@@ -5,12 +5,10 @@ using UnityEngine;
 public class MapManager : Singleton<MapManager>
 {
     public System.Action<int> selectedMapUpdatedEvent;
-    public System.Action<MapSO> mapConfirmedEvent;
+    public System.Action<MapData> mapConfirmedEvent;
     public int MaxMaps { get; private set; }
-    public MapSO SelectedLevel => mapSOs[selectedMapIndex];
 
-    List<MapSO> mapSOs;
-    List<GameObject> mapGOs;
+    Dictionary<MapData, GameObject> mapObjectsByMapData;
     int selectedMapIndex;
     private void OnEnable()
     {
@@ -21,21 +19,20 @@ public class MapManager : Singleton<MapManager>
     public void Init()
     {
         var level = GameManager.Instance.Level;
-        mapSOs = LevelScheduler.Instance.CurrentLevelMaps;
         InitializeMapGOs();
+        SetSelectedMap(0);
     }
 
     void InitializeMapGOs()
     {
-        mapGOs = new List<GameObject>();
-        foreach (var map in mapSOs)
+        mapObjectsByMapData = new Dictionary<MapData, GameObject>();
+        var mapsData = LevelScheduler.Instance.CurrentLevelData;
+        foreach (var data in mapsData)
         {
-            var newMap = Instantiate(map.prefab);
-            newMap.SetActive(false);
-            mapGOs.Add(newMap);
+            var newMap = Instantiate(data.map.prefab);
+            mapObjectsByMapData.Add(data, newMap);
         }
-        MaxMaps = mapGOs.Count;
-        SetSelectedMap(0);
+        MaxMaps = mapObjectsByMapData.Count;
     }
     void OnDisable()
     {
@@ -58,15 +55,18 @@ public class MapManager : Singleton<MapManager>
     }
     void SetSelectedMap(int index)
     {
-        foreach (var l in mapGOs)
+        foreach (var l in mapObjectsByMapData.Values)
         {
             l.SetActive(false);
         }
-        mapGOs[index].SetActive(true);
+        var selectedMapData = LevelScheduler.Instance.CurrentLevelData[index];
+        var selectedMapObject = mapObjectsByMapData[selectedMapData];
+        selectedMapObject.SetActive(true);
         selectedMapIndex = index;
     }
     void HandleSelectedLevelConfirm()
     {
-        mapConfirmedEvent(mapSOs[selectedMapIndex]);
+        var selectedMapData = LevelScheduler.Instance.CurrentLevelData[selectedMapIndex];
+        mapConfirmedEvent(selectedMapData);
     }
 }

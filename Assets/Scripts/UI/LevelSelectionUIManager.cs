@@ -82,9 +82,9 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
                 icon.gameObject.SetActive(false);
             }
         }
-        var rewards = LevelScheduler.Instance.CurrentLevelRewards;
-        var selectedMapRewards = rewards[currentMapIndex];
-        foreach (var r in selectedMapRewards)
+        var levelData = LevelScheduler.Instance.CurrentLevelData;
+        var selectedMapRewards = levelData[currentMapIndex];
+        foreach (var r in selectedMapRewards.reward)
         {
             AddReward(r.Sprite, r.count);
         }

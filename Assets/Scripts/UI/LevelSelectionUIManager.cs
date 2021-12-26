@@ -16,7 +16,7 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
     [SerializeField] Button nextMapButton;
     [SerializeField] TMP_Text levelText;
     [SerializeField] Transform rewardImageParent;
-    [SerializeField] List<RewardIconScript> rewardIcons;
+    [SerializeField] List<InventoryItemUIScript> rewardIcons;
     private void OnEnable()
     {
         MapManager.Instance.selectedMapUpdatedEvent += HandleSelectedMapUpdatedEvent;
@@ -96,7 +96,7 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
             if(icon != rewardImageParent && icon.gameObject.activeSelf == false)
             {
                 icon.gameObject.SetActive(true);
-                var rewardIconScript = icon.GetComponent<RewardIconScript>();
+                var rewardIconScript = icon.GetComponent<InventoryItemUIScript>();
                 rewardIconScript.SetSprite(s);
                 rewardIconScript.SetCount(count);
                 return;

@@ -307,7 +307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
       propertyPath: availableBlocks.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
       propertyPath: availableMaps.Array.data[0]
@@ -325,6 +325,10 @@ PrefabInstance:
       propertyPath: availableMaps.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: 99c413b43b804ba41b96d4e34c85cdac, type: 2}
+    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
+      propertyPath: availableBlocks.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: c72cbba4debd1d14abf643aaec537d30, type: 2}
     - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
       propertyPath: availableBlocks.Array.data[1]
       value: 

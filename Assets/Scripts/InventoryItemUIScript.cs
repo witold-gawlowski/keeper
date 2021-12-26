@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-public class RewardIconScript : MonoBehaviour
+public class InventoryItemUIScript : MonoBehaviour
 {
     [SerializeField] private Image image;
     [SerializeField] private TMP_Text countText;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlockSO : ScriptableObject
 {
     public GameObject prefab;
-    public int countInInventory = 0;
+    public int initialCountInInventory = 0;
     public BlockScript BlockScript
     {
         get

@@ -48,7 +48,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 78c497b5507d8164ebe326d1874035ee, type: 2}
   - {fileID: 11400000, guid: a0562c29ecc1d384d8f521d898d7b688, type: 2}
   - {fileID: 11400000, guid: 99c413b43b804ba41b96d4e34c85cdac, type: 2}
-  availableBlocks: []
+  availableBlocks:
+  - {fileID: 11400000, guid: 36711967a91576d4ca31148ceed1c6f0, type: 2}
+  - {fileID: 11400000, guid: 5a909d310f8a01b4993bb39f12e830ee, type: 2}
+  - {fileID: 11400000, guid: c72cbba4debd1d14abf643aaec537d30, type: 2}
   mapsPerLevel: 2
   minRewardItemsCount: 1
   maxRewardItemsCount: 3

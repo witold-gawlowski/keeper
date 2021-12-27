@@ -78,7 +78,7 @@ public class GameManager : Singleton<GameManager>
         BlockManager.Instance.SubscribeToMainSceneEvents();
         MainSceneUIManager.Instance.surrenderPressedEvent += HandleSurrenderEvent;
         MainSceneUIManager.Instance.levelCompletedConfirmPressedEvent += HandleLevelCompletedEvent;
-        MainSceneManager.Instance.levelCompleted += HandleLevelCompleted;
+        MainSceneManager.Instance.levelCompletedEvent += HandleLevelCompleted;
     }
 
     void UnsubscribeFromMainSceneEvents()
@@ -90,7 +90,7 @@ public class GameManager : Singleton<GameManager>
         }
         if (MainSceneManager.Instance)
         {
-            MainSceneManager.Instance.levelCompleted -= HandleLevelCompleted;
+            MainSceneManager.Instance.levelCompletedEvent -= HandleLevelCompleted;
         }
     }
     #endregion

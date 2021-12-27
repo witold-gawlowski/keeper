@@ -7,16 +7,13 @@ public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
 
-    private List<GameObject> blocks;
+    private List<GameObject> blockGOs;
+    private Dictionary<GameObject, BlockSO> blockTypes;
     bool isFreezed;
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
         isFreezed = false;
-    }
-    private void Start()
-    {
-        GenerateBlockPool();
     }
     private void OnEnable()
     {
@@ -45,12 +42,30 @@ public class BlockManager : Singleton<BlockManager>
             MainSceneManager.Instance.verdictStartedEvent -= HandleVerdictStardedEvent;
         }
     }
+    public Dictionary<BlockSO, int> GetUsedBlocks()
+    {
+        var result = new Dictionary<BlockSO, int>();
+        foreach(var blockGO in blockGOs)
+        {
+            if (blockGO.activeSelf)
+            {
+                var blockType = blockTypes[blockGO];
+                if (!result.ContainsKey(blockType))
+                {
+                    result.Add(blockType, 0);
+                }
+                result[blockType]++;
+            }
+        }
+        return result;
+    }
     void HandleVerdictStardedEvent()
     {
         SetFreezeBlocks(true);
     }
     void HandleMainSceneStartedEvent()
     {
+        GenerateBlockPool();
         SetFreezeBlocks(false);
     }
     void Mouse0DownWithDPressedEventHandler(Vector2 position, Collider2D block)
@@ -73,28 +88,30 @@ public class BlockManager : Singleton<BlockManager>
     }
     void GenerateBlockPool()
     {
+        blockTypes = new Dictionary<GameObject, BlockSO>();
         var inventory = InventoryManager.Instance.GetInventory();
-        blocks = new List<GameObject>();
+        blockGOs = new List<GameObject>();
         foreach (var item in inventory)
         {
-            for (int i = 0; i < item.countInInventory; i++)
+            for (int i = 0; i < item.Value; i++)
             {
-                var block = Instantiate(item.prefab, transform);
+                var block = Instantiate(item.Key.prefab, transform);
+                blockTypes.Add(block, item.Key);
                 block.SetActive(false);
-                blocks.Add(block);
+                blockGOs.Add(block);
             }
         }
     }
     void DespawnAll()
     {
-        foreach(var go in blocks)
+        foreach(var go in blockGOs)
         {
             Despawn(go);
         }
     }
     void Spawn(Vector2 position)
     {
-        foreach (var go in blocks)
+        foreach (var go in blockGOs)
         {
             if (!go.activeSelf)
             {

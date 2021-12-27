@@ -34,8 +34,8 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
         MainSceneManager.Instance.targetFractionHitEvent += HandleTargetFrationHit;
         DragManager.Instance.dragStartedEvent += DisableVerdict;
         BlockManager.Instance.blockSpawnedEvent += DisableVerdict;
-        MainSceneManager.Instance.levelCompleted += HandleLevelCompleted;
-        MainSceneManager.Instance.levelFailed += HandleLevelFailed;
+        MainSceneManager.Instance.levelCompletedEvent += HandleLevelCompleted;
+        MainSceneManager.Instance.levelFailedEvent += HandleLevelFailed;
     }
     #endregion
     #region Custom public functions
@@ -105,8 +105,8 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
         {
             MainSceneManager.Instance.verdictStartedEvent -= HandleVerdictStarted;
             MainSceneManager.Instance.targetFractionHitEvent -= HandleTargetFrationHit;
-            MainSceneManager.Instance.levelCompleted -= HandleLevelCompleted;
-            MainSceneManager.Instance.levelFailed -= HandleLevelFailed;
+            MainSceneManager.Instance.levelCompletedEvent -= HandleLevelCompleted;
+            MainSceneManager.Instance.levelFailedEvent -= HandleLevelFailed;
         }
         if (FillManager.Instance)
         {

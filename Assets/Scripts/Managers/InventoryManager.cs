@@ -5,42 +5,72 @@ using UnityEngine;
 public class InventoryManager : Singleton<InventoryManager>
 {
     [SerializeField] private List<BlockSO> blockSOs;
+    Dictionary<BlockSO, int> blockCounts;
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        Init();
     }
     private void OnEnable()
     {
         GameManager.Instance.mainSceneStartedEvent += SubscribeToMainSceneEvents;
-        GameManager.Instance.mainSceneEndedEvent += UnsubscrubeFromMainSceneEvents;
+        GameManager.Instance.mainSceneEndedEvent += UnsubscribeFromMainSceneEvents;
     }
-    public List<BlockSO> GetInventory()
+    void Init()
     {
-        return blockSOs;
+        blockCounts = new Dictionary<BlockSO, int>();
+        foreach(var blockSO in blockSOs)
+        {
+            blockCounts.Add(blockSO, blockSO.initialCountInInventory);
+        }
+    }
+    public Dictionary<BlockSO, int> GetInventory()
+    {
+        return blockCounts;
     }
     void SubscribeToMainSceneEvents()
     {
-        GameManager.Instance.mainSceneStartedEvent += HandleLevelCompleted;
+        MainSceneManager.Instance.levelCompletedEvent += HandleLevelCompleted;
     }
-    void UnsubscrubeFromMainSceneEvents()
+    void UnsubscribeFromMainSceneEvents()
     {
-        GameManager.Instance.mainSceneEndedEvent -= HandleLevelCompleted;
+        MainSceneManager.Instance.levelCompletedEvent -= HandleLevelCompleted;
     }
     void HandleLevelCompleted()
     {
+        RemoveUsedBlocks();
         AddReward();
+    }
+    void RemoveUsedBlocks()
+    {
+        var usedBlocks = BlockManager.Instance.GetUsedBlocks();
+        foreach(var usedItem in usedBlocks)
+        {
+            blockCounts[usedItem.Key] -= usedItem.Value;
+        }
     }
     void AddReward()
     {
         var reward = GameManager.Instance.SelectedMapData.reward;
         foreach(var rewardItem in reward)
         {
-            rewardItem.block.countInInventory += rewardItem.count;
+            if (blockCounts.ContainsKey(rewardItem.block))
+            {
+                blockCounts[rewardItem.block] += rewardItem.count;
+            }
+            else
+            {
+                Debug.Log(rewardItem.block.name);
+                Debug.Log(blockCounts.Keys);
+            }
         }
     }
     private void OnDisable()
     {
-        GameManager.Instance.mainSceneStartedEvent -= SubscribeToMainSceneEvents;
-        GameManager.Instance.mainSceneEndedEvent -= UnsubscrubeFromMainSceneEvents;
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.mainSceneStartedEvent -= SubscribeToMainSceneEvents;
+            GameManager.Instance.mainSceneEndedEvent -= UnsubscribeFromMainSceneEvents;
+        }
     }
 }

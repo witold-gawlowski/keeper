@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Eliza
   m_EditorClassIdentifier: 
   prefab: {fileID: 131824936426708904, guid: eafa54d5b8aa47b46824e1e5e25bf9b5, type: 3}
-  countInInventory: 3
+  initialCountInInventory: 3
+  _blockScript: {fileID: 293478834099704613, guid: eafa54d5b8aa47b46824e1e5e25bf9b5, type: 3}

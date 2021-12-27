@@ -6,8 +6,8 @@ public class MainSceneManager : Singleton<MainSceneManager>
 {
     public System.Action verdictStartedEvent;
     public System.Action targetFractionHitEvent;
-    public System.Action levelCompleted;
-    public System.Action levelFailed;
+    public System.Action levelCompletedEvent;
+    public System.Action levelFailedEvent;
     public GameObject LevelObject { get; private set; }
     MapData mapData;
     private void Awake()
@@ -34,10 +34,10 @@ public class MainSceneManager : Singleton<MainSceneManager>
         var maxHits = mapData.map.maxNumberOfHits;
         if(hits <= maxHits)
         {
-            levelCompleted?.Invoke();
+            levelCompletedEvent?.Invoke();
             return;
         }
-        levelFailed?.Invoke();
+        levelFailedEvent?.Invoke();
     }
     void HandleVerdictPressedEvent()
     {

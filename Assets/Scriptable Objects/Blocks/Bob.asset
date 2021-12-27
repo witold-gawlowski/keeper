@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Bob
   m_EditorClassIdentifier: 
   prefab: {fileID: 1626901537347775321, guid: e25b01d6bef62964f96b9f17b71c1377, type: 3}
-  countInInventory: 1
+  initialCountInInventory: 1
+  _blockScript: {fileID: 1393047358018545620, guid: e25b01d6bef62964f96b9f17b71c1377, type: 3}

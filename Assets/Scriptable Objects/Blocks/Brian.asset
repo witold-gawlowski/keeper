@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Brian
   m_EditorClassIdentifier: 
   prefab: {fileID: 6552443574647239309, guid: 5dcb4e5e03edc5049b81d092b36251b2, type: 3}
-  countInInventory: 2
+  initialCountInInventory: 2
+  _blockScript: {fileID: 6856739039357763072, guid: 5dcb4e5e03edc5049b81d092b36251b2, type: 3}

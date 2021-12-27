@@ -20,17 +20,17 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         var inventory = InventoryManager.Instance.GetInventory();
         foreach (var i in inventory)
         {
-            AddItem(i);
+            AddItem(i.Key, i.Value);
         }
     }
-    void AddItem(BlockSO block)
+    void AddItem(BlockSO block, int count)
     {
         foreach (var icon in inventoryIcons)
         {
             if (!icon.gameObject.activeSelf)
             {
                 icon.gameObject.SetActive(true);
-                icon.SetCount(block.countInInventory);
+                icon.SetCount(count);
                 icon.SetSprite(block.BlockScript.GetSprite());
                 return;
             }

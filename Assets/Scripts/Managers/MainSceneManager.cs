@@ -12,7 +12,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     MapData mapData;
     private void Awake()
     {
-        mapData = GameManager.Instance.SelectedMapData;
+        mapData = SceneLoader.Instance.SelectedMapData;
         LevelObject = Instantiate(mapData.map.prefab, transform);
     }
     private void OnEnable()

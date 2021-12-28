@@ -7,6 +7,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     public System.Action surrenderPressedEvent;
     public System.Action<GameObject> blockSelectedForDeletionEvent;
     public System.Action levelCompletedConfirmPressedEvent;
+    public System.Action levelFailedConfirmPressedEvent;
     public System.Action verdictPressedEvent;
 
     [SerializeField] GameObject levelCompletedBox;
@@ -42,6 +43,10 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     public void LevelCompletedConfimPress()
     {
         levelCompletedConfirmPressedEvent();
+    }
+    public void LevelFailedConfirmPress()
+    {
+        levelFailedConfirmPressedEvent();   
     }
     public void OnVerdictPress()
     {

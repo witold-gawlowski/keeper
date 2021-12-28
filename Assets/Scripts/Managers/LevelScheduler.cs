@@ -41,7 +41,7 @@ public class LevelScheduler : Singleton<LevelScheduler>
     }
     public MapSO GetMap(int index)
     {
-        var level = GameManager.Instance.Level;
+        var level = SceneLoader.Instance.Level;
         var rangeStartIndex = (level - 1) * mapsPerLevel;
         var result = availableMaps[rangeStartIndex + index];
         return result;

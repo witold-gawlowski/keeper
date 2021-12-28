@@ -10,7 +10,7 @@ public class MainSceneSliderUIScript : MonoBehaviour
 
     private void Awake()
     {
-        var mapData = GameManager.Instance.SelectedMapData;
+        var mapData = SceneLoader.Instance.SelectedMapData;
         SetFraction(mapData.map.targetCompletionFraction);
     }
     void SetFraction(float value)

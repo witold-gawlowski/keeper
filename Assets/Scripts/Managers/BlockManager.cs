@@ -13,34 +13,16 @@ public class BlockManager : Singleton<BlockManager>
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        isFreezed = false;
+        GenerateBlockPool();
+        SetFreezeBlocks(false);
     }
     private void OnEnable()
     {
-        GameManager.Instance.mainSceneStartedEvent += HandleMainSceneStartedEvent;
-    }
-    public void SubscribeToMainSceneEvents()
-    {
+        SceneLoader.Instance.mainSceneStartedEvent += HandleMainSceneStartedEvent;
         InputManager.mouse0DownEventWithDPressed += Mouse0DownWithDPressedEventHandler;
         InputManager.mouse0DownEvent += Mouse0DownEventHandler;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
-        GameManager.Instance.surrenderEvent += DespawnAll;
-        MainSceneUIManager.Instance.levelCompletedConfirmPressedEvent += DespawnAll;
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStardedEvent;
-    }
-    public void UnsubscribeFromMainSceneEvents()
-    {
-        InputManager.mouse0DownEventWithDPressed -= Mouse0DownWithDPressedEventHandler;
-        InputManager.mouse0DownEvent -= Mouse0DownEventHandler;
-        if (MainSceneUIManager.Instance)
-        {
-            MainSceneUIManager.Instance.levelCompletedConfirmPressedEvent -= DespawnAll;
-        }
-        GameManager.Instance.surrenderEvent -= DespawnAll;
-        if (MainSceneManager.Instance)
-        {
-            MainSceneManager.Instance.verdictStartedEvent -= HandleVerdictStardedEvent;
-        }
     }
     public Dictionary<BlockSO, int> GetUsedBlocks()
     {
@@ -65,8 +47,7 @@ public class BlockManager : Singleton<BlockManager>
     }
     void HandleMainSceneStartedEvent()
     {
-        GenerateBlockPool();
-        SetFreezeBlocks(false);
+
     }
     void Mouse0DownWithDPressedEventHandler(Vector2 position, Collider2D block)
     {
@@ -102,13 +83,6 @@ public class BlockManager : Singleton<BlockManager>
             }
         }
     }
-    void DespawnAll()
-    {
-        foreach(var go in blockGOs)
-        {
-            Despawn(go);
-        }
-    }
     void Spawn(Vector2 position)
     {
         foreach (var go in blockGOs)
@@ -128,12 +102,24 @@ public class BlockManager : Singleton<BlockManager>
     void Despawn(GameObject block)
     {
         block.gameObject.SetActive(false);
+        SetBlockAsLast(block);
+    }
+    void SetBlockAsLast(GameObject block)
+    {
+        blockGOs.Remove(block);
+        blockGOs.Add(block);
     }
     private void OnDisable()
     {
-        if (GameManager.Instance)
+        if (SceneLoader.Instance)
         {
-            GameManager.Instance.mainSceneStartedEvent -= HandleMainSceneStartedEvent;
+            SceneLoader.Instance.mainSceneStartedEvent -= HandleMainSceneStartedEvent;
+        }
+        InputManager.mouse0DownEventWithDPressed -= Mouse0DownWithDPressedEventHandler;
+        InputManager.mouse0DownEvent -= Mouse0DownEventHandler;
+        if (MainSceneManager.Instance)
+        {
+            MainSceneManager.Instance.verdictStartedEvent -= HandleVerdictStardedEvent;
         }
     }
 }

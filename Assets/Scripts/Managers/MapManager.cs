@@ -18,7 +18,7 @@ public class MapManager : Singleton<MapManager>
     }
     public void Init()
     {
-        var level = GameManager.Instance.Level;
+        var level = SceneLoader.Instance.Level;
         InitializeMapGOs();
         SetSelectedMap(0);
     }
@@ -68,5 +68,7 @@ public class MapManager : Singleton<MapManager>
     {
         var selectedMapData = LevelScheduler.Instance.CurrentLevelData[selectedMapIndex];
         mapConfirmedEvent(selectedMapData);
+        var mainScene = SceneLoader.Instance.MainScene;
+        
     }
 }

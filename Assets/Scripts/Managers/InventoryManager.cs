@@ -9,24 +9,25 @@ public class InventoryManager : Singleton<InventoryManager>
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        Init();
     }
     private void OnEnable()
     {
-        GameManager.Instance.mainSceneStartedEvent += SubscribeToMainSceneEvents;
-        GameManager.Instance.mainSceneEndedEvent += UnsubscribeFromMainSceneEvents;
+        SceneLoader.Instance.mainSceneStartedEvent += SubscribeToMainSceneEvents;
+        SceneLoader.Instance.mainSceneEndedEvent += UnsubscribeFromMainSceneEvents;
+        SceneLoader.Instance.gameStartedEvent += ResetCounts;
     }
-    void Init()
+    public Dictionary<BlockSO, int> GetInventory()
     {
+        return blockCounts;
+    }
+    void ResetCounts()
+    {
+        Debug.Log("resetting counts");
         blockCounts = new Dictionary<BlockSO, int>();
         foreach(var blockSO in blockSOs)
         {
             blockCounts.Add(blockSO, blockSO.initialCountInInventory);
         }
-    }
-    public Dictionary<BlockSO, int> GetInventory()
-    {
-        return blockCounts;
     }
     void SubscribeToMainSceneEvents()
     {
@@ -35,6 +36,10 @@ public class InventoryManager : Singleton<InventoryManager>
     void UnsubscribeFromMainSceneEvents()
     {
         MainSceneManager.Instance.levelCompletedEvent -= HandleLevelCompleted;
+    }
+    void HandleStartGame()
+    {
+        ResetCounts();
     }
     void HandleLevelCompleted()
     {
@@ -51,7 +56,7 @@ public class InventoryManager : Singleton<InventoryManager>
     }
     void AddReward()
     {
-        var reward = GameManager.Instance.SelectedMapData.reward;
+        var reward = SceneLoader.Instance.SelectedMapData.reward;
         foreach(var rewardItem in reward)
         {
             if (blockCounts.ContainsKey(rewardItem.block))
@@ -67,10 +72,11 @@ public class InventoryManager : Singleton<InventoryManager>
     }
     private void OnDisable()
     {
-        if (GameManager.Instance)
+        if (SceneLoader.Instance)
         {
-            GameManager.Instance.mainSceneStartedEvent -= SubscribeToMainSceneEvents;
-            GameManager.Instance.mainSceneEndedEvent -= UnsubscribeFromMainSceneEvents;
+            SceneLoader.Instance.mainSceneStartedEvent -= SubscribeToMainSceneEvents;
+            SceneLoader.Instance.mainSceneEndedEvent -= UnsubscribeFromMainSceneEvents;
+            SceneLoader.Instance.gameStartedEvent -= ResetCounts;
         }
     }
 }

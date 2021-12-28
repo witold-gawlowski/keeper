@@ -11,11 +11,11 @@ public class GameStateManager : GlobalManager<GameStateManager>
         base.Awake();
         HandleGameStarted();
     }
-    public override void SubscribeToLevelSelectionEvents()
+    protected override void SubscribeToLevelSelectionEvents()
     {
         MapManager.Instance.mapConfirmedEvent += HandleMapConfirmed;
     }
-    public override void SubscribeToMainSceneEvents()
+    protected override void SubscribeToMainSceneEvents()
     {
         MainSceneManager.Instance.levelCompletedEvent += HandleLevelCompleted;
         MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += HandleGameStarted;

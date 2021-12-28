@@ -56,27 +56,27 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
             sceneUnloadedHandlers[scene.name]?.Invoke();
         }
     }
-    public virtual void SubscribeToMenuSceneEvents()
+    protected virtual void SubscribeToMenuSceneEvents()
     {
         Debug.Log("virtual SubscribeToMenuSceneEvents");
     }
-    public virtual void SubscribeToLevelSelectionEvents()
+    protected virtual void SubscribeToLevelSelectionEvents()
     {
         Debug.Log("virtual SubscribeToLevelSelectionEvents");
     }
-    public virtual void SubscribeToMainSceneEvents()
+    protected virtual void SubscribeToMainSceneEvents()
     {
         Debug.Log("virtual SubscribeToMainSceneEvents");
     }
-    public virtual void UnsubscribeFromMenuSceneEvents()
+    protected virtual void UnsubscribeFromMenuSceneEvents()
     {
         Debug.Log("virtual UnsubscribeFromMenuSceneEvents");
     }
-    public virtual void UnsubscribeFromLevelSelectionEvents()
+    protected virtual void UnsubscribeFromLevelSelectionEvents()
     {
         Debug.Log("virtual UnsubscribeFromLevelSelectionEvents");
     }
-    public virtual void UnsubscribeFromMainSceneEvents()
+    protected virtual void UnsubscribeFromMainSceneEvents()
     {
         Debug.Log("virtual UnsubscribeFromMainSceneEvents");
     }

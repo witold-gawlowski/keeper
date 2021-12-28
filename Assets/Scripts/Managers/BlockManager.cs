@@ -12,13 +12,11 @@ public class BlockManager : Singleton<BlockManager>
     bool isFreezed;
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         GenerateBlockPool();
         SetFreezeBlocks(false);
     }
     private void OnEnable()
     {
-        SceneLoader.Instance.mainSceneStartedEvent += HandleMainSceneStartedEvent;
         InputManager.mouse0DownEventWithDPressed += Mouse0DownWithDPressedEventHandler;
         InputManager.mouse0DownEvent += Mouse0DownEventHandler;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
@@ -44,10 +42,6 @@ public class BlockManager : Singleton<BlockManager>
     void HandleVerdictStardedEvent()
     {
         SetFreezeBlocks(true);
-    }
-    void HandleMainSceneStartedEvent()
-    {
-
     }
     void Mouse0DownWithDPressedEventHandler(Vector2 position, Collider2D block)
     {
@@ -108,18 +102,5 @@ public class BlockManager : Singleton<BlockManager>
     {
         blockGOs.Remove(block);
         blockGOs.Add(block);
-    }
-    private void OnDisable()
-    {
-        if (SceneLoader.Instance)
-        {
-            SceneLoader.Instance.mainSceneStartedEvent -= HandleMainSceneStartedEvent;
-        }
-        InputManager.mouse0DownEventWithDPressed -= Mouse0DownWithDPressedEventHandler;
-        InputManager.mouse0DownEvent -= Mouse0DownEventHandler;
-        if (MainSceneManager.Instance)
-        {
-            MainSceneManager.Instance.verdictStartedEvent -= HandleVerdictStardedEvent;
-        }
     }
 }

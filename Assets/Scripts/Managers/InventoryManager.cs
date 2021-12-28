@@ -2,50 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : Singleton<InventoryManager>
+public class InventoryManager : GlobalManager<InventoryManager>
 {
     [SerializeField] private List<BlockSO> blockSOs;
     Dictionary<BlockSO, int> blockCounts;
-    private void Awake()
+    protected override void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-    }
-    private void OnEnable()
-    {
-        SceneLoader.Instance.mainSceneStartedEvent += SubscribeToMainSceneEvents;
-        SceneLoader.Instance.mainSceneEndedEvent += UnsubscribeFromMainSceneEvents;
-        SceneLoader.Instance.gameStartedEvent += ResetCounts;
+        base.Awake();
+        ResetCounts();
     }
     public Dictionary<BlockSO, int> GetInventory()
     {
         return blockCounts;
     }
-    void ResetCounts()
-    {
-        Debug.Log("resetting counts");
-        blockCounts = new Dictionary<BlockSO, int>();
-        foreach(var blockSO in blockSOs)
-        {
-            blockCounts.Add(blockSO, blockSO.initialCountInInventory);
-        }
-    }
-    void SubscribeToMainSceneEvents()
+    protected override void SubscribeToMainSceneEvents()
     {
         MainSceneManager.Instance.levelCompletedEvent += HandleLevelCompleted;
-    }
-    void UnsubscribeFromMainSceneEvents()
-    {
-        MainSceneManager.Instance.levelCompletedEvent -= HandleLevelCompleted;
-    }
-    void HandleStartGame()
-    {
-        ResetCounts();
+        MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += HandleLevelFailed;
+        MainSceneUIManager.Instance.surrenderPressedEvent += HandleSurrender;
     }
     void HandleLevelCompleted()
     {
         RemoveUsedBlocks();
         AddReward();
     }
+    void HandleLevelFailed() => ResetCounts();
+    void HandleSurrender() => ResetCounts();
     void RemoveUsedBlocks()
     {
         var usedBlocks = BlockManager.Instance.GetUsedBlocks();
@@ -70,13 +52,13 @@ public class InventoryManager : Singleton<InventoryManager>
             }
         }
     }
-    private void OnDisable()
+    void ResetCounts()
     {
-        if (SceneLoader.Instance)
+        Debug.Log("resetting counts");
+        blockCounts = new Dictionary<BlockSO, int>();
+        foreach (var blockSO in blockSOs)
         {
-            SceneLoader.Instance.mainSceneStartedEvent -= SubscribeToMainSceneEvents;
-            SceneLoader.Instance.mainSceneEndedEvent -= UnsubscribeFromMainSceneEvents;
-            SceneLoader.Instance.gameStartedEvent -= ResetCounts;
+            blockCounts.Add(blockSO, blockSO.initialCountInInventory);
         }
     }
 }

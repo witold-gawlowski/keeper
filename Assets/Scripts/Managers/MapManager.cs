@@ -18,7 +18,7 @@ public class MapManager : Singleton<MapManager>
     }
     public void Init()
     {
-        var level = SceneLoader.Instance.Level;
+        var level = GameStateManager.Instance.Level;
         InitializeMapGOs();
         SetSelectedMap(0);
     }

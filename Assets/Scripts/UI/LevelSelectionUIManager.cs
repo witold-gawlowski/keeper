@@ -31,7 +31,7 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
   
     public void Init()
     {
-        levelText.text = "Level " + SceneLoader.Instance.Level;
+        levelText.text = "Level " + GameStateManager.Instance.Level;
         HandleSelectedMapUpdatedEvent(0);
     }
     void HandleSelectedMapUpdatedEvent(int currentMap)

@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : AbstractGlobalManager
+public class SceneLoader : GlobalManager<SceneLoader>
 {
     public System.Action mainSceneStartedEvent;
     public System.Action mainSceneEndedEvent;
     public System.Action gameStartedEvent;
 
     #region Unity Functions
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         gameStartedEvent += HandleGameStartedEvent;
     }
     void Start()
@@ -22,6 +23,7 @@ public class SceneLoader : AbstractGlobalManager
     #region Custom Private Functions
     public override void SubscribeToMenuSceneEvents()
     {
+        Debug.Log("scene loader subscribe to main menu events");
         MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent += HandleLevelSelectionOpen;
     }
     public override void UnsubscribeFromMenuSceneEvents()
@@ -69,5 +71,5 @@ public class SceneLoader : AbstractGlobalManager
     void HandleLevelConfirmed(MapData _) => SceneManager.LoadScene(MainScene.name);
     void HandleLevelCompletedEvent() => SceneManager.LoadScene(MenuScene.name);
     void HandledLevelFailedConfirmedEvent() => SceneManager.LoadScene(MenuScene.name);
+    #endregion
 }
-#endregion

@@ -56,7 +56,7 @@ public class InventoryManager : Singleton<InventoryManager>
     }
     void AddReward()
     {
-        var reward = SceneLoader.Instance.SelectedMapData.reward;
+        var reward = GameStateManager.Instance.SelectedMapData.reward;
         foreach(var rewardItem in reward)
         {
             if (blockCounts.ContainsKey(rewardItem.block))

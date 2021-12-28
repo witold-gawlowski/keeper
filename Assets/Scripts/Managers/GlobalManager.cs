@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class AbstractGlobalManager : Singleton<AbstractGlobalManager>
+public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
 {
     private Dictionary<string, System.Action> sceneLoadedHandlers;
     private Dictionary<string, System.Action> sceneUnloadedHandlers;
 
-    [SerializeField] protected UnityEditor.SceneAsset MenuScene { get; private set; }
-    [SerializeField] protected UnityEditor.SceneAsset LevelSelectionScene { get; private set; }
-    [SerializeField] protected UnityEditor.SceneAsset MainScene { get; private set; }
+    public UnityEditor.SceneAsset MenuScene;
+    public UnityEditor.SceneAsset LevelSelectionScene;
+    public UnityEditor.SceneAsset MainScene;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         DontDestroyOnLoad(gameObject);
         InitializeSceneLoadedHandlers();
     }
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
+        var obj = this.name;
+        Debug.Log("global manager on enable");
         SceneManager.sceneLoaded += SceneLoadedHandler;
         SceneManager.sceneUnloaded += SceneUnloadedHandler;
     }
     void InitializeSceneLoadedHandlers()
     {
+        var obj = this.name;
         sceneLoadedHandlers = new Dictionary<string, System.Action>()
         {
             { MenuScene.name, SubscribeToMenuSceneEvents},
@@ -39,6 +42,8 @@ public class AbstractGlobalManager : Singleton<AbstractGlobalManager>
     }
     void SceneLoadedHandler(Scene scene, LoadSceneMode _)
     {
+        var obj = this.name;
+        Debug.Log("scene loaded handeler " + scene.name);
         if (sceneLoadedHandlers.ContainsKey(scene.name))
         {
             sceneLoadedHandlers[scene.name]?.Invoke();
@@ -53,29 +58,29 @@ public class AbstractGlobalManager : Singleton<AbstractGlobalManager>
     }
     public virtual void SubscribeToMenuSceneEvents()
     {
-
+        Debug.Log("virtual SubscribeToMenuSceneEvents");
     }
     public virtual void SubscribeToLevelSelectionEvents()
     {
-
+        Debug.Log("virtual SubscribeToLevelSelectionEvents");
     }
     public virtual void SubscribeToMainSceneEvents()
     {
-
+        Debug.Log("virtual SubscribeToMainSceneEvents");
     }
     public virtual void UnsubscribeFromMenuSceneEvents()
     {
-
+        Debug.Log("virtual UnsubscribeFromMenuSceneEvents");
     }
     public virtual void UnsubscribeFromLevelSelectionEvents()
     {
-
+        Debug.Log("virtual UnsubscribeFromLevelSelectionEvents");
     }
     public virtual void UnsubscribeFromMainSceneEvents()
     {
-
+        Debug.Log("virtual UnsubscribeFromMainSceneEvents");
     }
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         SceneManager.sceneLoaded -= SceneLoadedHandler;
         SceneManager.sceneUnloaded -= SceneUnloadedHandler;

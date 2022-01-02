@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 179c620157824664285a897e6b6b7812, type: 3}
-  m_Name: Map4
+  m_Name: MediumMap7
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1134651120889527720, guid: ccfdd74c4cc25fa47b9e6a1d22544070, type: 3}
-  targetCompletionFraction: 0.55
-  maxNumberOfHits: 5
-  progressIndex: 27
+  prefab: {fileID: 2239655062267605566, guid: 3f70ae1e78446484fab920a4e56cd704, type: 3}
+  targetCompletionFraction: 0
+  maxNumberOfHits: 0
+  progressIndex: 0
+  mapSize: 1

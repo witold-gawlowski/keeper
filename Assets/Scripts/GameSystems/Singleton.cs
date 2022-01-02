@@ -17,8 +17,4 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         private set { _instance = value;  }
     }
     static T _instance;
-    private void Awake()
-    {
-        Instance = this as T;
-    }
 }

@@ -7,25 +7,25 @@ public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
 
-    private List<GameObject> blockGOs;
+    public List<GameObject> BlockGOs { get; private set; }
     private Dictionary<GameObject, BlockSO> blockTypes;
     bool isFreezed;
-    private void Awake()
+    public void Init()
     {
         GenerateBlockPool();
         SetFreezeBlocks(false);
     }
     private void OnEnable()
     {
-        InputManager.mouse0DownEventWithDPressed += Mouse0DownWithDPressedEventHandler;
-        InputManager.mouse0DownEvent += Mouse0DownEventHandler;
+        InputManager.Instance.mouse0DownWithDPressedEvent += Mouse0DownWithDPressedEventHandler;
+        InputManager.Instance.mouse0DownEvent += Mouse0DownEventHandler;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStardedEvent;
     }
     public Dictionary<BlockSO, int> GetUsedBlocks()
     {
         var result = new Dictionary<BlockSO, int>();
-        foreach(var blockGO in blockGOs)
+        foreach(var blockGO in BlockGOs)
         {
             if (blockGO.activeSelf)
             {
@@ -65,7 +65,7 @@ public class BlockManager : Singleton<BlockManager>
     {
         blockTypes = new Dictionary<GameObject, BlockSO>();
         var inventory = InventoryManager.Instance.GetInventory();
-        blockGOs = new List<GameObject>();
+        BlockGOs = new List<GameObject>();
         foreach (var item in inventory)
         {
             for (int i = 0; i < item.Value; i++)
@@ -73,13 +73,13 @@ public class BlockManager : Singleton<BlockManager>
                 var block = Instantiate(item.Key.prefab, transform);
                 blockTypes.Add(block, item.Key);
                 block.SetActive(false);
-                blockGOs.Add(block);
+                BlockGOs.Add(block);
             }
         }
     }
     void Spawn(Vector2 position)
     {
-        foreach (var go in blockGOs)
+        foreach (var go in BlockGOs)
         {
             if (!go.activeSelf)
             {
@@ -100,7 +100,7 @@ public class BlockManager : Singleton<BlockManager>
     }
     void SetBlockAsLast(GameObject block)
     {
-        blockGOs.Remove(block);
-        blockGOs.Add(block);
+        BlockGOs.Remove(block);
+        BlockGOs.Add(block);
     }
 }

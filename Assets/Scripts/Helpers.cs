@@ -13,4 +13,12 @@ public static class Helpers
         Debug.LogError("There is no layer \"" + name + "\"!");
         return 0;
     }
+    public static ContactFilter2D GetSingleLayerMaskContactFilter(string name)
+    {
+        var result = new ContactFilter2D();
+        result.NoFilter();
+        var layerMask = GetSingleLayerMask(name);
+        result.SetLayerMask(layerMask);
+        return result;
+    }
 }

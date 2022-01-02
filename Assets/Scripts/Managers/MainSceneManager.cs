@@ -5,7 +5,7 @@ using UnityEngine;
 public class MainSceneManager : Singleton<MainSceneManager>
 {
     public System.Action verdictStartedEvent;
-    public System.Action targetFractionHitEvent;
+    public System.Action verdictConditionsMetEvent;
     public System.Action levelCompletedEvent;
     public System.Action levelFailedEvent;
     public GameObject LevelObject { get; private set; }
@@ -26,7 +26,10 @@ public class MainSceneManager : Singleton<MainSceneManager>
         float targetCompletionFraction = mapData.map.targetCompletionFraction;
         if (fraction >= targetCompletionFraction)
         {
-            targetFractionHitEvent();
+            if (CoherencyCalculator.IsCoherent())
+            {
+                verdictConditionsMetEvent();
+            }
         }
     }
     void HandleVerdictFinished(int hits)

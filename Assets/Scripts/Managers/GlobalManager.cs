@@ -20,7 +20,6 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
     protected virtual void OnEnable()
     {
         var obj = this.name;
-        Debug.Log("global manager on enable");
         SceneManager.sceneLoaded += SceneLoadedHandler;
         SceneManager.sceneUnloaded += SceneUnloadedHandler;
     }
@@ -43,7 +42,6 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
     void SceneLoadedHandler(Scene scene, LoadSceneMode _)
     {
         var obj = this.name;
-        Debug.Log("scene loaded handeler " + scene.name);
         if (sceneLoadedHandlers.ContainsKey(scene.name))
         {
             sceneLoadedHandlers[scene.name]?.Invoke();
@@ -58,27 +56,21 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
     }
     protected virtual void SubscribeToMenuSceneEvents()
     {
-        Debug.Log("virtual SubscribeToMenuSceneEvents");
     }
     protected virtual void SubscribeToLevelSelectionEvents()
     {
-        Debug.Log("virtual SubscribeToLevelSelectionEvents");
     }
     protected virtual void SubscribeToMainSceneEvents()
     {
-        Debug.Log("virtual SubscribeToMainSceneEvents");
     }
     protected virtual void UnsubscribeFromMenuSceneEvents()
     {
-        Debug.Log("virtual UnsubscribeFromMenuSceneEvents");
     }
     protected virtual void UnsubscribeFromLevelSelectionEvents()
     {
-        Debug.Log("virtual UnsubscribeFromLevelSelectionEvents");
     }
     protected virtual void UnsubscribeFromMainSceneEvents()
     {
-        Debug.Log("virtual UnsubscribeFromMainSceneEvents");
     }
     protected virtual void OnDisable()
     {

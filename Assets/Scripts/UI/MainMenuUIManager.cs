@@ -8,7 +8,6 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
     [SerializeField] private List<InventoryItemUIScript> inventoryIcons;
     private void Start()
     {
-        Debug.Log("updating invenotry ui");
         UpdateInventory();
     }
     public void OnStartPress()

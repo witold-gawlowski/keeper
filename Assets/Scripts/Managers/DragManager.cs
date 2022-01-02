@@ -20,22 +20,22 @@ public class DragManager : Singleton<DragManager>
     private void OnEnable()
     {
         MainSceneManager.Instance.verdictStartedEvent += VerdictStartedHandler;
-        InputManager.mouse0DownEvent += StartBlockDrag;
-        InputManager.mouse0UpEvent += FinishBlockDrag;
-        InputManager.rPressedEvent += ContintueBlockRotation;
-        InputManager.rUpEvent += FinishBlockRotation;
-        InputManager.rDownEvent += StartBlockRotation;
-        InputManager.mouse0PressedEvent += ContinueBlockDrag;
+        InputManager.Instance.mouse0DownEvent += StartBlockDrag;
+        InputManager.Instance.mouse0UpEvent += FinishBlockDrag;
+        InputManager.Instance.rPressedEvent += ContintueBlockRotation;
+        InputManager.Instance.rUpEvent += FinishBlockRotation;
+        InputManager.Instance.rDownEvent += StartBlockRotation;
+        InputManager.Instance.mouse0PressedEvent += ContinueBlockDrag;
     }
     private void OnDisable()
     {
         MainSceneManager.Instance.verdictStartedEvent -= VerdictStartedHandler;
-        InputManager.mouse0DownEvent -= StartBlockDrag;
-        InputManager.mouse0UpEvent -= FinishBlockDrag;
-        InputManager.rPressedEvent -= ContintueBlockRotation;
-        InputManager.rUpEvent -= FinishBlockRotation;
-        InputManager.rDownEvent -= StartBlockRotation;
-        InputManager.mouse0PressedEvent -= ContinueBlockDrag;
+        InputManager.Instance.mouse0DownEvent -= StartBlockDrag;
+        InputManager.Instance.mouse0UpEvent -= FinishBlockDrag;
+        InputManager.Instance.rPressedEvent -= ContintueBlockRotation;
+        InputManager.Instance.rUpEvent -= FinishBlockRotation;
+        InputManager.Instance.rDownEvent -= StartBlockRotation;
+        InputManager.Instance.mouse0PressedEvent -= ContinueBlockDrag;
     }
     void VerdictStartedHandler()
     {

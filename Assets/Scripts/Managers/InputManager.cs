@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
-    public static System.Action<Vector2, Collider2D> mouse0DownEvent;
-    public static System.Action<Vector2, Collider2D> mouse0DownEventWithDPressed;
-    public static System.Action<Vector2> mouse0PressedEvent;
-    public static System.Action mouse0UpEvent;
-    public static System.Action rPressedEvent;
-    public static System.Action rDownEvent;
-    public static System.Action rUpEvent;
-    public static System.Action dPressed;
+    public System.Action<Vector2, Collider2D> mouse0DownEvent;
+    public System.Action<Vector2, Collider2D> mouse0DownWithDPressedEvent;
+    public System.Action<Vector2> mouse0PressedEvent;
+    public System.Action mouse0UpEvent;
+    public System.Action rPressedEvent;
+    public System.Action rDownEvent;
+    public System.Action rUpEvent;
+    public System.Action dPressedEvent;
 
     bool rPressed;
     Vector3 mousePositionScreen;
@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviour
                 Collider2D hit = Physics2D.OverlapPoint(mousePositionWorld, blockLayerMask);
                 if (Input.GetKey(KeyCode.D))
                 {
-                    mouse0DownEventWithDPressed(mousePositionWorld, hit);
+                    mouse0DownWithDPressedEvent(mousePositionWorld, hit);
                 }
                 else
                 {

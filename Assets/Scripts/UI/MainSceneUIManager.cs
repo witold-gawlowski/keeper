@@ -32,7 +32,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     {
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStarted;
         FillManager.Instance.finishedAreaCalculationFrame += UpdateScore;
-        MainSceneManager.Instance.targetFractionHitEvent += HandleTargetFrationHit;
+        MainSceneManager.Instance.verdictConditionsMetEvent += HandleTargetFrationHit;
         DragManager.Instance.dragStartedEvent += DisableVerdict;
         BlockManager.Instance.blockSpawnedEvent += DisableVerdict;
         MainSceneManager.Instance.levelCompletedEvent += HandleLevelCompleted;
@@ -104,26 +104,4 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
         }
     }
     #endregion
-    private void OnDisable()
-    {
-        if (MainSceneManager.Instance)
-        {
-            MainSceneManager.Instance.verdictStartedEvent -= HandleVerdictStarted;
-            MainSceneManager.Instance.targetFractionHitEvent -= HandleTargetFrationHit;
-            MainSceneManager.Instance.levelCompletedEvent -= HandleLevelCompleted;
-            MainSceneManager.Instance.levelFailedEvent -= HandleLevelFailed;
-        }
-        if (FillManager.Instance)
-        {
-            FillManager.Instance.finishedAreaCalculationFrame -= UpdateScore;
-        }
-        if (DragManager.Instance)
-        {
-            DragManager.Instance.dragStartedEvent -= DisableVerdict;
-        }
-        if (BlockManager.Instance)
-        {
-            BlockManager.Instance.blockSpawnedEvent -= DisableVerdict;
-        }
-    }
 }

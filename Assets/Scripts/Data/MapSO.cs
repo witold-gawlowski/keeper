@@ -8,4 +8,5 @@ public class MapSO : ScriptableObject
     public float targetCompletionFraction;
     public int maxNumberOfHits;
     public int progressIndex;
+    public Constants.MapSize mapSize;
 }

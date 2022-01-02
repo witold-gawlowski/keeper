@@ -14,7 +14,6 @@ public class SceneLoader : GlobalManager<SceneLoader>
     #region Custom Private Functions
     protected override void SubscribeToMenuSceneEvents()
     {
-        Debug.Log("scene loader subscribe to main menu events");
         MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent += HandleLevelSelectionOpen;
     }
     protected override void UnsubscribeFromMenuSceneEvents()

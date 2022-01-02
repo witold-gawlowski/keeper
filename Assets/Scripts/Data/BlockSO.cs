@@ -6,6 +6,7 @@ public class BlockSO : ScriptableObject
 {
     public GameObject prefab;
     public int initialCountInInventory = 0;
+    public float regularity;
     public BlockScript BlockScript
     {
         get
@@ -18,5 +19,5 @@ public class BlockSO : ScriptableObject
         }
         private set { _blockScript = value; }
     }
-    [SerializeField] private BlockScript _blockScript;
+    private BlockScript _blockScript;
 }

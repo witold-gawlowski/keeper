@@ -21,4 +21,24 @@ public static class Helpers
         result.SetLayerMask(layerMask);
         return result;
     }
+    public static List<T> GetRandomSubset<T>(List<T> collection, int size)
+    {
+        var n = collection.Count;
+        if(size >= n)
+        {
+            return new List<T>(collection);
+        }
+        var indexSet = new HashSet<int>();
+        var result = new List<T>();
+        while(indexSet.Count < size)
+        {
+            var randomIndex = Random.Range(0, n);
+            if (!indexSet.Contains(randomIndex))
+            {
+                indexSet.Add(randomIndex);
+                result.Add(collection[randomIndex]);
+            }
+        }
+        return result;
+    }
 }

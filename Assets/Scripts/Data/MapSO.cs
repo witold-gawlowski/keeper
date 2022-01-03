@@ -7,6 +7,7 @@ public class MapSO : ScriptableObject
     public GameObject prefab;
     public float targetCompletionFraction;
     public int maxNumberOfHits;
-    public int progressIndex;
+    public int startingLevel;
+    public int endingLevel;
     public Constants.MapSize mapSize;
 }

@@ -46,7 +46,6 @@ public static class CoherencyCalculator
                 var collidingColliders = new List<Collider2D>();
                 var blockCollider = b.GetComponent<Collider2D>();
                 Physics2D.OverlapCollider(blockCollider, filter, collidingColliders);
-                Debug.Log(collidingColliders.Count + " cpnt!");
                 overlaps.Add(blockCollider, collidingColliders);
             }
         }

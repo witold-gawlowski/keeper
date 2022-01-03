@@ -235,18 +235,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3097109899378982415, guid: ab46bd553e707f14a87b24b03696a7d7, type: 3}
-      propertyPath: MainScene
-      value: 
-      objectReference: {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
-    - target: {fileID: 3097109899378982415, guid: ab46bd553e707f14a87b24b03696a7d7, type: 3}
-      propertyPath: MenuScene
-      value: 
-      objectReference: {fileID: 102900000, guid: 7f905a251c9a64543b7560d98adfd4f0, type: 3}
-    - target: {fileID: 3097109899378982415, guid: ab46bd553e707f14a87b24b03696a7d7, type: 3}
-      propertyPath: LevelSelectionScene
-      value: 
-      objectReference: {fileID: 102900000, guid: 95dd226e03aaf674e874ba7bb51ee9a4, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab46bd553e707f14a87b24b03696a7d7, type: 3}
 --- !u!1001 &2065956088
@@ -256,50 +244,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableMaps.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableBlocks.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableMaps.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 88937c6178290f844abe137ab85c8e67, type: 2}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableMaps.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 78c497b5507d8164ebe326d1874035ee, type: 2}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableMaps.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: a0562c29ecc1d384d8f521d898d7b688, type: 2}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableMaps.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 99c413b43b804ba41b96d4e34c85cdac, type: 2}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableBlocks.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: c72cbba4debd1d14abf643aaec537d30, type: 2}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableBlocks.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: bf773360987d0d046b3b1214f22acd83, type: 2}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableBlocks.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 36711967a91576d4ca31148ceed1c6f0, type: 2}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableBlocks.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 5a909d310f8a01b4993bb39f12e830ee, type: 2}
-    - target: {fileID: -295308311224091616, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
-      propertyPath: availableBlocks.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: c72cbba4debd1d14abf643aaec537d30, type: 2}
     - target: {fileID: 60237750474172488, guid: f9a05bc825db1a1468dabe015d2790ad, type: 3}
       propertyPath: m_Name
       value: LevelScheduler

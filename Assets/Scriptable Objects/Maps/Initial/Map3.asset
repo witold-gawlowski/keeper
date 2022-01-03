@@ -15,5 +15,6 @@ MonoBehaviour:
   prefab: {fileID: 7773270141513653564, guid: 60161685cde23a84da7d615595bd1d59, type: 3}
   targetCompletionFraction: 0.35
   maxNumberOfHits: 2
-  progressIndex: 17
+  startingLevel: 0
+  endingLevel: 9
   mapSize: 1

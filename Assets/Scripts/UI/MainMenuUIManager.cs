@@ -20,7 +20,10 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
         var inventory = InventoryManager.Instance.GetInventory();
         foreach (var i in inventory)
         {
-            AddItem(i.Key, i.Value);
+            if (i.Value > 0)
+            {
+                AddItem(i.Key, i.Value);
+            }
         }
     }
     void AddItem(BlockSO block, int count)
@@ -31,7 +34,7 @@ public class MainMenuUIManager : Singleton<MainMenuUIManager>
             {
                 icon.gameObject.SetActive(true);
                 icon.SetCount(count);
-                icon.SetSprite(block.BlockScript.GetSprite());
+                icon.SetSprite(block.PrefabBlockScript.GetSprite());
                 return;
             }
         }

@@ -19,32 +19,28 @@ public class LevelScheduler : Singleton<LevelScheduler>
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        Init();
     }
-    public void Init()
-    {
-        allMapsSorted = new List<MapSO>(availableMaps);
-        System.Comparison<MapSO> comparer =
-            (level1, level2) => level1.progressIndex.CompareTo(level2.progressIndex);
-        allMapsSorted.Sort(comparer);
-    }
+
     public void CreateCurrentLevelData()
     {
         CurrentLevelData = new List<MapData>();
+        var currentLevelPool = new List<MapSO>();
+        var currentLevel = GameStateManager.Instance.Level;
+        foreach(var map in availableMaps)
+        {
+            if(currentLevel <= map.endingLevel && currentLevel >= map.startingLevel)
+            {
+                currentLevelPool.Add(map);
+            }
+        }
+        var maps = Helpers.GetRandomSubset(currentLevelPool, mapsPerLevel);
         for(int i=0; i<mapsPerLevel; i++)
         {
-            var mapData = GetMap(i);
+            var mapData = maps[i];
             var rewards = CreateReward();
             var data = new MapData(mapData, rewards);
             CurrentLevelData.Add(data);
         }
-    }
-    public MapSO GetMap(int index)
-    {
-        var level = GameStateManager.Instance.Level;
-        var rangeStartIndex = (level - 1) * mapsPerLevel;
-        var result = availableMaps[rangeStartIndex + index];
-        return result;
     }
     public List<RewardItem> CreateReward()
     {

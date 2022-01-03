@@ -7,7 +7,7 @@ public class BlockSO : ScriptableObject
     public GameObject prefab;
     public int initialCountInInventory = 0;
     public float regularity;
-    public BlockScript BlockScript
+    public BlockScript PrefabBlockScript
     {
         get
         {

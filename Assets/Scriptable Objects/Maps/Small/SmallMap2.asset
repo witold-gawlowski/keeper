@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: SmallMap2
   m_EditorClassIdentifier: 
   prefab: {fileID: 6340182931054834353, guid: af7e39c263074c04c804d763ceb8586c, type: 3}
-  targetCompletionFraction: 0
+  targetCompletionFraction: 0.65
   maxNumberOfHits: 0
-  progressIndex: 0
+  startingLevel: 0
+  endingLevel: 9
+  mapSize: 0

@@ -10,7 +10,6 @@ public class RewardItem
     {
         this.block = block;
         this.count = count;
-        var blockScript = block.prefab.GetComponent<BlockScript>();
-        Sprite = blockScript.GetSprite();
+        Sprite = block.PrefabBlockScript.GetSprite();
     }
 }

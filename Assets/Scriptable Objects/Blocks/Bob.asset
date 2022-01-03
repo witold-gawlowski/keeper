@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf8e140d433d0f4b9d54eb7702d8b73, type: 3}
   m_Name: Bob
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1626901537347775321, guid: e25b01d6bef62964f96b9f17b71c1377, type: 3}
+  prefab: {fileID: 1719644420314300623, guid: 22aab2f761d1352418bc9f9876dce07b, type: 3}
   initialCountInInventory: 1
-  _blockScript: {fileID: 1393047358018545620, guid: e25b01d6bef62964f96b9f17b71c1377, type: 3}
+  regularity: 0

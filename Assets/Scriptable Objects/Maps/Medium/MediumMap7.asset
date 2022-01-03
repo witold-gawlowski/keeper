@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MediumMap7
   m_EditorClassIdentifier: 
   prefab: {fileID: 2239655062267605566, guid: 3f70ae1e78446484fab920a4e56cd704, type: 3}
-  targetCompletionFraction: 0
+  targetCompletionFraction: 0.65
   maxNumberOfHits: 0
-  progressIndex: 0
+  startingLevel: 0
+  endingLevel: 9
   mapSize: 1

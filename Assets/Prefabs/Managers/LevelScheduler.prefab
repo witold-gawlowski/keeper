@@ -96,6 +96,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b755d93d3f441c9488589d27a5c3c17e, type: 2}
   - {fileID: 11400000, guid: 8dea59679a4114d4aa11dd8c625e0d92, type: 2}
   - {fileID: 11400000, guid: ccf8372826866f54eaa7e08c8a8ca9e3, type: 2}
+  levelGroups:
+  - {fileID: 11400000, guid: 95f38be655ffc97498c65db74ae6370b, type: 2}
+  - {fileID: 11400000, guid: cc767abe77ea2f543a02f417424d40d5, type: 2}
+  - {fileID: 11400000, guid: e3a06df28dc463943bea5d9f76def26d, type: 2}
+  - {fileID: 11400000, guid: 969404d979c629e41a1c65c9d88dc0e9, type: 2}
+  - {fileID: 11400000, guid: b9bdfb8a59001d24988e713c626af131, type: 2}
+  - {fileID: 11400000, guid: b7d8dffa4c0850a428c0ef83de1c0196, type: 2}
+  - {fileID: 11400000, guid: 0c216d52e19e8d14b9d38b5cde292301, type: 2}
   mapsPerLevel: 2
   minRewardItemsCount: 1
   maxRewardItemsCount: 3

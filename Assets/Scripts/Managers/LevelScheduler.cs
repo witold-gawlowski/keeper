@@ -6,8 +6,8 @@ public class LevelScheduler : Singleton<LevelScheduler>
 {
     public List<MapData> CurrentLevelData { get; private set; }
 
-    [SerializeField] private List<MapSO> availableMaps;
     [SerializeField] private List<BlockSO> availableBlocks;
+    [SerializeField] private List<LevelGroupSO> levelGroups;
 
     [SerializeField] private int mapsPerLevel = 2;
     [SerializeField] private int minRewardItemsCount = 1;
@@ -24,15 +24,9 @@ public class LevelScheduler : Singleton<LevelScheduler>
     public void CreateCurrentLevelData()
     {
         CurrentLevelData = new List<MapData>();
-        var currentLevelPool = new List<MapSO>();
+        var levelGroup = GetLevelGroup();
+        var currentLevelPool = levelGroup.maps;
         var currentLevel = GameStateManager.Instance.Level;
-        foreach(var map in availableMaps)
-        {
-            if(currentLevel <= map.endingLevel && currentLevel >= map.startingLevel)
-            {
-                currentLevelPool.Add(map);
-            }
-        }
         var maps = Helpers.GetRandomSubset(currentLevelPool, mapsPerLevel);
         for(int i=0; i<mapsPerLevel; i++)
         {
@@ -42,7 +36,7 @@ public class LevelScheduler : Singleton<LevelScheduler>
             CurrentLevelData.Add(data);
         }
     }
-    public List<RewardItem> CreateReward()
+    private List<RewardItem> CreateReward()
     {
         var result = new List<RewardItem>();
         var count = Random.Range(minRewardItemsCount, maxRewardItemsCount);
@@ -55,5 +49,19 @@ public class LevelScheduler : Singleton<LevelScheduler>
             result.Add(rewardItem);
         }
         return result;
+    }
+    private LevelGroupSO GetLevelGroup()
+    {
+        var level = GameStateManager.Instance.Level;
+        var currentGroupMaxLevel = 0;
+        foreach(var g in levelGroups)
+        {
+            currentGroupMaxLevel += g.length;
+            if(currentGroupMaxLevel >= level)
+            {
+                return g;
+            }
+        }
+        return null;
     }
 }

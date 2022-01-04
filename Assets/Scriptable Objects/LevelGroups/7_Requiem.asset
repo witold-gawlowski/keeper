@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 179c620157824664285a897e6b6b7812, type: 3}
-  m_Name: Map1
+  m_Script: {fileID: 11500000, guid: b05a6b4faa1e47940804002a1e1137ea, type: 3}
+  m_Name: 7_Requiem
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5991863233526848571, guid: de151b453f54c1c428d0640072f97df4, type: 3}
-  targetCompletionFraction: 0.5
-  maxNumberOfHits: 3
-  mapSize: 1
+  length: 5
+  mName: Requiem
+  maps: []

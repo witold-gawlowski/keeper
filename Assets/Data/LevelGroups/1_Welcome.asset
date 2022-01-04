@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05a6b4faa1e47940804002a1e1137ea, type: 3}
+  m_Name: 1_Welcome
+  m_EditorClassIdentifier: Assembly-CSharp::LevelGroup
+  length: 5
+  mName: Welcome
+  maps:
+  - {fileID: 11400000, guid: 88937c6178290f844abe137ab85c8e67, type: 2}
+  - {fileID: 11400000, guid: 78c497b5507d8164ebe326d1874035ee, type: 2}
+  - {fileID: 11400000, guid: a0562c29ecc1d384d8f521d898d7b688, type: 2}
+  - {fileID: 11400000, guid: 283a0c22d85cfd749a48764b1446a11d, type: 2}
+  - {fileID: 11400000, guid: 87509791510a23545b5b4a8448a46076, type: 2}
+  - {fileID: 11400000, guid: 5177165e7293b4c4ea5ea14f30bb96bd, type: 2}
+  rewardBlocks:
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  mapsPerLevel: 2

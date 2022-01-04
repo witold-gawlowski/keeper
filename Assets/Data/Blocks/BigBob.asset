@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf8e140d433d0f4b9d54eb7702d8b73, type: 3}
   m_Name: BigBob
   m_EditorClassIdentifier: 
-  prefab: {fileID: 419338082246057599, guid: 5d2fd43b2eebbd3498a3b0c047767e9b, type: 3}
+  prefab: {fileID: 6162643405188753413, guid: a0f12568faa63f445b6962b605fdea1b, type: 3}
+  initialCountInInventory: 0
+  regularity: 0

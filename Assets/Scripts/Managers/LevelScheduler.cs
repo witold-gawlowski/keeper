@@ -11,9 +11,10 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
     [SerializeField] private int minRewardItemsCount = 1;
     [SerializeField] private int maxRewardItemsCount = 3;
     private List<MapSO> allMapsSorted;
-    private void Start()
+
+    protected override void SubscribeToMenuSceneEvents()
     {
-        CreateCurrentLevelData();
+        MainMenuUIManager.Instance.startNewGameEvent += HandleNewGameStartedEvent;
     }
     protected override void SubscribeToMainSceneEvents()
     {
@@ -21,11 +22,15 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
         MainSceneManager.Instance.levelCompletedEvent += HandleLevelFinished;
     }
 
+    private void HandleNewGameStartedEvent()
+    {
+        CreateCurrentLevelData();
+    }
     private void HandleLevelFinished()
     {
         CreateCurrentLevelData();
     }
-    public void CreateCurrentLevelData()
+    private void CreateCurrentLevelData()
     {
         CurrentLevelData = new List<MapData>();
         var levelGroup = GetLevelGroup();

@@ -14,51 +14,24 @@ public class SceneLoader : GlobalManager<SceneLoader>
     #region Custom Private Functions
     protected override void SubscribeToMenuSceneEvents()
     {
-        MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent += HandleLevelSelectionOpen;
-    }
-    protected override void UnsubscribeFromMenuSceneEvents()
-    {
-        if (MainMenuUIManager.Instance)
-        {
-            MainMenuUIManager.Instance.onLevelSelectionButtonPressEvent -= HandleLevelSelectionOpen;
-        }
+        MainMenuUIManager.Instance.startNewGameEvent += LoadLevelSelectionScene;
+        MainMenuUIManager.Instance.continueGameEvent += LoadLevelSelectionScene;
     }
     protected override void SubscribeToLevelSelectionEvents()
     {
-        LevelSelectionUIManager.Instance.BackButtonPressedEvent += HandleBackToMainMenu;
-        MapManager.Instance.mapConfirmedEvent += HandleLevelConfirmed;
-    }
-    protected override void UnsubscribeFromLevelSelectionEvents()
-    {
-        if (LevelSelectionUIManager.Instance)
-        {
-            LevelSelectionUIManager.Instance.BackButtonPressedEvent -= HandleBackToMainMenu;
-            MapManager.Instance.mapConfirmedEvent -= HandleLevelConfirmed;
-        }
+        LevelSelectionUIManager.Instance.BackButtonPressedEvent += LoadMenuScene;
+        MapManager.Instance.mapConfirmedEvent += (MapData _) => LoadMainScene();
     }
     protected override void SubscribeToMainSceneEvents()
     {
-        MainSceneUIManager.Instance.surrenderPressedEvent += HandleSurrenderEvent;
-        MainSceneUIManager.Instance.levelCompletedConfirmPressedEvent += HandleLevelCompletedConfirmPressed;
-        MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += HandledLevelFailedConfirmedEvent;
-    }
-
-    protected override void UnsubscribeFromMainSceneEvents()
-    {
-        if (MainSceneUIManager.Instance)
-        {
-            MainSceneUIManager.Instance.surrenderPressedEvent -= HandleSurrenderEvent;
-            MainSceneUIManager.Instance.levelFailedConfirmPressedEvent -= HandledLevelFailedConfirmedEvent;
-            MainSceneUIManager.Instance.levelCompletedConfirmPressedEvent -= HandleLevelCompletedConfirmPressed;
-        }
+        MainSceneUIManager.Instance.surrenderPressedEvent += LoadMenuScene;
+        MainSceneUIManager.Instance.levelCompletedConfirmPressedEvent += LoadLevelSelectionScene;
+        MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += LoadMenuScene;
     }
     #endregion
     #region Handlers
-    void HandleSurrenderEvent() => SceneManager.LoadScene(MenuScene.name);
-    void HandleBackToMainMenu() => SceneManager.LoadScene(MenuScene.name);
-    void HandleLevelSelectionOpen() => SceneManager.LoadScene(LevelSelectionScene.name);
-    void HandleLevelConfirmed(MapData _) => SceneManager.LoadScene(MainScene.name);
-    void HandleLevelCompletedConfirmPressed() => SceneManager.LoadScene(MenuScene.name);
-    void HandledLevelFailedConfirmedEvent() => SceneManager.LoadScene(MenuScene.name);
+    void LoadMenuScene() => SceneManager.LoadScene(MenuScene.name);
+    void LoadLevelSelectionScene() => SceneManager.LoadScene(LevelSelectionScene.name);
+    void LoadMainScene() => SceneManager.LoadScene(MainScene.name);
     #endregion
 }

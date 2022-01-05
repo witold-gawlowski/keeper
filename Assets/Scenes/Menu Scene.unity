@@ -354,22 +354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75c5c59332a9ec4fa587b72f889556d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryIcons:
-  - {fileID: 1150972217}
-  - {fileID: 1355413352}
-  - {fileID: 1521636484}
-  - {fileID: 429290049}
-  - {fileID: 586632971}
-  - {fileID: 979364924}
-  - {fileID: 687469958}
-  - {fileID: 653905743}
-  - {fileID: 635441580}
-  - {fileID: 649109146}
-  - {fileID: 476116788}
-  - {fileID: 1649849216}
-  - {fileID: 479970858}
-  - {fileID: 1488367662}
-  - {fileID: 74032837}
 --- !u!1 &150933708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,6 +1635,7 @@ GameObject:
   - component: {fileID: 958018388}
   - component: {fileID: 958018387}
   - component: {fileID: 958018389}
+  - component: {fileID: 958018390}
   m_Layer: 5
   m_Name: InventoryPanel
   m_TagString: Untagged
@@ -1754,6 +1739,34 @@ MonoBehaviour:
   m_Spacing: {x: 50, y: 50}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &958018390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958018385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13eaf4faa36ac814e931f2ff3ccb3393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryIcons:
+  - {fileID: 1150972217}
+  - {fileID: 1355413352}
+  - {fileID: 1521636484}
+  - {fileID: 429290049}
+  - {fileID: 586632971}
+  - {fileID: 979364924}
+  - {fileID: 687469958}
+  - {fileID: 653905743}
+  - {fileID: 635441580}
+  - {fileID: 649109146}
+  - {fileID: 476116788}
+  - {fileID: 1649849216}
+  - {fileID: 479970858}
+  - {fileID: 1488367662}
+  - {fileID: 74032837}
 --- !u!1001 &979364922
 PrefabInstance:
   m_ObjectHideFlags: 0

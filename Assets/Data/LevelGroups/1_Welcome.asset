@@ -23,7 +23,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5177165e7293b4c4ea5ea14f30bb96bd, type: 2}
   rewardBlocks:
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: bf773360987d0d046b3b1214f22acd83, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 3fc1085c9514fd04e857c9e5bfb0f77c, type: 2}
   mapsPerLevel: 2

@@ -15,16 +15,15 @@ public class InventoryManager : GlobalManager<InventoryManager>
     {
         return blockCounts;
     }
-    protected override void SubscribeToMainSceneEvents()
-    {
-        MainSceneManager.Instance.levelCompletedEvent += HandleLevelCompleted;
-        MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += HandleLevelFailed;
-        MainSceneUIManager.Instance.surrenderPressedEvent += HandleSurrender;
-    }
-    void HandleLevelCompleted()
+    public void HandleLevelCompleted()
     {
         RemoveUsedBlocks();
         AddReward();
+    }
+    protected override void SubscribeToMainSceneEvents()
+    {
+        MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += HandleLevelFailed;
+        MainSceneUIManager.Instance.surrenderPressedEvent += HandleSurrender;
     }
     void HandleLevelFailed() => ResetCounts();
     void HandleSurrender() => ResetCounts();

@@ -6,6 +6,10 @@ public class GameStateManager : GlobalManager<GameStateManager>
 {
     public MapData SelectedMapData { get; private set; }
     public int Level { get; private set; }
+    public void HandleLevelCompleted()
+    {
+        Level++;
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -30,9 +34,6 @@ public class GameStateManager : GlobalManager<GameStateManager>
     {
         Level = 1;
     }
-    void HandleLevelCompleted()
-    {
-        Level++;
-    }
+
     #endregion Handlers
 }

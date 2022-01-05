@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 public class MainSceneUIManager : Singleton<MainSceneUIManager>
 {
+    public System.Action cheatPressedEvent;
     public System.Action surrenderPressedEvent;
     public System.Action<GameObject> blockSelectedForDeletionEvent;
     public System.Action levelCompletedConfirmPressedEvent;
@@ -40,19 +41,23 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     }
     #endregion
     #region Custom public functions
-    public void LevelCompletedConfimPress()
+    public void OnLevelCompletedConfimPressed()
     {
         levelCompletedConfirmPressedEvent();
     }
-    public void LevelFailedConfirmPress()
+    public void OnLevelFailedConfirmPressed()
     {
         levelFailedConfirmPressedEvent();   
     }
-    public void OnVerdictPress()
+    public void OnCheatPressed()
+    {
+        cheatPressedEvent();
+    }
+    public void OnVerdictPressed()
     {
         verdictPressedEvent();
     }
-    public void OnSurrender()
+    public void OnSurrenderPressed()
     {
         surrenderPressedEvent();
     }

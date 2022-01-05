@@ -18,8 +18,9 @@ public class MainSceneManager : Singleton<MainSceneManager>
     private void OnEnable()
     {
         MainSceneUIManager.Instance.verdictPressedEvent += HandleVerdictPressedEvent;
+        MainSceneUIManager.Instance.cheatPressedEvent += HandleCheatPressed; 
         FillManager.Instance.finishedCalulatingAreaFractionEvent += HandleFinishedAreaCalculation;
-        VerdictManager.Instance.resultEvent += HandleVerdictFinished; 
+        VerdictManager.Instance.resultEvent += HandleVerdictFinished;
     }
     void HandleFinishedAreaCalculation(float fraction)
     {
@@ -46,11 +47,16 @@ public class MainSceneManager : Singleton<MainSceneManager>
     {
         verdictStartedEvent();
     }
+    void HandleCheatPressed()
+    {
+        levelCompletedEvent?.Invoke();
+    }
     void OnDisable()
     {
         if (MainSceneUIManager.Instance)
         {
             MainSceneUIManager.Instance.verdictPressedEvent -= HandleVerdictPressedEvent;
+            MainSceneUIManager.Instance.cheatPressedEvent -= HandleCheatPressed;
         }
         if (FillManager.Instance)
         {

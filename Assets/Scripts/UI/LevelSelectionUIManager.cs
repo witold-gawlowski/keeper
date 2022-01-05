@@ -17,6 +17,7 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
     [SerializeField] TMP_Text levelText;
     [SerializeField] Transform rewardImageParent;
     [SerializeField] List<InventoryItemUIScript> rewardIcons;
+    [SerializeField] GameObject inventoryPanel;
     private void OnEnable()
     {
         MapManager.Instance.selectedMapUpdatedEvent += HandleSelectedMapUpdatedEvent;
@@ -33,6 +34,17 @@ public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
     {
         levelText.text = "Level " + GameStateManager.Instance.Level;
         HandleSelectedMapUpdatedEvent(0);
+    }
+    public void HandleInventoryTogglePress()
+    {
+        if (inventoryPanel.activeSelf)
+        {
+            inventoryPanel.SetActive(false);
+        }
+        else
+        {
+            inventoryPanel.SetActive(true);
+        }
     }
     void HandleSelectedMapUpdatedEvent(int currentMap)
     {

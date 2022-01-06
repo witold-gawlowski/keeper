@@ -37,6 +37,7 @@ public class GameStateManager : GlobalManager<GameStateManager>
     }
     void HandleGameStarted()
     {
+        Level = 1;
         GameInProgress = true;
     }
 

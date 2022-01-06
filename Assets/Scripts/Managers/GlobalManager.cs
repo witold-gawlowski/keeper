@@ -8,10 +8,6 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
     private Dictionary<string, System.Action> sceneLoadedHandlers;
     private Dictionary<string, System.Action> sceneUnloadedHandlers;
 
-    public UnityEditor.SceneAsset MenuScene;
-    public UnityEditor.SceneAsset LevelSelectionScene;
-    public UnityEditor.SceneAsset MainScene;
-
     protected virtual void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -28,15 +24,15 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
         var obj = this.name;
         sceneLoadedHandlers = new Dictionary<string, System.Action>()
         {
-            { MenuScene.name, SubscribeToMenuSceneEvents},
-            { LevelSelectionScene.name,  SubscribeToLevelSelectionEvents},
-            { MainScene.name, SubscribeToMainSceneEvents },
+            { Constants.MenuSceneName, SubscribeToMenuSceneEvents},
+            { Constants.MapSelectionSceneName,  SubscribeToMapSelectionEvents},
+            { Constants.MainSceneName, SubscribeToMainSceneEvents },
         };
         sceneUnloadedHandlers = new Dictionary<string, System.Action>()
         {
-            { MenuScene.name, UnsubscribeFromMenuSceneEvents},
-            { LevelSelectionScene.name,  UnsubscribeFromLevelSelectionEvents},
-            { MainScene.name,  UnsubscribeFromMainSceneEvents },
+            { Constants.MenuSceneName, UnsubscribeFromMenuSceneEvents},
+            { Constants.MapSelectionSceneName,  UnsubscribeFromLevelSelectionEvents},
+            { Constants.MainSceneName,  UnsubscribeFromMainSceneEvents },
         };
     }
     void SceneLoadedHandler(Scene scene, LoadSceneMode _)
@@ -57,7 +53,7 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
     protected virtual void SubscribeToMenuSceneEvents()
     {
     }
-    protected virtual void SubscribeToLevelSelectionEvents()
+    protected virtual void SubscribeToMapSelectionEvents()
     {
     }
     protected virtual void SubscribeToMainSceneEvents()

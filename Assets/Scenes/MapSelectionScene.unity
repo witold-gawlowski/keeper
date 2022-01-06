@@ -2508,7 +2508,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2134802842}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 058495088fbeba74ebb7e407a39b76ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ba42a9c887690b4cb590f57f40b8121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rewardIconPrefab: {fileID: 4445629289927742946, guid: 336f83ed012f13f4d8113f2f3ac98a9b, type: 3}

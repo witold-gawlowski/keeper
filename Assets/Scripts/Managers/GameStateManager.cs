@@ -15,7 +15,7 @@ public class GameStateManager : GlobalManager<GameStateManager>
     {
         MainMenuUIManager.Instance.startNewGameEvent += HandleGameStarted;
     }
-    protected override void SubscribeToLevelSelectionEvents()
+    protected override void SubscribeToMapSelectionEvents()
     {
         MapManager.Instance.mapConfirmedEvent += HandleMapConfirmed;
     }

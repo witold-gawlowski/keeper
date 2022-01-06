@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelSelectionScriptInitializer : MonoBehaviour
+public class MapSelectionScriptInitializer : MonoBehaviour
 {
     void Start()
     {
         MapManager.Instance.Init();
-        LevelSelectionUIManager.Instance.Init();
+        MapSelectionUIManager.Instance.Init();
     }
 }

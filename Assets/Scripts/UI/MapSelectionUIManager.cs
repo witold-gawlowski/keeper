@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class LevelSelectionUIManager : Singleton<LevelSelectionUIManager>
+public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
 {
     public System.Action PreviousLevelButtonPressedEvent;
     public System.Action NextLevelButtonPressedEvent;

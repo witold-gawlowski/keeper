@@ -17,9 +17,9 @@ public class SceneLoader : GlobalManager<SceneLoader>
         MainMenuUIManager.Instance.startNewGameEvent += LoadLevelSelectionScene;
         MainMenuUIManager.Instance.continueGameEvent += LoadLevelSelectionScene;
     }
-    protected override void SubscribeToLevelSelectionEvents()
+    protected override void SubscribeToMapSelectionEvents()
     {
-        LevelSelectionUIManager.Instance.BackButtonPressedEvent += LoadMenuScene;
+        MapSelectionUIManager.Instance.BackButtonPressedEvent += LoadMenuScene;
         MapManager.Instance.mapConfirmedEvent += (MapData _) => LoadMainScene();
     }
     protected override void SubscribeToMainSceneEvents()
@@ -30,8 +30,8 @@ public class SceneLoader : GlobalManager<SceneLoader>
     }
     #endregion
     #region Handlers
-    void LoadMenuScene() => SceneManager.LoadScene(MenuScene.name);
-    void LoadLevelSelectionScene() => SceneManager.LoadScene(LevelSelectionScene.name);
-    void LoadMainScene() => SceneManager.LoadScene(MainScene.name);
+    void LoadMenuScene() => SceneManager.LoadScene(Constants.MenuSceneName);
+    void LoadLevelSelectionScene() => SceneManager.LoadScene(Constants.MapSelectionSceneName);
+    void LoadMainScene() => SceneManager.LoadScene(Constants.MainSceneName);
     #endregion
 }

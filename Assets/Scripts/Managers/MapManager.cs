@@ -12,9 +12,9 @@ public class MapManager : Singleton<MapManager>
     int selectedMapIndex;
     private void OnEnable()
     {
-        LevelSelectionUIManager.Instance.PreviousLevelButtonPressedEvent += HandlePreviousLevelSelectedEvent;
-        LevelSelectionUIManager.Instance.NextLevelButtonPressedEvent += HandleNextLevelSelectedEvent;
-        LevelSelectionUIManager.Instance.StartButtonPressedEvent += HandleSelectedLevelConfirm;
+        MapSelectionUIManager.Instance.PreviousLevelButtonPressedEvent += HandlePreviousLevelSelectedEvent;
+        MapSelectionUIManager.Instance.NextLevelButtonPressedEvent += HandleNextLevelSelectedEvent;
+        MapSelectionUIManager.Instance.StartButtonPressedEvent += HandleMapSelectedConfirm;
     }
     public void Init()
     {
@@ -36,11 +36,11 @@ public class MapManager : Singleton<MapManager>
     }
     void OnDisable()
     {
-        if (LevelSelectionUIManager.Instance)
+        if (MapSelectionUIManager.Instance)
         {
-            LevelSelectionUIManager.Instance.PreviousLevelButtonPressedEvent -= HandlePreviousLevelSelectedEvent;
-            LevelSelectionUIManager.Instance.NextLevelButtonPressedEvent -= HandleNextLevelSelectedEvent;
-            LevelSelectionUIManager.Instance.StartButtonPressedEvent -= HandleSelectedLevelConfirm;
+            MapSelectionUIManager.Instance.PreviousLevelButtonPressedEvent -= HandlePreviousLevelSelectedEvent;
+            MapSelectionUIManager.Instance.NextLevelButtonPressedEvent -= HandleNextLevelSelectedEvent;
+            MapSelectionUIManager.Instance.StartButtonPressedEvent -= HandleMapSelectedConfirm;
         }
     }
     void HandlePreviousLevelSelectedEvent()
@@ -64,11 +64,9 @@ public class MapManager : Singleton<MapManager>
         selectedMapObject.SetActive(true);
         selectedMapIndex = index;
     }
-    void HandleSelectedLevelConfirm()
+    void HandleMapSelectedConfirm()
     {
         var selectedMapData = LevelScheduler.Instance.CurrentLevelData[selectedMapIndex];
-        mapConfirmedEvent(selectedMapData);
-        var mainScene = SceneLoader.Instance.MainScene;
-        
+        mapConfirmedEvent(selectedMapData);        
     }
 }

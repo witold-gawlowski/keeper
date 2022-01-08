@@ -6,7 +6,7 @@ public class InputManager : Singleton<InputManager>
 {
     public System.Action<Vector2, Collider2D> mouse0DownEvent;
     public System.Action<Vector2, Collider2D> mouse0DownWithDPressedEvent;
-    public System.Action<Vector2> mouse0PressedEvent;
+    public System.Action<Vector2> pointer0PressedEvent;
     public System.Action mouse0UpEvent;
     public System.Action rPressedEvent;
     public System.Action rDownEvent;
@@ -14,7 +14,7 @@ public class InputManager : Singleton<InputManager>
     public System.Action dPressedEvent;
 
     bool rPressed;
-    Vector3 mousePositionScreen;
+    Vector3 pointerPositionScreen;
     Camera mainCamera;
     int blockLayerMask;
     private void Start()
@@ -23,13 +23,14 @@ public class InputManager : Singleton<InputManager>
         mainCamera = Camera.main;
         blockLayerMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
-    void Update()
+    void FixedUpdate()
     {
-        mousePositionScreen = Input.mousePosition;
+#if UNITY_EDITOR
+        pointerPositionScreen = Input.mousePosition;
         if (Input.GetMouseButton(0))
         {
-            Vector2 mousePositionWorld = mainCamera.ScreenToWorldPoint(mousePositionScreen);
-            mouse0PressedEvent(mousePositionWorld);
+            Vector2 mousePositionWorld = mainCamera.ScreenToWorldPoint(pointerPositionScreen);
+            pointer0PressedEvent(mousePositionWorld);
             if (Input.GetMouseButtonDown(0))
             {
                 Collider2D hit = Physics2D.OverlapPoint(mousePositionWorld, blockLayerMask);
@@ -70,5 +71,26 @@ public class InputManager : Singleton<InputManager>
         {
             rDownEvent();
         }
+#endif
+#if UNITY_ANDROID
+        if (Input.touchCount == 1)
+        {
+            var touch = Input.GetTouch(0);
+            Vector2 mousePositionWorld = mainCamera.ScreenToWorldPoint(touch.position);
+            pointer0PressedEvent(mousePositionWorld);
+            if (touch.phase == TouchPhase.Began)
+            {
+                Collider2D hit = Physics2D.OverlapPoint(mousePositionWorld, blockLayerMask);
+                if (!EventSystem.current.IsPointerOverGameObject())
+                {
+                    mouse0DownEvent(mousePositionWorld, hit);
+                }
+            }
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                mouse0UpEvent();
+            }
+        }
+#endif
     }
 }

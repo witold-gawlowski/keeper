@@ -7,7 +7,8 @@ public class DragManager : Singleton<DragManager>
     public System.Action dragFinishedEvent;
     public System.Action dragStartedEvent;
 
-    [SerializeField] float dragForce = 5;
+    [SerializeField] float dragForce = 15;
+    [SerializeField] private float maxForceDistance = 1;
     GameObject draggedBlock;
     Rigidbody2D draggedRB;
     Vector2 pointerOffset;
@@ -25,7 +26,7 @@ public class DragManager : Singleton<DragManager>
         InputManager.Instance.rPressedEvent += ContintueBlockRotation;
         InputManager.Instance.rUpEvent += FinishBlockRotation;
         InputManager.Instance.rDownEvent += StartBlockRotation;
-        InputManager.Instance.mouse0PressedEvent += ContinueBlockDrag;
+        InputManager.Instance.pointer0PressedEvent += ContinueBlockDrag;
     }
     private void OnDisable()
     {
@@ -35,7 +36,7 @@ public class DragManager : Singleton<DragManager>
         InputManager.Instance.rPressedEvent -= ContintueBlockRotation;
         InputManager.Instance.rUpEvent -= FinishBlockRotation;
         InputManager.Instance.rDownEvent -= StartBlockRotation;
-        InputManager.Instance.mouse0PressedEvent -= ContinueBlockDrag;
+        InputManager.Instance.pointer0PressedEvent -= ContinueBlockDrag;
     }
     void VerdictStartedHandler()
     {
@@ -45,8 +46,11 @@ public class DragManager : Singleton<DragManager>
     {
         if (!isFreezed && draggedBlock)
         {
-            Vector2 direction = pointerOffset + worldPos - (Vector2)draggedBlock.transform.position;
-            draggedRB.AddForce(direction * dragForce);
+            Vector2 pointerBlockVector = pointerOffset + worldPos - (Vector2)draggedBlock.transform.position;
+            var direction = pointerBlockVector.normalized;
+            var magnitude = pointerBlockVector.magnitude;
+            var force = Mathf.Clamp01(magnitude / maxForceDistance) * dragForce * 200;
+            draggedRB.AddForce(direction * force * Time.fixedDeltaTime);
         }
     }
     void StartBlockDrag(Vector2 worldPos, Collider2D block)

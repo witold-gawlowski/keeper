@@ -20,10 +20,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a0562c29ecc1d384d8f521d898d7b688, type: 2}
   - {fileID: 11400000, guid: 283a0c22d85cfd749a48764b1446a11d, type: 2}
   - {fileID: 11400000, guid: 87509791510a23545b5b4a8448a46076, type: 2}
+  - {fileID: 11400000, guid: 7c4cb18d1ac71c94daea3df289a8b9ca, type: 2}
+  - {fileID: 11400000, guid: 2a74c7fd82111e94d80d724fac86a897, type: 2}
   - {fileID: 11400000, guid: 5177165e7293b4c4ea5ea14f30bb96bd, type: 2}
+  - {fileID: 11400000, guid: 283a0c22d85cfd749a48764b1446a11d, type: 2}
   rewardBlocks:
   - rarity: 0
     blockSO: {fileID: 11400000, guid: bf773360987d0d046b3b1214f22acd83, type: 2}
   - rarity: 0
     blockSO: {fileID: 11400000, guid: 3fc1085c9514fd04e857c9e5bfb0f77c, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: e7bc38aaa34cf9548a0498ea00a8263b, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: b755d93d3f441c9488589d27a5c3c17e, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: e565acc65f1826b4e9e265b8353b08d3, type: 2}
   mapsPerLevel: 2

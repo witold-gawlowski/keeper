@@ -17,7 +17,7 @@ public class BlockManager : Singleton<BlockManager>
     }
     private void OnEnable()
     {
-        InputManager.Instance.shortTouchFinishedEvent += ShortTouchFinishedHandler;
+        InputManager.Instance.pointerReleasedAfterHoldEvent += ShortTouchFinishedHandler;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStardedEvent;
     }

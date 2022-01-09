@@ -30,9 +30,9 @@ public class DragManager : Singleton<DragManager>
     {
         BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawedEvent;
         MainSceneManager.Instance.verdictStartedEvent += VerdictStartedHandler;
-        InputManager.Instance.pointerDownEvent += HandlePointerDown;
-        InputManager.Instance.pointerUpAfterLongDown += HandleFinishDrag;
-        InputManager.Instance.pointerPressedEvent += HandlePointerPressedEvent;
+        InputManager.Instance.pointerPressedEvent += HandlePointerDown;
+        InputManager.Instance.pointerInstantlyReleasedEvent += HandleFinishDrag;
+        InputManager.Instance.pointerDownEvent += HandlePointerPressedEvent;
     }
     void VerdictStartedHandler()
     {

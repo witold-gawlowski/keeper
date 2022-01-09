@@ -42,15 +42,12 @@ public class DragManager : Singleton<DragManager>
     {
         isFreezed = true;
     }
-    void ContinueBlockDrag(Vector2 worldPos)
+    public void ContinueBlockDrag(Vector2 worldPos)
     {
         if (!isFreezed && draggedBlock)
         {
             Vector2 pointerBlockVector = pointerOffset + worldPos - (Vector2)draggedBlock.transform.position;
-            var direction = pointerBlockVector.normalized;
-            var magnitude = pointerBlockVector.magnitude;
-            var force = Mathf.Clamp01(magnitude / maxForceDistance) * dragForce * 200;
-            draggedRB.AddForce(direction * force * Time.fixedDeltaTime);
+            draggedBlock.transform.position = worldPos;
         }
     }
     void StartBlockDrag(Vector2 worldPos, Collider2D block)

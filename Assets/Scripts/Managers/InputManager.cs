@@ -23,7 +23,7 @@ public class InputManager : Singleton<InputManager>
         mainCamera = Camera.main;
         blockLayerMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
-    void FixedUpdate()
+    void Update()
     {
 #if UNITY_EDITOR
         pointerPositionScreen = Input.mousePosition;

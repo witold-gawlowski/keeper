@@ -17,7 +17,6 @@ public class BlockManager : Singleton<BlockManager>
     }
     private void OnEnable()
     {
-        InputManager.Instance.mouse0DownWithDPressedEvent += Mouse0DownWithDPressedEventHandler;
         InputManager.Instance.mouse0DownEvent += Mouse0DownEventHandler;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStardedEvent;
@@ -43,13 +42,7 @@ public class BlockManager : Singleton<BlockManager>
     {
         SetFreezeBlocks(true);
     }
-    void Mouse0DownWithDPressedEventHandler(Vector2 position, Collider2D block)
-    {
-        if (!isFreezed && block != null)
-        {
-            Despawn(block.gameObject);
-        }
-    }
+
     void Mouse0DownEventHandler(Vector2 position, Collider2D block)
     {
         if (!isFreezed && block == null)

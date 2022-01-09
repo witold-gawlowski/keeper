@@ -8,7 +8,7 @@ public class InputManager : Singleton<InputManager>
     public System.Action<Vector2> mouse0DownWithDPressedEvent;
     public System.Action<Vector2> pointerPressedEvent;
     public System.Action<Vector2> shortTouchFinishedEvent;
-    public System.Action<Vector2, Vector2> dragFinishedEvent;
+    public System.Action<Vector2, Vector2> pointerUpAfterLongDown;
     public System.Action rPressedEvent;
     public System.Action rDownEvent;
     public System.Action rUpEvent;
@@ -55,7 +55,7 @@ public class InputManager : Singleton<InputManager>
                 }
                 else if(drag.magnitude >= 0.1f)
                 {
-                    dragFinishedEvent(currentDragStartPositionWorld, mousePositionWorld);
+                    pointerUpAfterLongDown(currentDragStartPositionWorld, mousePositionWorld);
                 }
             }
             pointerPressedEvent(mousePositionWorld);

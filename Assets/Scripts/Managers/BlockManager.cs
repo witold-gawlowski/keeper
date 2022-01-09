@@ -17,7 +17,7 @@ public class BlockManager : Singleton<BlockManager>
     }
     private void OnEnable()
     {
-        InputManager.Instance.mouse0DownEvent += Mouse0DownEventHandler;
+        InputManager.Instance.shortTouchFinishedEvent += ShortTouchFinishedHandler;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStardedEvent;
     }
@@ -42,12 +42,13 @@ public class BlockManager : Singleton<BlockManager>
     {
         SetFreezeBlocks(true);
     }
-
-    void Mouse0DownEventHandler(Vector2 position, Collider2D block)
+    void ShortTouchFinishedHandler(Vector2 worldPos)
     {
-        if (!isFreezed && block == null)
+        var blockMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
+        var hit = Physics2D.OverlapPoint(worldPos, blockMask);
+        if (!isFreezed && hit == null)
         {
-            Spawn(position);
+            Spawn(worldPos);
         }
     }
     void SetFreezeBlocks(bool value)

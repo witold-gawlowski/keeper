@@ -9,40 +9,49 @@ public class DragManager : Singleton<DragManager>
 
     [SerializeField] float dragForce = 15;
     [SerializeField] private float maxForceDistance = 1;
-    GameObject draggedBlock;
-    Rigidbody2D draggedRB;
-    Vector2 pointerOffset;
-    [SerializeField] float rotationSpeed = 50f;
+    [SerializeField] private float turnSpeed = 10;
+
+    bool turnStarted;
     bool isFreezed;
+    GameObject draggedBlock;
+    Quaternion initialBlockRotation;
+    Vector2 pointerOffset;
+    GameObject lastBlockTouched;
+    Vector2 turnStartPosition;
+    int blockLayerMask;
+
     private void Awake()
     {
+        turnStarted = false;
         isFreezed = false;
+        blockLayerMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
     private void OnEnable()
     {
         MainSceneManager.Instance.verdictStartedEvent += VerdictStartedHandler;
-        InputManager.Instance.mouse0DownEvent += StartBlockDrag;
-        InputManager.Instance.mouse0UpEvent += FinishBlockDrag;
-        InputManager.Instance.rPressedEvent += ContintueBlockRotation;
-        InputManager.Instance.rUpEvent += FinishBlockRotation;
-        InputManager.Instance.rDownEvent += StartBlockRotation;
-        InputManager.Instance.pointer0PressedEvent += ContinueBlockDrag;
-    }
-    private void OnDisable()
-    {
-        MainSceneManager.Instance.verdictStartedEvent -= VerdictStartedHandler;
-        InputManager.Instance.mouse0DownEvent -= StartBlockDrag;
-        InputManager.Instance.mouse0UpEvent -= FinishBlockDrag;
-        InputManager.Instance.rPressedEvent -= ContintueBlockRotation;
-        InputManager.Instance.rUpEvent -= FinishBlockRotation;
-        InputManager.Instance.rDownEvent -= StartBlockRotation;
-        InputManager.Instance.pointer0PressedEvent -= ContinueBlockDrag;
+        InputManager.Instance.pointerDownEvent += HandlePointerDown;
+        InputManager.Instance.dragFinishedEvent += HandleFinishDrag;
+        InputManager.Instance.pointerPressedEvent += HandlePointerPressedEvent;
     }
     void VerdictStartedHandler()
     {
         isFreezed = true;
     }
-    public void ContinueBlockDrag(Vector2 worldPos)
+    void HandlePointerPressedEvent(Vector2 worldPos)
+    {
+        if (draggedBlock)
+        {
+            ContinueBlockDrag(worldPos);
+        }
+        else if (draggedBlock == null && lastBlockTouched != null)
+        {
+            if (turnStarted)
+            {
+                ContinueBlockTurn(worldPos);
+            }
+        }
+    }
+    void ContinueBlockDrag(Vector2 worldPos)
     {
         if (!isFreezed && draggedBlock)
         {
@@ -50,49 +59,68 @@ public class DragManager : Singleton<DragManager>
             draggedBlock.transform.position = worldPos;
         }
     }
-    void StartBlockDrag(Vector2 worldPos, Collider2D block)
+    void HandlePointerDown(Vector2 worldPos)
+    {
+        Collider2D hit = Physics2D.OverlapPoint(worldPos, blockLayerMask);
+        if (hit)
+        {
+            StartBlockDrag(worldPos, hit.gameObject);
+        }
+        else if(hit == null && lastBlockTouched != null)
+        {
+            StartBlockTurn(worldPos);
+        }
+    }
+    void HandleBlockSpawedEvent(GameObject block)
+    {
+        lastBlockTouched = block;
+    }
+    void StartBlockTurn(Vector2 worldPos)
+    {
+        turnStarted = true;
+        turnStartPosition = worldPos;
+        initialBlockRotation = lastBlockTouched.transform.rotation;
+    }
+    void ContinueBlockTurn(Vector2 worldPos)
+    {
+        var turnDrag = (turnStartPosition - worldPos);
+        lastBlockTouched.transform.rotation = initialBlockRotation * Quaternion.Euler(0, 0, -turnDrag.y * turnSpeed);
+    }
+    void EndBlockTurn()
+    {
+        turnStarted = false;
+    }
+    void StartBlockDrag(Vector2 worldPos, GameObject block)
     {
         if (!isFreezed && block)
         {
-            draggedRB = block.GetComponent<Rigidbody2D>();
-            draggedRB.constraints = RigidbodyConstraints2D.FreezeRotation;
             draggedBlock = block.gameObject;
             pointerOffset = (Vector2)draggedBlock.transform.position - worldPos;
             dragStartedEvent?.Invoke();
         }
     }
-    void FinishBlockDrag()
+    void HandleFinishDrag(Vector2 initialDragPosition, Vector2 finalDragPosition)
     {
-        if (!isFreezed && draggedBlock != null)
+        if (draggedBlock)
         {
-            draggedRB.constraints = RigidbodyConstraints2D.FreezeAll;
+            FinishBlockDrag(initialDragPosition, finalDragPosition);
+        }
+        else if (turnStarted)
+        {
+            EndBlockTurn();
+        }
+    }
+    void FinishBlockDrag(Vector2 _, Vector2 _2)
+    {
+        if (!isFreezed)
+        {
+            lastBlockTouched = draggedBlock;
             draggedBlock = null;
-            draggedRB = null;
-        }
-        if (!isFreezed && dragFinishedEvent != null)
-        {
-            dragFinishedEvent();
-        }
-    }
-    void StartBlockRotation()
-    {
-        if (!isFreezed && draggedRB)
-        {
-            draggedRB.constraints = RigidbodyConstraints2D.None;
+            if (dragFinishedEvent != null)
+            {
+                dragFinishedEvent();
+            }
         }
     }
-    void FinishBlockRotation()
-    {
-        if (!isFreezed && draggedRB)
-        {
-            draggedRB.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
-    }
-    void ContintueBlockRotation()
-    {
-        if (!isFreezed && draggedBlock)
-        {
-            draggedRB.angularVelocity = rotationSpeed;
-        }
-    }
+
 }

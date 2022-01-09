@@ -4,53 +4,61 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public class InputManager : Singleton<InputManager>
 {
-    public System.Action<Vector2, Collider2D> mouse0DownEvent;
-    public System.Action<Vector2, Collider2D> mouse0DownWithDPressedEvent;
-    public System.Action<Vector2> pointer0PressedEvent;
-    public System.Action mouse0UpEvent;
+    public System.Action<Vector2> pointerDownEvent;
+    public System.Action<Vector2> mouse0DownWithDPressedEvent;
+    public System.Action<Vector2> pointerPressedEvent;
+    public System.Action<Vector2> shortTouchFinishedEvent;
+    public System.Action<Vector2, Vector2> dragFinishedEvent;
     public System.Action rPressedEvent;
     public System.Action rDownEvent;
     public System.Action rUpEvent;
     public System.Action dPressedEvent;
 
+    Vector2 currentDragStartPositionWorld;
+    Collider2D currentTouchInitialPositionHit;
     bool rPressed;
     Vector3 pointerPositionScreen;
     Camera mainCamera;
-    int blockLayerMask;
     private void Start()
     {
         rPressed = false;
         mainCamera = Camera.main;
-        blockLayerMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
     void Update()
     {
 #if UNITY_EDITOR
         pointerPositionScreen = Input.mousePosition;
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
         {
             Vector2 mousePositionWorld = mainCamera.ScreenToWorldPoint(pointerPositionScreen);
-            pointer0PressedEvent(mousePositionWorld);
             if (Input.GetMouseButtonDown(0))
             {
-                Collider2D hit = Physics2D.OverlapPoint(mousePositionWorld, blockLayerMask);
+                currentDragStartPositionWorld = mousePositionWorld;
                 if (Input.GetKey(KeyCode.D))
                 {
-                    mouse0DownWithDPressedEvent(mousePositionWorld, hit);
+                    mouse0DownWithDPressedEvent(mousePositionWorld);
                 }
                 else
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
-                        mouse0DownEvent(mousePositionWorld, hit);
+                        pointerDownEvent(mousePositionWorld);
                     }
                 }
             }
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            mouse0UpEvent();
+            else if (Input.GetMouseButtonUp(0))
+            {
+                var drag = currentDragStartPositionWorld - mousePositionWorld;
+                if (drag.magnitude < 0.1f)
+                {
+                    shortTouchFinishedEvent(mousePositionWorld);
+                }
+                else if(drag.magnitude >= 0.1f)
+                {
+                    dragFinishedEvent(currentDragStartPositionWorld, mousePositionWorld);
+                }
+            }
+            pointerPressedEvent(mousePositionWorld);
         }
 
         if (Input.GetKey(KeyCode.R))
@@ -76,20 +84,21 @@ public class InputManager : Singleton<InputManager>
         if (Input.touchCount == 1)
         {
             var touch = Input.GetTouch(0);
-            Vector2 mousePositionWorld = mainCamera.ScreenToWorldPoint(touch.position);
-            pointer0PressedEvent(mousePositionWorld);
+            Vector2 pointerPositionWorld = mainCamera.ScreenToWorldPoint(touch.position);
+            
             if (touch.phase == TouchPhase.Began)
             {
-                Collider2D hit = Physics2D.OverlapPoint(mousePositionWorld, blockLayerMask);
+                currentDragStartPositionWorld = pointerPositionWorld;
                 if (!EventSystem.current.IsPointerOverGameObject())
                 {
-                    mouse0DownEvent(mousePositionWorld, hit);
+                    pointerDownEvent(pointerPositionWorld);
                 }
             }
             else if (touch.phase == TouchPhase.Ended)
             {
-                mouse0UpEvent();
+                shortTouchFinishedEvent(pointerPositionWorld);
             }
+            pointerPressedEvent(pointerPositionWorld);
         }
 #endif
     }

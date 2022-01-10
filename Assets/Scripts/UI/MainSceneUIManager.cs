@@ -6,7 +6,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
 {
     public System.Action cheatPressedEvent;
     public System.Action surrenderPressedEvent;
-    public System.Action<GameObject> blockSelectedForDeletionEvent;
+    public System.Action<BlockScript> blockSelectedForDeletionEvent;
     public System.Action levelCompletedConfirmPressedEvent;
     public System.Action levelFailedConfirmPressedEvent;
     public System.Action verdictPressedEvent;
@@ -104,7 +104,8 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
         {
             if (col.tag == Constants.blockTag)
             {
-                blockSelectedForDeletionEvent(col.gameObject);
+                var script = col.GetComponent<BlockScript>();
+                blockSelectedForDeletionEvent(script);
             }
         }
     }

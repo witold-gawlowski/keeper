@@ -26,8 +26,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 283a0c22d85cfd749a48764b1446a11d, type: 2}
   rewardBlocks:
   - rarity: 0
-    blockSO: {fileID: 11400000, guid: bf773360987d0d046b3b1214f22acd83, type: 2}
-  - rarity: 0
     blockSO: {fileID: 11400000, guid: 3fc1085c9514fd04e857c9e5bfb0f77c, type: 2}
   - rarity: 0
     blockSO: {fileID: 11400000, guid: e7bc38aaa34cf9548a0498ea00a8263b, type: 2}

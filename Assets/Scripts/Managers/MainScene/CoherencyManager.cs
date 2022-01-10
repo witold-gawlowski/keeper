@@ -5,18 +5,16 @@ using UnityEngine;
 public class CoherencyManager: Singleton<CoherencyManager>
 {
     public bool IsCoherent { get { return visited.Count == overlaps.Count; } }
-
-    Dictionary<Collider2D, List<Collider2D>> overlaps;
-    HashSet<Collider2D> visited;
-    List<Collider2D> highlightedBlocks;
-
+    
+    private Dictionary<Collider2D, List<Collider2D>> overlaps;
+    private HashSet<Collider2D> visited;
+    private Collider2D startCol;
     public void CalculateCoherency()
     {
-        if(highlightedBlocks == null || highlightedBlocks.Count == 0)
+        if(startCol == null || !startCol.gameObject.activeSelf)
         {
             var lastBlockTouched = MainSceneManager.Instance.LastBlockTouched;
-            Collider2D collider = lastBlockTouched.GetComponent<Collider2D>();
-            highlightedBlocks = new List<Collider2D>() { collider };
+            startCol = lastBlockTouched.GetComponent<Collider2D>();
         }
         CalculateOverlaps();
         Traverse();
@@ -24,8 +22,7 @@ public class CoherencyManager: Singleton<CoherencyManager>
     private void Traverse()
     {
         visited = new HashSet<Collider2D>();
-        Collider2D startCollider = highlightedBlocks[0];
-        Step(startCollider);
+        Step(startCol);
     }
     private void Step(Collider2D col)
     {
@@ -41,11 +38,11 @@ public class CoherencyManager: Singleton<CoherencyManager>
     private void CalculateOverlaps()
     {
         var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
-        var blocks = BlockManager.Instance.BlockGOs;
+        var blocks = BlockManager.Instance.Blocks;
         overlaps = new Dictionary<Collider2D, List<Collider2D>>();
         foreach (var b in blocks)
         {
-            if (b.activeSelf)
+            if (b.gameObject.activeSelf)
             {
                 var collidingColliders = new List<Collider2D>();
                 var blockCollider = b.GetComponent<Collider2D>();

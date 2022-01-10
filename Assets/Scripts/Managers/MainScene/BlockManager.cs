@@ -7,10 +7,12 @@ public class BlockManager : Singleton<BlockManager>
 {
 
     public System.Action<GameObject> blockSpawnedEvent;
-    public List<GameObject> BlockGOs { get; private set; }
+    public List<BlockScript> Blocks { get; private set; }
 
+    [SerializeField] private Color highlightColor;
+    [SerializeField] private Color normalColor;
     [SerializeField] private float spawnTapMaxDuration = 0.1f; 
-    private Dictionary<GameObject, BlockSO> blockTypes;
+    private Dictionary<BlockScript, BlockSO> blockTypes;
     private bool isFreezed;
     public void Init()
     {
@@ -21,16 +23,16 @@ public class BlockManager : Singleton<BlockManager>
     {
         InputManager.Instance.pointerReleased += HandlerPointerReleasedEvent;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
-        MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStardedEvent;
+        MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStartedEvent;
     }
     public Dictionary<BlockSO, int> GetUsedBlocks()
     {
         var result = new Dictionary<BlockSO, int>();
-        foreach(var blockGO in BlockGOs)
+        foreach(var bs in Blocks)
         {
-            if (blockGO.activeSelf)
+            if (bs.gameObject.activeSelf)
             {
-                var blockType = blockTypes[blockGO];
+                var blockType = blockTypes[bs];
                 if (!result.ContainsKey(blockType))
                 {
                     result.Add(blockType, 0);
@@ -40,7 +42,21 @@ public class BlockManager : Singleton<BlockManager>
         }
         return result;
     }
-    void HandleVerdictStardedEvent()
+    public void HighlightBlocks(List<BlockScript> list)
+    {
+        foreach(var bs in Blocks)
+        {
+            if (bs.gameObject.activeSelf)
+            {
+                bs.SetColor(normalColor);
+            }
+        }
+        foreach(var bs in list)
+        {
+            bs.SetColor(highlightColor);
+        }
+    }
+    void HandleVerdictStartedEvent()
     {
         SetFreezeBlocks(true);
     }
@@ -63,28 +79,30 @@ public class BlockManager : Singleton<BlockManager>
     }
     void GenerateBlockPool()
     {
-        blockTypes = new Dictionary<GameObject, BlockSO>();
+        blockTypes = new Dictionary<BlockScript, BlockSO>();
         var inventory = InventoryManager.Instance.GetInventory();
-        BlockGOs = new List<GameObject>();
+        Blocks = new List<BlockScript>();
         foreach (var item in inventory)
         {
             for (int i = 0; i < item.Value; i++)
             {
                 var block = Instantiate(item.Key.prefab, transform);
-                blockTypes.Add(block, item.Key);
+                var script = block.GetComponent<BlockScript>();
+                blockTypes.Add(script, item.Key);
                 block.SetActive(false);
-                BlockGOs.Add(block);
+                Blocks.Add(script);
             }
         }
     }
     void Spawn(Vector2 position)
     {
-        foreach (var go in BlockGOs)
+        foreach (var bs in Blocks)
         {
+            var go = bs.gameObject;
             if (!go.activeSelf)
             {
                 go.SetActive(true);
-                go.transform.position = position;
+                bs.transform.position = position;
                 if (blockSpawnedEvent != null)
                 {
                     blockSpawnedEvent(go);
@@ -93,14 +111,14 @@ public class BlockManager : Singleton<BlockManager>
             }
         }
     }
-    void Despawn(GameObject block)
+    void Despawn(BlockScript block)
     {
         block.gameObject.SetActive(false);
         SetBlockAsLast(block);
     }
-    void SetBlockAsLast(GameObject block)
+    void SetBlockAsLast(BlockScript block)
     {
-        BlockGOs.Remove(block);
-        BlockGOs.Add(block);
+        Blocks.Remove(block);
+        Blocks.Add(block);
     }
 }

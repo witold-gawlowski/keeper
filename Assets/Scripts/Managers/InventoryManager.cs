@@ -53,11 +53,13 @@ public class InventoryManager : GlobalManager<InventoryManager>
     }
     void ResetCounts()
     {
-        Debug.Log("resetting counts");
         blockCounts = new Dictionary<BlockSO, int>();
         foreach (var blockSO in blockSOs)
         {
-            blockCounts.Add(blockSO, blockSO.initialCountInInventory);
+            if (blockSO != null)
+            {
+                blockCounts.Add(blockSO, blockSO.initialCountInInventory);
+            }
         }
     }
 }

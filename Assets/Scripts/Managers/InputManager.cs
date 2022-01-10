@@ -6,11 +6,9 @@ public class InputManager : Singleton<InputManager>
 {
     public System.Action<Vector2> pointerPressedEvent;
     public System.Action<Vector2> pointerDownEvent;
-    public System.Action<Vector2> pointerReleasedAfterHoldEvent;
-    public System.Action<Vector2, Vector2> pointerInstantlyReleasedEvent;
+    public System.Action<Vector2, Vector2> pointerReleased;
 
     Vector2 currentDragStartPositionWorld;
-    Collider2D currentTouchInitialPositionHit;
     bool rPressed;
     Vector3 pointerPositionScreen;
     Camera mainCamera;
@@ -22,7 +20,6 @@ public class InputManager : Singleton<InputManager>
     }
     void Update()
     {
-#if UNITY_EDITOR
         pointerPositionScreen = PointerPosition();
         if (PointerDown() || PointerReleased())
         {
@@ -37,59 +34,19 @@ public class InputManager : Singleton<InputManager>
             }
             else if (PointerReleased())
             {
-                var drag = currentDragStartPositionWorld - pointerPositionWorld;
-                if (drag.magnitude < 0.1f)
-                {
-                    pointerReleasedAfterHoldEvent(pointerPositionWorld);
-                }
-                else if (drag.magnitude >= 0.1f)
-                {
-                    pointerInstantlyReleasedEvent(currentDragStartPositionWorld, pointerPositionWorld);
-                }
+                pointerReleased(currentDragStartPositionWorld, pointerPositionWorld);
             }
             pointerDownEvent(pointerPositionWorld);
         }
-#endif
-//#if UNITY_ANDROID
-//        if (Input.touchCount == 1)
-//        {
-//            var touch = Input.GetTouch(0);
-//            Vector2 pointerPositionWorld = mainCamera.ScreenToWorldPoint(touch.position);
-
-//            if (touch.phase == TouchPhase.Began)
-//            {
-//                currentDragStartPositionWorld = pointerPositionWorld;
-//                if (!EventSystem.current.IsPointerOverGameObject())
-//                {
-//                    pointerPressedEvent(pointerPositionWorld);
-//                }
-//            }
-//            else if (touch.phase == TouchPhase.Ended)
-//            {
-//                var drag = currentDragStartPositionWorld - pointerPositionWorld;
-//                if (drag.magnitude < 0.1f)
-//                {
-//                    pointerReleasedAfterHoldEvent(pointerPositionWorld);
-//                }
-//                else if (drag.magnitude >= 0.1f)
-//                {
-//                    pointerInstantlyReleasedEvent(currentDragStartPositionWorld, pointerPositionWorld);
-//                }
-//            }
-//            pointerDownEvent(pointerPositionWorld);
-//        }
-//#endif
     }
     bool PointerDown()
     {
 #if UNITY_EDITOR
         return Input.GetMouseButton(0);
-#endif
-#if UNITY_ANDROID
+#elif UNITY_ANDROID
         if (Input.touchCount == 1)
         {
-            touch = Input.GetTouch(0);
-            return touch.phase == TouchPhase.Began;
+            return true;
         }
         return false;
 #endif
@@ -98,11 +55,11 @@ public class InputManager : Singleton<InputManager>
     {
 #if UNITY_EDITOR
         return Input.GetMouseButtonDown(0);
-#endif
-#if UNITY_ANDROID
-        if (Input.touchCount == 1)
+#elif UNITY_ANDROID
+       if (Input.touchCount == 1)
         {
-            return true;
+            touch = Input.GetTouch(0);
+            return touch.phase == TouchPhase.Began;
         }
         return false;
 #endif
@@ -111,12 +68,15 @@ public class InputManager : Singleton<InputManager>
     {
 #if UNITY_EDITOR
         return Input.GetMouseButtonUp(0);
-#endif
-#if UNITY_ANDROID
+#elif UNITY_ANDROID
         if (Input.touchCount == 1)
         {
             touch = Input.GetTouch(0);
-            return touch.phase == TouchPhase.Ended;
+            var endedPhase = touch.phase == TouchPhase.Ended;
+            if(endedPhase){
+                Debug.Log("released!!");
+                return true;
+            }
         }
         return false;
 #endif
@@ -125,8 +85,7 @@ public class InputManager : Singleton<InputManager>
     {
 #if UNITY_EDITOR
         return Input.mousePosition;
-#endif
-#if UNITY_ANDROID
+#elif UNITY_ANDROID
         var result = new Vector2();
         if(Input.touchCount == 1)
         {

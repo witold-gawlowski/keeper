@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: C
   m_EditorClassIdentifier: 
   prefab: {fileID: 4731544278501659396, guid: 8733a4a37df97be44a7442cdd28e7bce, type: 3}
-  initialCountInInventory: 0
+  initialCountInInventory: 2
   regularity: 0
+  minRewardItemMultiplicity: 1
+  maxRewadItemMultiplicity: 3

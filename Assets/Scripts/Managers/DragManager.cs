@@ -31,7 +31,7 @@ public class DragManager : Singleton<DragManager>
         BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawedEvent;
         MainSceneManager.Instance.verdictStartedEvent += VerdictStartedHandler;
         InputManager.Instance.pointerPressedEvent += HandlePointerDown;
-        InputManager.Instance.pointerInstantlyReleasedEvent += HandleFinishDrag;
+        InputManager.Instance.pointerReleased += HandleFinishDrag;
         InputManager.Instance.pointerDownEvent += HandlePointerPressedEvent;
     }
     void VerdictStartedHandler()
@@ -108,8 +108,7 @@ public class DragManager : Singleton<DragManager>
     {
         if (!isFreezed && draggedBlock)
         {
-            Vector2 pointerBlockVector = pointerOffset + worldPos - (Vector2)draggedBlock.transform.position;
-            draggedBlock.transform.position = worldPos;
+            draggedBlock.transform.position = worldPos + pointerOffset;
         }
     }
 

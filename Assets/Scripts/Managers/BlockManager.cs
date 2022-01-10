@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class BlockManager : Singleton<BlockManager>
 {
-    public System.Action<GameObject> blockSpawnedEvent;
 
+    public System.Action<GameObject> blockSpawnedEvent;
     public List<GameObject> BlockGOs { get; private set; }
+
+    [SerializeField] private float spawnTapMaxDuration = 0.1f; 
     private Dictionary<GameObject, BlockSO> blockTypes;
-    bool isFreezed;
+    private bool isFreezed;
     public void Init()
     {
         GenerateBlockPool();
@@ -17,7 +19,7 @@ public class BlockManager : Singleton<BlockManager>
     }
     private void OnEnable()
     {
-        InputManager.Instance.pointerReleasedAfterHoldEvent += ShortTouchFinishedHandler;
+        InputManager.Instance.pointerReleased += HandlerPointerReleasedEvent;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStardedEvent;
     }
@@ -42,13 +44,17 @@ public class BlockManager : Singleton<BlockManager>
     {
         SetFreezeBlocks(true);
     }
-    void ShortTouchFinishedHandler(Vector2 worldPos)
+    void HandlerPointerReleasedEvent(Vector2 initialWorldosition, Vector2 worldPos)
     {
-        var blockMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
-        var hit = Physics2D.OverlapPoint(worldPos, blockMask);
-        if (!isFreezed && hit == null)
+        var drag = initialWorldosition - worldPos;
+        if (drag.magnitude < spawnTapMaxDuration)
         {
-            Spawn(worldPos);
+            var blockMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
+            var hit = Physics2D.OverlapPoint(worldPos, blockMask);
+            if (!isFreezed && hit == null)
+            {
+                Spawn(worldPos);
+            }
         }
     }
     void SetFreezeBlocks(bool value)
@@ -73,6 +79,7 @@ public class BlockManager : Singleton<BlockManager>
     }
     void Spawn(Vector2 position)
     {
+        Debug.Log("spawned");
         foreach (var go in BlockGOs)
         {
             if (!go.activeSelf)

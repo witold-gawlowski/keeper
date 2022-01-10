@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Corridor
   m_EditorClassIdentifier: 
   prefab: {fileID: 178121234526357213, guid: 82acf16e8acd84e418c84c6c19ac8bc6, type: 3}
-  initialCountInInventory: 0
+  initialCountInInventory: 1
   regularity: 0
+  minRewardItemMultiplicity: 1
+  maxRewadItemMultiplicity: 3

@@ -9,16 +9,22 @@ public class CoherencyManager: Singleton<CoherencyManager>
     Dictionary<Collider2D, List<Collider2D>> overlaps;
     HashSet<Collider2D> visited;
     List<Collider2D> highlightedBlocks;
+
     public void CalculateCoherency()
     {
+        if(highlightedBlocks == null || highlightedBlocks.Count == 0)
+        {
+            var lastBlockTouched = MainSceneManager.Instance.LastBlockTouched;
+            Collider2D collider = lastBlockTouched.GetComponent<Collider2D>();
+            highlightedBlocks = new List<Collider2D>() { collider };
+        }
         CalculateOverlaps();
         Traverse();
     }
     private void Traverse()
     {
         visited = new HashSet<Collider2D>();
-        var startGO = BlockManager.Instance.BlockGOs[0];
-        var startCollider = startGO.GetComponent<Collider2D>();
+        Collider2D startCollider = highlightedBlocks[0];
         Step(startCollider);
     }
     private void Step(Collider2D col)
@@ -48,6 +54,7 @@ public class CoherencyManager: Singleton<CoherencyManager>
             }
         }
     }
+
     private void LogOverlaps()
     {
         foreach (var e in overlaps)

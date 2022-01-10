@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class DragManager : Singleton<DragManager>
 {
-    public System.Action dragFinishedEvent;
+    public System.Action<GameObject> dragFinishedEvent;
     public System.Action dragStartedEvent;
+    public System.Action<GameObject> turnFinishedEvent;
 
     [SerializeField] float dragForce = 15;
     [SerializeField] private float maxForceDistance = 1;
@@ -16,9 +17,9 @@ public class DragManager : Singleton<DragManager>
     GameObject draggedBlock;
     Quaternion initialBlockRotation;
     Vector2 pointerOffset;
-    GameObject lastBlockTouched;
     Vector2 turnStartPosition;
     int blockLayerMask;
+    GameObject lastBlockTouched;
 
     private void Awake()
     {
@@ -28,18 +29,18 @@ public class DragManager : Singleton<DragManager>
     }
     private void OnEnable()
     {
-        BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawedEvent;
         MainSceneManager.Instance.verdictStartedEvent += VerdictStartedHandler;
-        InputManager.Instance.pointerPressedEvent += HandlePointerDown;
-        InputManager.Instance.pointerReleased += HandleFinishDrag;
-        InputManager.Instance.pointerDownEvent += HandlePointerPressedEvent;
+        InputManager.Instance.pointerPressedEvent += HandlePointerPressed;
+        InputManager.Instance.pointerReleased += HandlePointerReleased;
+        InputManager.Instance.pointerDownEvent += HandlePointerDown;
     }
     void VerdictStartedHandler()
     {
         isFreezed = true;
     }
-    void HandlePointerDown(Vector2 worldPos)
+    void HandlePointerPressed(Vector2 worldPos)
     {
+        lastBlockTouched = MainSceneManager.Instance.LastBlockTouched;
         Collider2D hit = Physics2D.OverlapPoint(worldPos, blockLayerMask);
         if (hit)
         {
@@ -50,7 +51,7 @@ public class DragManager : Singleton<DragManager>
             StartBlockTurn(worldPos);
         }
     }
-    void HandlePointerPressedEvent(Vector2 worldPos)
+    void HandlePointerDown(Vector2 worldPos)
     {
         if (draggedBlock)
         {
@@ -64,7 +65,7 @@ public class DragManager : Singleton<DragManager>
             }
         }
     }
-    void HandleFinishDrag(Vector2 initialDragPosition, Vector2 finalDragPosition)
+    void HandlePointerReleased(Vector2 initialDragPosition, Vector2 finalDragPosition)
     {
         if (draggedBlock)
         {
@@ -75,13 +76,9 @@ public class DragManager : Singleton<DragManager>
             EndBlockTurn();
         }
     }
-
-    void HandleBlockSpawedEvent(GameObject block)
-    {
-        lastBlockTouched = block;
-    }
     void StartBlockTurn(Vector2 worldPos)
     {
+        lastBlockTouched = MainSceneManager.Instance.LastBlockTouched;
         turnStarted = true;
         turnStartPosition = worldPos;
         initialBlockRotation = lastBlockTouched.transform.rotation;
@@ -94,6 +91,7 @@ public class DragManager : Singleton<DragManager>
     void EndBlockTurn()
     {
         turnStarted = false;
+        turnFinishedEvent(lastBlockTouched);
     }
     void StartBlockDrag(Vector2 worldPos, GameObject block)
     {
@@ -116,12 +114,11 @@ public class DragManager : Singleton<DragManager>
     {
         if (!isFreezed)
         {
-            lastBlockTouched = draggedBlock;
-            draggedBlock = null;
             if (dragFinishedEvent != null)
             {
-                dragFinishedEvent();
+                dragFinishedEvent(draggedBlock);
             }
+            draggedBlock = null;
         }
     }
 

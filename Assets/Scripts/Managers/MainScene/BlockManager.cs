@@ -79,7 +79,6 @@ public class BlockManager : Singleton<BlockManager>
     }
     void Spawn(Vector2 position)
     {
-        Debug.Log("spawned");
         foreach (var go in BlockGOs)
         {
             if (!go.activeSelf)

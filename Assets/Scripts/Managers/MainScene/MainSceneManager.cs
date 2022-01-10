@@ -9,7 +9,8 @@ public class MainSceneManager : Singleton<MainSceneManager>
     public System.Action levelCompletedEvent;
     public System.Action levelFailedEvent;
     public GameObject LevelObject { get; private set; }
-    MapData mapData;
+    public GameObject LastBlockTouched { get; private set; }
+    private MapData mapData; 
     private void Awake()
     {
         mapData = GameStateManager.Instance.SelectedMapData;
@@ -17,21 +18,28 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     private void OnEnable()
     {
+        BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawedEvent;
         MainSceneUIManager.Instance.verdictPressedEvent += HandleVerdictPressedEvent;
         MainSceneUIManager.Instance.cheatPressedEvent += HandleCheatPressed; 
         FillManager.Instance.finishedCalulatingAreaFractionEvent += HandleFinishedAreaCalculation;
         VerdictManager.Instance.resultEvent += HandleVerdictFinished;
+        DragManager.Instance.dragFinishedEvent += HandleDragFinished;
     }
     void HandleFinishedAreaCalculation(float fraction)
     {
         float targetCompletionFraction = mapData.map.targetCompletionFraction;
         if (fraction >= targetCompletionFraction)
         {
-            if (CoherencyCalculator.IsCoherent())
+            CoherencyManager.Instance.CalculateCoherency();
+            if (CoherencyManager.Instance.IsCoherent)
             {
                 verdictConditionsMetEvent();
             }
         }
+    }
+    void HandleBlockSpawedEvent(GameObject block)
+    {
+        LastBlockTouched = block;
     }
     void HandleVerdictFinished(int hits)
     {
@@ -50,6 +58,10 @@ public class MainSceneManager : Singleton<MainSceneManager>
     void HandleCheatPressed()
     {
         levelCompletedEvent?.Invoke();
+    }
+    void HandleDragFinished(GameObject block)
+    {
+        LastBlockTouched = block;
     }
     void OnDisable()
     {

@@ -2,28 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class CoherencyCalculator
+public class CoherencyManager: Singleton<CoherencyManager>
 {
-    static Dictionary<Collider2D, List<Collider2D>> overlaps;
-    static HashSet<Collider2D> visited;
-    public static bool IsCoherent()
+    public bool IsCoherent { get { return visited.Count == overlaps.Count; } }
+
+    Dictionary<Collider2D, List<Collider2D>> overlaps;
+    HashSet<Collider2D> visited;
+    List<Collider2D> highlightedBlocks;
+    public void CalculateCoherency()
     {
         CalculateOverlaps();
         Traverse();
-        if (visited.Count == overlaps.Count)
-        {
-            return true;
-        }
-        return false;
     }
-    private static void Traverse()
+    private void Traverse()
     {
         visited = new HashSet<Collider2D>();
         var startGO = BlockManager.Instance.BlockGOs[0];
         var startCollider = startGO.GetComponent<Collider2D>();
         Step(startCollider);
     }
-    private static void Step(Collider2D col)
+    private void Step(Collider2D col)
     {
         visited.Add(col);
         foreach (var o in overlaps[col])
@@ -34,7 +32,7 @@ public static class CoherencyCalculator
             }
         }
     }
-    private static void CalculateOverlaps()
+    private void CalculateOverlaps()
     {
         var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
         var blocks = BlockManager.Instance.BlockGOs;
@@ -50,7 +48,7 @@ public static class CoherencyCalculator
             }
         }
     }
-    private static void LogOverlaps()
+    private void LogOverlaps()
     {
         foreach (var e in overlaps)
         {

@@ -6,7 +6,6 @@ public class DragManager : Singleton<DragManager>
 {
     public System.Action<GameObject> dragFinishedEvent;
     public System.Action dragStartedEvent;
-    public System.Action<GameObject> turnFinishedEvent;
 
     [SerializeField] float dragForce = 15;
     [SerializeField] private float maxForceDistance = 1;
@@ -91,7 +90,6 @@ public class DragManager : Singleton<DragManager>
     void EndBlockTurn()
     {
         turnStarted = false;
-        turnFinishedEvent(lastBlockTouched);
     }
     void StartBlockDrag(Vector2 worldPos, GameObject block)
     {

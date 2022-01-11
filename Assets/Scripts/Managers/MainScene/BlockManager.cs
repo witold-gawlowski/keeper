@@ -8,16 +8,13 @@ public class BlockManager : Singleton<BlockManager>
     public System.Action<GameObject> blockSpawnedEvent;
     public List<BlockScript> Blocks { get; private set; }
 
-    [SerializeField] private List<ColorSO> colors;
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
 
-    private Dictionary<InstanceID, Color> blockColors;
     private Dictionary<BlockScript, BlockSO> blockTypes;
     private bool isFreezed;
     public void Init()
     {
         GenerateBlockPool();
-        InitBlockColors();
         SetFreezeBlocks(false);
     }
     private void OnEnable()
@@ -43,18 +40,6 @@ public class BlockManager : Singleton<BlockManager>
         }
         return result;
     }
-    public void RepaintBlocks()
-    {
-        var components = CoherencyManager.Instance.Components;
-        foreach(var b in Blocks)
-        {
-            if (b.gameObject.activeSelf)
-            {
-                var color = blockColors[components[b.GetInstanceID()]];
-                b.SetColor(color);
-            }
-        }
-    }
     void HandleVerdictStartedEvent()
     {
         SetFreezeBlocks(true);
@@ -75,17 +60,6 @@ public class BlockManager : Singleton<BlockManager>
     void SetFreezeBlocks(bool value)
     {
         isFreezed = value;
-    }
-    void InitBlockColors()
-    {
-        blockColors = new Dictionary<InstanceID, Color>();
-        int i = 0;
-        int n = Blocks.Count;
-        foreach(var b in Blocks)
-        {
-            blockColors.Add(b.GetInstanceID(), colors[i % n].value);
-            i++;
-        }
     }
     void GenerateBlockPool()
     {

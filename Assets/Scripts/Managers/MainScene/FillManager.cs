@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 public class FillManager: Singleton<FillManager>
 {
-    public System.Action<float> finishedCalulatingAreaFractionEvent;
     public System.Action<float> finishedAreaCalculationFrame;
     public float AreaFractionCovered { get; private set; }
 
@@ -62,7 +61,6 @@ public class FillManager: Singleton<FillManager>
         }
         var resultFraction = 1.0f * hits / tries;
         AreaFractionCovered = resultFraction;
-        finishedCalulatingAreaFractionEvent(resultFraction);
     }
     void SetupBounds()
     {

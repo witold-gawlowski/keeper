@@ -10,7 +10,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     public System.Action levelFailedEvent;
     public GameObject LevelObject { get; private set; }
     public GameObject LastBlockTouched { get; private set; }
-    private MapData mapData; 
+    private MapData mapData;
     private void Awake()
     {
         mapData = GameStateManager.Instance.SelectedMapData;
@@ -19,7 +19,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     private void OnEnable()
     {
         MainSceneUIManager.Instance.verdictPressedEvent += HandleVerdictPressedEvent;
-        MainSceneUIManager.Instance.cheatPressedEvent += HandleCheatPressed; 
+        MainSceneUIManager.Instance.cheatPressedEvent += HandleCheatPressed;
         VerdictManager.Instance.resultEvent += HandleVerdictFinished;
         DragManager.Instance.dragFinishedEvent += HandleBlockPositionUpdated;
         BlockManager.Instance.blockSpawnedEvent += HandleBlockPositionUpdated;
@@ -27,7 +27,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     void HandleVerdictFinished(int hits)
     {
         var maxHits = mapData.map.maxNumberOfHits;
-        if(hits <= maxHits)
+        if (hits <= maxHits)
         {
             levelCompletedEvent?.Invoke();
             return;
@@ -50,15 +50,10 @@ public class MainSceneManager : Singleton<MainSceneManager>
     {
         float targetCompletionFraction = mapData.map.targetCompletionFraction;
         LastBlockTouched = block;
-        CoherencyManager.Instance.CalculateCoherency();
-        BlockManager.Instance.RepaintBlocks();
         yield return FillManager.Instance.CalculateCoveredAreaFraction();
         if (FillManager.Instance.AreaFractionCovered >= targetCompletionFraction)
         {
-            if (CoherencyManager.Instance.IsCoherent)
-            {
-                verdictConditionsMetEvent();
-            }
+            verdictConditionsMetEvent();
         }
     }
 }

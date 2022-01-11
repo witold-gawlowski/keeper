@@ -7,18 +7,16 @@ public class FillManager: Singleton<FillManager>
 {
     public System.Action<float> finishedCalulatingAreaFractionEvent;
     public System.Action<float> finishedAreaCalculationFrame;
+    public float AreaFractionCovered { get; private set; }
 
-    [SerializeField] int numberOfEvalutionTries;
+    [SerializeField] private int numberOfEvalutionTries;
     private ObjectPool hitPool;
-
-    Vector2 minBoundCoordinatesCorner;
-    Vector2 maxBoundCoordinatesCorner;
-
-    int levelMask;
-    int blockMask;
-
-    int hits;
-    int tries;
+    private Vector2 minBoundCoordinatesCorner;
+    private Vector2 maxBoundCoordinatesCorner;
+    private int levelMask;
+    private int blockMask;
+    private int hits;
+    private int tries;
     void Start()
     {
         hitPool = GetComponentInChildren<ObjectPool>();
@@ -26,53 +24,11 @@ public class FillManager: Singleton<FillManager>
         levelMask = Helpers.GetSingleLayerMask(Constants.levelLayer);
         blockMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
-    private void OnEnable()
-    {
-        DragManager.Instance.dragFinishedEvent += StartCalculateCoveredAreaFractionCoroutine;
-        BlockManager.Instance.blockSpawnedEvent += StartCalculateCoveredAreaFractionCoroutine;  
-    }
-    private void OnDisable()
-    {
-        if (DragManager.Instance)
-        {
-            DragManager.Instance.dragFinishedEvent -= StartCalculateCoveredAreaFractionCoroutine;
-        }
-        if (BlockManager.Instance)
-        {
-            BlockManager.Instance.blockSpawnedEvent -= StartCalculateCoveredAreaFractionCoroutine;
-        }
-    }
     private void OnDestroy()
     {
         StopAllCoroutines();
     }
-    void SetupBounds()
-    {
-        GameObject levelGO = GameObject.FindWithTag(Constants.levelLayer);
-        if (levelGO)
-        {
-            Collider2D levelCol = levelGO.GetComponent<Collider2D>();
-            if (levelCol)
-            {
-                Bounds levelBounds = levelCol.bounds;
-                minBoundCoordinatesCorner = levelBounds.min;
-                maxBoundCoordinatesCorner = levelBounds.max;
-            }
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("Missing Level Object!");
-        }
-    }
-    void StartCalculateCoveredAreaFractionCoroutine()
-    {
-        StartCoroutine(CalculateCoveredAreaFraction());
-    }
-    void StartCalculateCoveredAreaFractionCoroutine(GameObject _)
-    {
-        StartCalculateCoveredAreaFractionCoroutine();
-    }
-    IEnumerator CalculateCoveredAreaFraction()
+    public IEnumerator CalculateCoveredAreaFraction()
     {
         hits = 0;
         tries = 0;
@@ -91,11 +47,11 @@ public class FillManager: Singleton<FillManager>
                     tries++;
                     var hitBlock = Physics2D.OverlapPoint(randomPoint, blockMask);
                     if (hitBlock != null)
-                    { 
+                    {
                         hits++;
                     }
                 }
-                if(tries >= numberOfEvalutionTries)
+                if (tries >= numberOfEvalutionTries)
                 {
                     done = true;
                     break;
@@ -104,7 +60,27 @@ public class FillManager: Singleton<FillManager>
             finishedAreaCalculationFrame(1.0f * hits / tries);
             yield return new WaitForFixedUpdate();
         }
-        finishedCalulatingAreaFractionEvent(1.0f * hits / tries);
+        var resultFraction = 1.0f * hits / tries;
+        AreaFractionCovered = resultFraction;
+        finishedCalulatingAreaFractionEvent(resultFraction);
+    }
+    void SetupBounds()
+    {
+        GameObject levelGO = GameObject.FindWithTag(Constants.levelLayer);
+        if (levelGO)
+        {
+            Collider2D levelCol = levelGO.GetComponent<Collider2D>();
+            if (levelCol)
+            {
+                Bounds levelBounds = levelCol.bounds;
+                minBoundCoordinatesCorner = levelBounds.min;
+                maxBoundCoordinatesCorner = levelBounds.max;
+            }
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("Missing Level Object!");
+        }
     }
     Vector2 GetRandomPointInBounds()
     {

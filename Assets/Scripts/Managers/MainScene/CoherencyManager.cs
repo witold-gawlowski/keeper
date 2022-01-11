@@ -1,39 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using InstanceID = System.Int32;
 public class CoherencyManager: Singleton<CoherencyManager>
 {
     public bool IsCoherent { get { return visited.Count == overlaps.Count; } }
-    
+    public Dictionary<InstanceID, InstanceID> Components { get; private set; }
+
     private Dictionary<Collider2D, List<Collider2D>> overlaps;
     private HashSet<Collider2D> visited;
-    private Collider2D startCol;
     public void CalculateCoherency()
     {
-        if(startCol == null || !startCol.gameObject.activeSelf)
-        {
-            var lastBlockTouched = MainSceneManager.Instance.LastBlockTouched;
-            startCol = lastBlockTouched.GetComponent<Collider2D>();
-        }
-        CalculateOverlaps();
+        Init();
         Traverse();
     }
     private void Traverse()
     {
         visited = new HashSet<Collider2D>();
-        Step(startCol);
+        foreach(var c in overlaps.Keys)
+        {
+            if (!visited.Contains(c))
+            {
+                Step(c, c.GetInstanceID());
+            }
+        }
     }
-    private void Step(Collider2D col)
+    private void Step(Collider2D col, int componentIndex)
     {
         visited.Add(col);
+        Components.Add(col.GetInstanceID(), componentIndex);
         foreach (var o in overlaps[col])
         {
             if (!visited.Contains(o))
             {
-                Step(o);
+                Step(o, componentIndex);
             }
         }
+    }
+    private void Init()
+    {
+        Components = new Dictionary<InstanceID, InstanceID>();
+        CalculateOverlaps();
     }
     private void CalculateOverlaps()
     {

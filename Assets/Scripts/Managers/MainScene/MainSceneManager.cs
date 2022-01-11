@@ -18,28 +18,11 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     private void OnEnable()
     {
-        BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawedEvent;
         MainSceneUIManager.Instance.verdictPressedEvent += HandleVerdictPressedEvent;
         MainSceneUIManager.Instance.cheatPressedEvent += HandleCheatPressed; 
-        FillManager.Instance.finishedCalulatingAreaFractionEvent += HandleFinishedAreaCalculation;
         VerdictManager.Instance.resultEvent += HandleVerdictFinished;
-        DragManager.Instance.dragFinishedEvent += HandleDragFinished;
-    }
-    void HandleFinishedAreaCalculation(float fraction)
-    {
-        float targetCompletionFraction = mapData.map.targetCompletionFraction;
-        if (fraction >= targetCompletionFraction)
-        {
-            CoherencyManager.Instance.CalculateCoherency();
-            if (CoherencyManager.Instance.IsCoherent)
-            {
-                verdictConditionsMetEvent();
-            }
-        }
-    }
-    void HandleBlockSpawedEvent(GameObject block)
-    {
-        LastBlockTouched = block;
+        DragManager.Instance.dragFinishedEvent += HandleBlockPositionUpdated;
+        BlockManager.Instance.blockSpawnedEvent += HandleBlockPositionUpdated;
     }
     void HandleVerdictFinished(int hits)
     {
@@ -59,24 +42,23 @@ public class MainSceneManager : Singleton<MainSceneManager>
     {
         levelCompletedEvent?.Invoke();
     }
-    void HandleDragFinished(GameObject block)
+    void HandleBlockPositionUpdated(GameObject block)
     {
-        LastBlockTouched = block;
+        StartCoroutine(HandlePositionUpdateCoroutine(block));
     }
-    void OnDisable()
+    IEnumerator HandlePositionUpdateCoroutine(GameObject block)
     {
-        if (MainSceneUIManager.Instance)
+        float targetCompletionFraction = mapData.map.targetCompletionFraction;
+        LastBlockTouched = block;
+        CoherencyManager.Instance.CalculateCoherency();
+        BlockManager.Instance.HighlightBlocks();
+        yield return FillManager.Instance.CalculateCoveredAreaFraction();
+        if (FillManager.Instance.AreaFractionCovered >= targetCompletionFraction)
         {
-            MainSceneUIManager.Instance.verdictPressedEvent -= HandleVerdictPressedEvent;
-            MainSceneUIManager.Instance.cheatPressedEvent -= HandleCheatPressed;
-        }
-        if (FillManager.Instance)
-        {
-            FillManager.Instance.finishedCalulatingAreaFractionEvent -= HandleFinishedAreaCalculation;
-        }
-        if (VerdictManager.Instance)
-        {
-            VerdictManager.Instance.resultEvent -= HandleVerdictFinished;
+            if (CoherencyManager.Instance.IsCoherent)
+            {
+                verdictConditionsMetEvent();
+            }
         }
     }
 }

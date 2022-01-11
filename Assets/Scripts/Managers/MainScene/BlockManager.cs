@@ -43,7 +43,7 @@ public class BlockManager : Singleton<BlockManager>
         }
         return result;
     }
-    public void HighlightBlocks()
+    public void RepaintBlocks()
     {
         var components = CoherencyManager.Instance.Components;
         foreach(var b in Blocks)

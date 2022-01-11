@@ -51,7 +51,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
         float targetCompletionFraction = mapData.map.targetCompletionFraction;
         LastBlockTouched = block;
         CoherencyManager.Instance.CalculateCoherency();
-        BlockManager.Instance.HighlightBlocks();
+        BlockManager.Instance.RepaintBlocks();
         yield return FillManager.Instance.CalculateCoveredAreaFraction();
         if (FillManager.Instance.AreaFractionCovered >= targetCompletionFraction)
         {

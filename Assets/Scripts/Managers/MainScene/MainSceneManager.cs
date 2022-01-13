@@ -18,11 +18,11 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     private void OnEnable()
     {
-        MainSceneUIManager.Instance.verdictPressedEvent += HandleVerdictPressedEvent;
+        MainSceneUIManager.Instance.verdictPressedEvent += HandleVerdictPressed;
         MainSceneUIManager.Instance.cheatPressedEvent += HandleCheatPressed; 
         VerdictManager.Instance.resultEvent += HandleVerdictFinished;
-        DragManager.Instance.dragFinishedEvent += HandleBlockPositionUpdated;
-        BlockManager.Instance.blockSpawnedEvent += HandleBlockPositionUpdated;
+        DragManager.Instance.dragFinishedEvent += HandleDragFinished;
+        BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawned;
     }
     void HandleVerdictFinished(int hits)
     {
@@ -34,7 +34,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
         }
         levelFailedEvent?.Invoke();
     }
-    void HandleVerdictPressedEvent()
+    void HandleVerdictPressed()
     {
         verdictStartedEvent();
     }
@@ -42,16 +42,27 @@ public class MainSceneManager : Singleton<MainSceneManager>
     {
         levelCompletedEvent?.Invoke();
     }
-    void HandleBlockPositionUpdated(GameObject block)
+    void HandleBlockDragContinued()
     {
-        StartCoroutine(HandlePositionUpdateCoroutine(block));
+        CoherencyManager.Instance.CalculateComponents();
+        BlockManager.Instance.RepaintBlocks();
     }
-    IEnumerator HandlePositionUpdateCoroutine(GameObject block)
+    void HandleBlockSpawned(GameObject block)
+    {
+        LastBlockTouched = block;
+        CoherencyManager.Instance.CalculateNeighborhood();
+        CoherencyManager.Instance.CalculateComponents();
+        BlockManager.Instance.RepaintBlocks();
+        StartCoroutine(CheckForLevelCompletion());
+    }
+    void HandleDragFinished(GameObject block)
+    {
+        LastBlockTouched = block;
+        StartCoroutine(CheckForLevelCompletion());
+    }
+    private IEnumerator CheckForLevelCompletion()
     {
         float targetCompletionFraction = mapData.map.targetCompletionFraction;
-        LastBlockTouched = block;
-        CoherencyManager.Instance.CalculateCoherency();
-        BlockManager.Instance.RepaintBlocks();
         yield return FillManager.Instance.CalculateCoveredAreaFraction();
         if (FillManager.Instance.AreaFractionCovered >= targetCompletionFraction)
         {

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class DragManager : Singleton<DragManager>
 {
-    public System.Action<GameObject> dragFinishedEvent;
     public System.Action dragStartedEvent;
+    public System.Action dragContinuedEvent;
+    public System.Action<GameObject> dragFinishedEvent;
     public System.Action<GameObject> turnFinishedEvent;
 
     [SerializeField] float dragForce = 15;
@@ -91,7 +92,7 @@ public class DragManager : Singleton<DragManager>
     void EndBlockTurn()
     {
         turnStarted = false;
-        turnFinishedEvent(lastBlockTouched);
+        turnFinishedEvent?.Invoke(lastBlockTouched);
     }
     void StartBlockDrag(Vector2 worldPos, GameObject block)
     {
@@ -107,6 +108,7 @@ public class DragManager : Singleton<DragManager>
         if (!isFreezed && draggedBlock)
         {
             draggedBlock.transform.position = worldPos + pointerOffset;
+            dragContinuedEvent();
         }
     }
 

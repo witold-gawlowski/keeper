@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using InstanceID = System.Int32;
+using ComponentIndex = BlockScript;
 public class CoherencyManager: Singleton<CoherencyManager>
 {
     public bool IsCoherent { get { return visited.Count == overlaps.Count; } }
-    public Dictionary<InstanceID, InstanceID> Components { get; private set; }
+    public Dictionary<BlockScript, ComponentIndex> Components { get; private set; }
 
-    private Dictionary<Collider2D, List<Collider2D>> overlaps;
-    private HashSet<Collider2D> visited;
+    private Dictionary<BlockScript, List<BlockScript>> overlaps;
+    private HashSet<BlockScript> visited;
 
     public void CalculateComponents()
     {
@@ -18,7 +18,7 @@ public class CoherencyManager: Singleton<CoherencyManager>
     {
         var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
         var blocks = BlockManager.Instance.Blocks;
-        overlaps = new Dictionary<Collider2D, List<Collider2D>>();
+        overlaps = new Dictionary<BlockScript, List<BlockScript>>();
         foreach (var b in blocks)
         {
             if (b.gameObject.activeSelf)
@@ -26,27 +26,33 @@ public class CoherencyManager: Singleton<CoherencyManager>
                 var collidingColliders = new List<Collider2D>();
                 var blockCollider = b.GetComponent<Collider2D>();
                 Physics2D.OverlapCollider(blockCollider, filter, collidingColliders);
-                overlaps.Add(blockCollider, collidingColliders);
+                var collidingScripts = new List<BlockScript>();
+                foreach(var c in collidingColliders)
+                {
+                    var cScript = c.GetComponent<BlockScript>();
+                    collidingScripts.Add(cScript);   
+                }
+                overlaps.Add(b, collidingScripts);
             }
         }
     }
     private void Traverse()
     {
-        Components = new Dictionary<InstanceID, InstanceID>();
-        visited = new HashSet<Collider2D>();
-        foreach(var c in overlaps.Keys)
+        Components = new Dictionary<BlockScript, BlockScript>();
+        visited = new HashSet<BlockScript>();
+        foreach(var bs in overlaps.Keys)
         {
-            if (!visited.Contains(c))
+            if (!visited.Contains(bs))
             {
-                Step(c, c.GetInstanceID());
+                Step(bs, bs);
             }
         }
     }
-    private void Step(Collider2D col, int componentIndex)
+    private void Step(BlockScript bs, ComponentIndex componentIndex)
     {
-        visited.Add(col);
-        Components.Add(col.GetInstanceID(), componentIndex);
-        foreach (var o in overlaps[col])
+        visited.Add(bs);
+        Components.Add(bs, componentIndex);
+        foreach (var o in overlaps[bs])
         {
             if (!visited.Contains(o))
             {
@@ -59,7 +65,7 @@ public class CoherencyManager: Singleton<CoherencyManager>
         foreach (var e in overlaps)
         {
             var s = "";
-            foreach (Collider2D ee in e.Value)
+            foreach (BlockScript ee in e.Value)
             {
                 s += ee.name;
             }

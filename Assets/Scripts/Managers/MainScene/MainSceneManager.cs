@@ -23,6 +23,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
         VerdictManager.Instance.resultEvent += HandleVerdictFinished;
         DragManager.Instance.dragFinishedEvent += HandleDragFinished;
         BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawned;
+        DragManager.Instance.dragContinuedEvent += HandleBlockDragContinued;
     }
     void HandleVerdictFinished(int hits)
     {
@@ -44,6 +45,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     void HandleBlockDragContinued()
     {
+        CoherencyManager.Instance.CalculateNeighborhood();
         CoherencyManager.Instance.CalculateComponents();
         BlockManager.Instance.RepaintBlocks();
     }
@@ -58,6 +60,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     void HandleDragFinished(GameObject block)
     {
         LastBlockTouched = block;
+        CoherencyManager.Instance.CalculateNeighborhood();
         StartCoroutine(CheckForLevelCompletion());
     }
     private IEnumerator CheckForLevelCompletion()

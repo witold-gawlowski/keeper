@@ -62,7 +62,7 @@ public class FillManager: Singleton<FillManager>
         }
         var resultFraction = 1.0f * hits / tries;
         AreaFractionCovered = resultFraction;
-        finishedCalulatingAreaFractionEvent(resultFraction);
+        finishedCalulatingAreaFractionEvent?.Invoke(resultFraction);
     }
     void SetupBounds()
     {

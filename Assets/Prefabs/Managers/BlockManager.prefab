@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c02ab4f3d978084bab3a5c77b3ab9e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightColor: {r: 0.8773585, g: 0.33521718, b: 0.33521718, a: 1}
-  normalColor: {r: 0.7075472, g: 0.25031152, b: 0.25031152, a: 1}
   spawnTapMaxDuration: 0.1
+  colors:
+  - {fileID: 11400000, guid: 67a5326814a3b7043995db01cc986180, type: 2}
+  - {fileID: 11400000, guid: 4c92f3745edac1a478a74c40a87366cb, type: 2}
+  - {fileID: 11400000, guid: 1ab85ec5b93c1b84ca2fd6097bb05103, type: 2}

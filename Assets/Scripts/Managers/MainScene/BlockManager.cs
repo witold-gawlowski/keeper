@@ -2,22 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using InstanceID = System.Int32;
+using ComponentIndex = BlockScript;
 public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
     public List<BlockScript> Blocks { get; private set; }
 
-    [SerializeField] private List<ColorSO> colors;
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
-
-    private Dictionary<InstanceID, Color> blockColors;
+    private Dictionary<ComponentIndex, ColorSO> componentColors;
+    [SerializeField] private List<ColorSO> colors;
     private Dictionary<BlockScript, BlockSO> blockTypes;
     private bool isFreezed;
     public void Init()
     {
         GenerateBlockPool();
-        InitBlockColors();
         SetFreezeBlocks(false);
     }
     private void OnEnable()
@@ -46,12 +44,24 @@ public class BlockManager : Singleton<BlockManager>
     public void RepaintBlocks()
     {
         var components = CoherencyManager.Instance.Components;
+        componentColors = new Dictionary<ComponentIndex, ColorSO>();
+        var freeColors = new Stack<ColorSO>(colors);
         foreach(var b in Blocks)
         {
             if (b.gameObject.activeSelf)
             {
-                var color = blockColors[components[b.GetInstanceID()]];
-                b.SetColor(color);
+                var component = components[b];
+                var color = ScriptableObject.CreateInstance<ColorSO>();
+                if (componentColors.ContainsKey(component))
+                {
+                    color = componentColors[component];
+                }
+                else
+                {
+                    color = freeColors.Pop();
+                    componentColors.Add(component, color);
+                }
+                b.SetColor(color.value);
             }
         }
     }
@@ -75,17 +85,6 @@ public class BlockManager : Singleton<BlockManager>
     void SetFreezeBlocks(bool value)
     {
         isFreezed = value;
-    }
-    void InitBlockColors()
-    {
-        blockColors = new Dictionary<InstanceID, Color>();
-        int i = 0;
-        int n = Blocks.Count;
-        foreach(var b in Blocks)
-        {
-            blockColors.Add(b.GetInstanceID(), colors[i % n].value);
-            i++;
-        }
     }
     void GenerateBlockPool()
     {

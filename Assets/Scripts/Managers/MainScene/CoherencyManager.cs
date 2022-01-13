@@ -9,13 +9,30 @@ public class CoherencyManager: Singleton<CoherencyManager>
 
     private Dictionary<Collider2D, List<Collider2D>> overlaps;
     private HashSet<Collider2D> visited;
-    public void CalculateCoherency()
+
+    public void CalculateComponents()
     {
-        Init();
         Traverse();
+    }
+    public void CalculateNeighborhood()
+    {
+        var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
+        var blocks = BlockManager.Instance.Blocks;
+        overlaps = new Dictionary<Collider2D, List<Collider2D>>();
+        foreach (var b in blocks)
+        {
+            if (b.gameObject.activeSelf)
+            {
+                var collidingColliders = new List<Collider2D>();
+                var blockCollider = b.GetComponent<Collider2D>();
+                Physics2D.OverlapCollider(blockCollider, filter, collidingColliders);
+                overlaps.Add(blockCollider, collidingColliders);
+            }
+        }
     }
     private void Traverse()
     {
+        Components = new Dictionary<InstanceID, InstanceID>();
         visited = new HashSet<Collider2D>();
         foreach(var c in overlaps.Keys)
         {
@@ -36,29 +53,7 @@ public class CoherencyManager: Singleton<CoherencyManager>
                 Step(o, componentIndex);
             }
         }
-    }
-    private void Init()
-    {
-        Components = new Dictionary<InstanceID, InstanceID>();
-        CalculateOverlaps();
-    }
-    private void CalculateOverlaps()
-    {
-        var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
-        var blocks = BlockManager.Instance.Blocks;
-        overlaps = new Dictionary<Collider2D, List<Collider2D>>();
-        foreach (var b in blocks)
-        {
-            if (b.gameObject.activeSelf)
-            {
-                var collidingColliders = new List<Collider2D>();
-                var blockCollider = b.GetComponent<Collider2D>();
-                Physics2D.OverlapCollider(blockCollider, filter, collidingColliders);
-                overlaps.Add(blockCollider, collidingColliders);
-            }
-        }
-    }
-
+    }  
     private void LogOverlaps()
     {
         foreach (var e in overlaps)

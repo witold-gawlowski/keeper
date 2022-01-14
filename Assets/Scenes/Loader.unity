@@ -166,8 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fcb3d8f046dc97448266890e6a58c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenu: {fileID: 102900000, guid: 7f905a251c9a64543b7560d98adfd4f0, type: 3}
-  managerScene: {fileID: 102900000, guid: 1bbd38099c2fa184b8fe901ee7b861dc, type: 3}
 --- !u!1 &1624656948
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179c620157824664285a897e6b6b7812, type: 3}
   m_Name: Map 1
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4813238750824560023, guid: 85d2accc852fb6249bea51dbc4ff80c4, type: 3}
+  prefab: {fileID: 0}
   targetCompletionFraction: 0
   maxNumberOfHits: 0
   mapSize: 0

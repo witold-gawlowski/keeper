@@ -11,29 +11,21 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     public System.Action StartButtonPressedEvent;
     public System.Action BackButtonPressedEvent;
 
-    [SerializeField] GameObject rewardIconPrefab;
     [SerializeField] Button previousMapButton;
     [SerializeField] Button nextMapButton;
     [SerializeField] TMP_Text levelText;
-    [SerializeField] Transform rewardImageParent;
-    [SerializeField] List<InventoryItemUIScript> rewardIcons;
     [SerializeField] GameObject inventoryPanel;
+    [SerializeField] LootItemsUIScript rewardUIScript;
+    [SerializeField] private LootItemsUIScript inventoryItemsUIScript;
     private void OnEnable()
     {
-        MapManager.Instance.selectedMapUpdatedEvent += HandleSelectedMapUpdatedEvent;
-    }
-    private void OnDisable()
-    {
-        if (MapManager.Instance)
-        {
-            MapManager.Instance.selectedMapUpdatedEvent -= HandleSelectedMapUpdatedEvent;
-        }
+        MapManager.Instance.selectedMapChangedEvent += HandleSelectedMapChangedEvent;
     }
   
     public void Init()
     {
         levelText.text = "Level " + GameStateManager.Instance.Level;
-        HandleSelectedMapUpdatedEvent(0);
+        HandleSelectedMapChangedEvent(0);
     }
     public void HandleInventoryTogglePress()
     {
@@ -46,7 +38,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
             inventoryPanel.SetActive(true);
         }
     }
-    void HandleSelectedMapUpdatedEvent(int currentMap)
+    void HandleSelectedMapChangedEvent(int currentMap)
     {
         UpdateSelectionButtonsInteractivity(currentMap);
         UpdateRewards(currentMap);
@@ -87,32 +79,38 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     }
     void UpdateRewards(int currentMapIndex)
     {
-        foreach(Transform icon in rewardImageParent)
-        {
-            if (icon != rewardImageParent)
-            {
-                icon.gameObject.SetActive(false);
-            }
-        }
+        rewardUIScript.Clear();
         var levelData = LevelScheduler.Instance.CurrentLevelData;
         var selectedMapRewards = levelData[currentMapIndex];
         foreach (var r in selectedMapRewards.reward)
         {
-            AddReward(r.Sprite, r.count);
-        }
-    }
-    void AddReward(Sprite s, int count)
-    {
-        foreach(Transform icon in rewardImageParent)
-        {
-            if(icon != rewardImageParent && icon.gameObject.activeSelf == false)
+            if (r is BlockRewardItem)
             {
-                icon.gameObject.SetActive(true);
-                var rewardIconScript = icon.GetComponent<InventoryItemUIScript>();
-                rewardIconScript.SetSprite(s);
-                rewardIconScript.SetCount(count);
-                return;
+                var blockReward = r as BlockRewardItem;
+                rewardUIScript.AddBlockItem(blockReward.Sprite, blockReward.count);
+            }
+            else if(r is DiggerRewardItem)
+            {
+                var diggerReward = r as DiggerRewardItem;
+                rewardUIScript.AddDiggerItem(diggerReward.count);
             }
         }
     }
+    private void UpdateInventory()
+    {
+        inventoryItemsUIScript.Clear();
+        var inventory = InventoryManager.Instance;
+        foreach (var i in inventory.GetBlocks())
+        {
+            if (i.Value > 0)
+            {
+                var blockPrefab = i.Key.PrefabBlockScript;
+                var sprite = blockPrefab.GetSprite();
+                inventoryItemsUIScript.AddBlockItem(sprite, i.Value);
+            }
+        }
+        var diggerCount = inventory.DiggerCount;
+        inventoryItemsUIScript.AddDiggerItem(diggerCount);
+    }
+
 }

@@ -14,8 +14,8 @@ public class LevelGroupSO : ScriptableObject
     public string mName;
     public List<MapSO> maps;
     public List<BlockWithRarity> rewardBlocks;
+    public List<int> diggerDistribution;
     public int mapsPerLevel = 2;
-
     public BlockSO GetBlock()
     {
         int loopCount = 0;

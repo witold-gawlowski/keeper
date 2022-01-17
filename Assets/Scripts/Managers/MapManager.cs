@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapManager : Singleton<MapManager>
 {
-    public System.Action<int> selectedMapUpdatedEvent;
+    public System.Action<int> selectedMapChangedEvent;
     public System.Action<MapData> mapConfirmedEvent;
     public int MaxMaps { get; private set; }
 
@@ -46,12 +46,12 @@ public class MapManager : Singleton<MapManager>
     void HandlePreviousLevelSelectedEvent()
     {
         SetSelectedMap((selectedMapIndex - 1 + MaxMaps) % MaxMaps);
-        selectedMapUpdatedEvent(selectedMapIndex);
+        selectedMapChangedEvent(selectedMapIndex);
     }
     void HandleNextLevelSelectedEvent()
     {
         SetSelectedMap((selectedMapIndex + 1 + MaxMaps) % MaxMaps);
-        selectedMapUpdatedEvent(selectedMapIndex);
+        selectedMapChangedEvent(selectedMapIndex);
     }
     void SetSelectedMap(int index)
     {

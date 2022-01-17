@@ -46,17 +46,23 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
             CurrentLevelData.Add(data);
         }
     }
-    private List<RewardItem> CreateReward(LevelGroupSO levelGroup)
+    private List<IRewardItem> CreateReward(LevelGroupSO levelGroup)
     {
-        var result = new List<RewardItem>();
+        var result = new List<IRewardItem>();
         var count = Random.Range(minRewardItemsCount, maxRewardItemsCount);
         for(int i = 0; i<count; i++)
         {
             var rewardBlockSO = levelGroup.GetBlock();
             var rewardMultiplicity = 
-                Random.Range(rewardBlockSO.minRewardItemMultiplicity, rewardBlockSO.maxRewadItemMultiplicity);
-            var rewardItem = new RewardItem(rewardBlockSO, rewardMultiplicity);
+                Random.Range(rewardBlockSO.minRewardItemMultiplicity, rewardBlockSO.maxRewardItemMultiplicity);
+            var rewardItem = new BlockRewardItem(rewardBlockSO, rewardMultiplicity);
             result.Add(rewardItem);
+        }
+        var diggerCount = Helpers.GetIntFromDistribution(levelGroup.diggerDistribution);
+        if(diggerCount > 0)
+        {
+            var diggerReward = new DiggerRewardItem(diggerCount);
+            result.Add(diggerReward);
         }
         return result;
     }

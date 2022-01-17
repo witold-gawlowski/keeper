@@ -8,7 +8,7 @@ public class BlockSO : ScriptableObject
     public int initialCountInInventory = 0;
     public float regularity;
     public int minRewardItemMultiplicity = 1;
-    public int maxRewadItemMultiplicity = 3;
+    public int maxRewardItemMultiplicity = 3;
     public BlockScript PrefabBlockScript
     {
         get

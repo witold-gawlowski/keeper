@@ -41,4 +41,24 @@ public static class Helpers
         }
         return result;
     }
+    public static int GetIntFromDistribution(List<int> d)
+    {
+        int n = d.Count;
+        int total = 0;
+        foreach(var val in d)
+        {
+            total += val;
+        }
+        int selector = Random.Range(0, total);
+        int result = 0;
+        for(; result < n; result++)
+        {
+            selector -= d[result];
+            if(selector < 0)
+            {
+                break;
+            }
+        }
+        return result;
+    }
 }

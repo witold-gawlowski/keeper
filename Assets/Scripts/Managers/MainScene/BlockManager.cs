@@ -89,7 +89,7 @@ public class BlockManager : Singleton<BlockManager>
     void GenerateBlockPool()
     {
         blockTypes = new Dictionary<BlockScript, BlockSO>();
-        var inventory = InventoryManager.Instance.GetInventory();
+        var inventory = InventoryManager.Instance.GetBlocks();
         Blocks = new List<BlockScript>();
         foreach (var item in inventory)
         {

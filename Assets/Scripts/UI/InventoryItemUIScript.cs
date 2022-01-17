@@ -15,4 +15,8 @@ public class InventoryItemUIScript : MonoBehaviour
     {
         countText.text = "x" + val;
     }
+    public void SetColor(Color val)
+    {
+        image.color = val;
+    }
 }

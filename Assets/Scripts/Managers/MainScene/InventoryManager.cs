@@ -6,12 +6,13 @@ public class InventoryManager : GlobalManager<InventoryManager>
 {
     [SerializeField] private List<BlockSO> blockSOs;
     Dictionary<BlockSO, int> blockCounts;
+    public int DiggerCount { get; private set; }
     protected override void Awake()
     {
         base.Awake();
         ResetCounts();
     }
-    public Dictionary<BlockSO, int> GetInventory()
+    public Dictionary<BlockSO, int> GetBlocks()
     {
         return blockCounts;
     }
@@ -27,6 +28,10 @@ public class InventoryManager : GlobalManager<InventoryManager>
     }
     void HandleLevelFailed() => ResetCounts();
     void HandleSurrender() => ResetCounts();
+    void HandleMapEnded(int diggersUsed)
+    {
+        DiggerCount -= diggersUsed;
+    }
     void RemoveUsedBlocks()
     {
         var usedBlocks = BlockManager.Instance.GetUsedBlocks();
@@ -40,14 +45,23 @@ public class InventoryManager : GlobalManager<InventoryManager>
         var reward = GameStateManager.Instance.SelectedMapData.reward;
         foreach(var rewardItem in reward)
         {
-            if (blockCounts.ContainsKey(rewardItem.block))
+            if (rewardItem is BlockRewardItem)
             {
-                blockCounts[rewardItem.block] += rewardItem.count;
+                var blockRewardItem = rewardItem as BlockRewardItem;
+                if (blockCounts.ContainsKey(blockRewardItem.block))
+                {
+                    blockCounts[blockRewardItem.block] += blockRewardItem.count;
+                }
+                else
+                {
+                    Debug.Log(blockRewardItem.block.name);
+                    Debug.Log(blockCounts.Keys);
+                }
             }
-            else
+            else if(rewardItem is DiggerRewardItem)
             {
-                Debug.Log(rewardItem.block.name);
-                Debug.Log(blockCounts.Keys);
+                var diggerRewardItem = rewardItem as DiggerRewardItem;
+                DiggerCount += diggerRewardItem.count;
             }
         }
     }
@@ -61,5 +75,6 @@ public class InventoryManager : GlobalManager<InventoryManager>
                 blockCounts.Add(blockSO, blockSO.initialCountInInventory);
             }
         }
+        DiggerCount = 0;
     }
 }

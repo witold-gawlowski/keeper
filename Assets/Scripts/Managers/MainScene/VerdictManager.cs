@@ -81,7 +81,6 @@ public class VerdictManager : Singleton<VerdictManager>
                         {
                             hit.HandleMiss();
                         }
-                        Debug.Log("verdict step");
                         yield return new WaitForSeconds(probeInterval);
                     }
                 }

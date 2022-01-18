@@ -29,7 +29,8 @@ public class MainSceneManager : Singleton<MainSceneManager>
     void HandleVerdictFinished(int hits)
     {
         InventoryManager.Instance.RemoveDiggers(hits);
-        if(hits >= 0)
+        var diggerCount = InventoryManager.Instance.DiggerCount;
+        if(diggerCount >= 0)
         {
             levelCompletedEvent?.Invoke();
             return;
@@ -57,11 +58,17 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     void HandleBlockSpawned(GameObject block)
     {
+        StartCoroutine(HandleBlockSpawnedCoroutine(block));
+    }
+    IEnumerator HandleBlockSpawnedCoroutine(GameObject block)
+    {
+        yield return new WaitForFixedUpdate();
         LastBlockTouched = block;
         CoherencyManager.Instance.CalculateNeighborhood();
         CoherencyManager.Instance.CalculateComponents();
         BlockManager.Instance.RepaintBlocks();
         StartCoroutine(CheckForLevelCompletion());
+        yield return null;
     }
     void HandleDragFinished(GameObject block)
     {

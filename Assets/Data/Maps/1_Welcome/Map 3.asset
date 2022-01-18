@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Map 3
   m_EditorClassIdentifier: 
   prefab: {fileID: 6693411115135116257, guid: 8be5796811cd2bb4b8237213415cc073, type: 3}
-  targetCompletionFraction: 0
-  maxNumberOfHits: 0
+  targetCompletionFraction: 0.25
   mapSize: 0

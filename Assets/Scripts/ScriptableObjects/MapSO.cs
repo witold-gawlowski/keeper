@@ -6,6 +6,5 @@ public class MapSO : ScriptableObject
 {
     public GameObject prefab;
     public float targetCompletionFraction;
-    public int maxNumberOfHits;
     public Constants.MapSize mapSize;
 }

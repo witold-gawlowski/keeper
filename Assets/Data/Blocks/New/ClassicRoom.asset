@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ClassicRoom
   m_EditorClassIdentifier: 
   prefab: {fileID: 7431587951381721338, guid: 72e2530516c3d474aa6f699e236e2792, type: 3}
-  initialCountInInventory: 0
+  initialCountInInventory: 5
   regularity: 0
   minRewardItemMultiplicity: 1
   maxRewardItemMultiplicity: 3

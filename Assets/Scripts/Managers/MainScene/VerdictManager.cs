@@ -62,7 +62,7 @@ public class VerdictManager : Singleton<VerdictManager>
                 var unitVector = (pointB - pointA).normalized;
                 for(int k=0; k<numberOfVerdictPoints; k++)
                 {
-                    var basePosition = unitVector * k + pointA;
+                    var basePosition = unitVector * 1.0f / numberOfVerdictPointPerUnit * k + pointA;
                     var randomX = Random.Range(-dispersionRadius, dispersionRadius);
                     var randomY = Random.Range(-dispersionRadius, dispersionRadius);
                     var dispersionVector = new Vector2(randomX, randomY);
@@ -81,6 +81,7 @@ public class VerdictManager : Singleton<VerdictManager>
                         {
                             hit.HandleMiss();
                         }
+                        Debug.Log("verdict step");
                         yield return new WaitForSeconds(probeInterval);
                     }
                 }

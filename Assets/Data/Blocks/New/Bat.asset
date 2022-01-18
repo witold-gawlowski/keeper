@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 179c620157824664285a897e6b6b7812, type: 3}
-  m_Name: SmallMap10
+  m_Script: {fileID: 11500000, guid: baf8e140d433d0f4b9d54eb7702d8b73, type: 3}
+  m_Name: Bat
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  targetCompletionFraction: 0.65
-  maxNumberOfHits: 0
-  mapSize: 0
+  prefab: {fileID: 5564217830543990682, guid: 43a2a501ea00f1941a4f45444a4c6058, type: 3}
+  initialCountInInventory: 0
+  regularity: 0
+  minRewardItemMultiplicity: 1
+  maxRewardItemMultiplicity: 3

@@ -15,7 +15,8 @@ public class BlockSOEditor: Editor
         var y = (int)rect.y;
         var rWidth = (int)rect.width;
         var rHeight = (int)rect.height;
-        var pixData = sprite.texture.GetPixels(x, y, rWidth, rHeight);
+        var texture = sprite.texture;
+        var pixData = texture.GetPixels(x, y, rWidth, rHeight);
         var newTex = new Texture2D((int)rect.width, (int)rect.height);
         newTex.SetPixels(pixData);
         newTex.Apply();

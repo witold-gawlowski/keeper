@@ -26,6 +26,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     {
         levelText.text = "Level " + GameStateManager.Instance.Level;
         HandleSelectedMapChangedEvent(0);
+        UpdateInventory();
     }
     public void HandleInventoryTogglePress()
     {

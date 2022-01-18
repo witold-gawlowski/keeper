@@ -7,7 +7,7 @@ public class GameStateManager : GlobalManager<GameStateManager>
     public MapData SelectedMapData { get; private set; }
     public int Level { get; private set; }
     public bool GameInProgress { get; private set; }
-    public void HandleLevelCompleted()
+    public void OnLevelCompleted()
     {
         Level++;
     }

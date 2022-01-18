@@ -24,16 +24,22 @@ public class MainSceneManager : Singleton<MainSceneManager>
         DragManager.Instance.dragFinishedEvent += HandleDragFinished;
         BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawned;
         DragManager.Instance.dragContinuedEvent += HandleBlockDragContinued;
+        this.levelCompletedEvent += HandleLevelCompleted;
     }
     void HandleVerdictFinished(int hits)
     {
-        var maxHits = mapData.map.maxNumberOfHits;
-        if(hits <= maxHits)
+        InventoryManager.Instance.RemoveDiggers(hits);
+        if(hits >= 0)
         {
             levelCompletedEvent?.Invoke();
             return;
         }
         levelFailedEvent?.Invoke();
+    }
+    void HandleLevelCompleted()
+    {
+        GameStateManager.Instance.OnLevelCompleted();
+        InventoryManager.Instance.OnLevelCompleted();
     }
     void HandleVerdictPressed()
     {

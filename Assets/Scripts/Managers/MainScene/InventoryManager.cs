@@ -16,10 +16,14 @@ public class InventoryManager : GlobalManager<InventoryManager>
     {
         return blockCounts;
     }
-    public void HandleLevelCompleted()
+    public void OnLevelCompleted()
     {
         RemoveUsedBlocks();
         AddReward();
+    }
+    public void RemoveDiggers(int diggersUsed)
+    {
+        DiggerCount -= diggersUsed;
     }
     protected override void SubscribeToMainSceneEvents()
     {
@@ -28,10 +32,6 @@ public class InventoryManager : GlobalManager<InventoryManager>
     }
     void HandleLevelFailed() => ResetCounts();
     void HandleSurrender() => ResetCounts();
-    void HandleMapEnded(int diggersUsed)
-    {
-        DiggerCount -= diggersUsed;
-    }
     void RemoveUsedBlocks()
     {
         var usedBlocks = BlockManager.Instance.GetUsedBlocks();

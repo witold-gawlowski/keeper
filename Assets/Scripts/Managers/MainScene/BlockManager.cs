@@ -9,6 +9,7 @@ public class BlockManager : Singleton<BlockManager>
     public List<BlockScript> Blocks { get; private set; }
 
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
+    [SerializeField] private float spawnTapMaxLength = 0.1f;
     private Dictionary<ComponentIndex, ColorSO> componentColors;
     [SerializeField] private List<ColorSO> colors;
     private Dictionary<BlockScript, BlockSO> blockTypes;
@@ -69,10 +70,10 @@ public class BlockManager : Singleton<BlockManager>
     {
         SetFreezeBlocks(true);
     }
-    void HandlerPointerReleasedEvent(Vector2 initialWorldosition, Vector2 worldPos)
+    void HandlerPointerReleasedEvent(Vector2 initialWorldosition, Vector2 worldPos, float tapTimeSpan)
     {
         var drag = initialWorldosition - worldPos;
-        if (drag.magnitude < spawnTapMaxDuration)
+        if (drag.magnitude < spawnTapMaxLength && tapTimeSpan < spawnTapMaxDuration)
         {
             var blockMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
             var hit = Physics2D.OverlapPoint(worldPos, blockMask);

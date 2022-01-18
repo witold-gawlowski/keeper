@@ -66,11 +66,11 @@ public class DragManager : Singleton<DragManager>
             }
         }
     }
-    void HandlePointerReleased(Vector2 initialDragPosition, Vector2 finalDragPosition)
+    void HandlePointerReleased(Vector2 initialDragPosition, Vector2 finalDragPosition, float timeSpan)
     {
         if (draggedBlock)
         {
-            FinishBlockDrag(initialDragPosition, finalDragPosition);
+            FinishBlockDrag(initialDragPosition, finalDragPosition, timeSpan);
         }
         else if (turnStarted)
         {
@@ -87,7 +87,8 @@ public class DragManager : Singleton<DragManager>
     void ContinueBlockTurn(Vector2 worldPos)
     {
         var turnDrag = (turnStartPosition - worldPos);
-        lastBlockTouched.transform.rotation = initialBlockRotation * Quaternion.Euler(0, 0, -turnDrag.y * turnSpeed);
+        var rotationIndex = (int)( -turnDrag.y * turnSpeed) % 4;
+        lastBlockTouched.transform.rotation = initialBlockRotation * Quaternion.Euler(0, 0, rotationIndex * 90);
     }
     void EndBlockTurn()
     {
@@ -112,7 +113,7 @@ public class DragManager : Singleton<DragManager>
         }
     }
 
-    void FinishBlockDrag(Vector2 _, Vector2 _2)
+    void FinishBlockDrag(Vector2 _, Vector2 _2, float _3)
     {
         if (!isFreezed)
         {

@@ -6,9 +6,10 @@ public class InputManager : Singleton<InputManager>
 {
     public System.Action<Vector2> pointerPressedEvent;
     public System.Action<Vector2> pointerDownEvent;
-    public System.Action<Vector2, Vector2> pointerReleased;
+    public System.Action<Vector2, Vector2, float> pointerReleased;
 
     Vector2 currentDragStartPositionWorld;
+    float currentDragStartTime;
     bool rPressed;
     Vector3 pointerPositionScreen;
     Camera mainCamera;
@@ -26,15 +27,17 @@ public class InputManager : Singleton<InputManager>
             Vector2 pointerPositionWorld = mainCamera.ScreenToWorldPoint(pointerPositionScreen);
             if (PointerPressed())
             {
-                currentDragStartPositionWorld = pointerPositionWorld;
                 if (!EventSystem.current.IsPointerOverGameObject())
                 {
+                    currentDragStartTime = Time.time;
+                    currentDragStartPositionWorld = pointerPositionWorld;
                     pointerPressedEvent(pointerPositionWorld);
                 }
             }
             else if (PointerReleased())
             {
-                pointerReleased(currentDragStartPositionWorld, pointerPositionWorld);
+                var dragTimespan = Time.time - currentDragStartTime;
+                pointerReleased(currentDragStartPositionWorld, pointerPositionWorld, dragTimespan);
             }
             pointerDownEvent(pointerPositionWorld);
         }

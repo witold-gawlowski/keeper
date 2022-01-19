@@ -24,6 +24,8 @@ public class MainSceneManager : Singleton<MainSceneManager>
         DragManager.Instance.dragFinishedEvent += HandleDragFinished;
         BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawned;
         DragManager.Instance.dragContinuedEvent += HandleBlockDragContinued;
+        DragManager.Instance.newRotationPositionEvent += HandleNewRotationPosition;
+        DragManager.Instance.turnFinishedEvent += HandleTurnFinished;
         this.levelCompletedEvent += HandleLevelCompleted;
     }
     void HandleVerdictFinished(int hits)
@@ -50,11 +52,13 @@ public class MainSceneManager : Singleton<MainSceneManager>
     {
         levelCompletedEvent?.Invoke();
     }
+    void HandleNewRotationPosition()
+    {
+        OnColliderPositionUpdate();
+    }
     void HandleBlockDragContinued()
     {
-        CoherencyManager.Instance.CalculateNeighborhood();
-        CoherencyManager.Instance.CalculateComponents();
-        BlockManager.Instance.RepaintBlocks();
+        OnColliderPositionUpdate();
     }
     void HandleBlockSpawned(GameObject block)
     {
@@ -62,25 +66,37 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     IEnumerator HandleBlockSpawnedCoroutine(GameObject block)
     {
-        yield return new WaitForFixedUpdate();
         LastBlockTouched = block;
-        CoherencyManager.Instance.CalculateNeighborhood();
-        CoherencyManager.Instance.CalculateComponents();
-        BlockManager.Instance.RepaintBlocks();
+        yield return new WaitForFixedUpdate();
+        OnColliderPositionUpdate();
         StartCoroutine(CheckForLevelCompletion());
         yield return null;
     }
+
     void HandleDragFinished(GameObject block)
     {
         LastBlockTouched = block;
-        CoherencyManager.Instance.CalculateNeighborhood();
         StartCoroutine(CheckForLevelCompletion());
+    }
+    void HandleTurnFinished(GameObject _)
+    {
+        StartCoroutine(CheckForLevelCompletion());
+    }
+    void OnColliderPositionUpdate()
+    {
+        CoherencyManager.Instance.CalculateNeighborhood();
+        CoherencyManager.Instance.CalculateComponents();
+        var componentCount = CoherencyManager.Instance.ComponentCount;
+        MainSceneUIManager.Instance.SetComponentCount(componentCount);
+        BlockManager.Instance.RepaintBlocks();
     }
     private IEnumerator CheckForLevelCompletion()
     {
         float targetCompletionFraction = mapData.map.targetCompletionFraction;
         yield return FillManager.Instance.CalculateCoveredAreaFraction();
-        if (FillManager.Instance.AreaFractionCovered >= targetCompletionFraction)
+        bool isAreaCovered = FillManager.Instance.AreaFractionCovered >= targetCompletionFraction;
+        bool isSingleComponent = CoherencyManager.Instance.ComponentCount == 1;
+        if (isAreaCovered && isSingleComponent)
         {
             if (CoherencyManager.Instance.IsCoherent)
             {

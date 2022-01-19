@@ -5,6 +5,7 @@ using ComponentIndex = BlockScript;
 public class CoherencyManager: Singleton<CoherencyManager>
 {
     public bool IsCoherent { get { return visited.Count == overlaps.Count; } }
+    public int ComponentCount { get; private set; }
     public Dictionary<BlockScript, ComponentIndex> Components { get; private set; }
 
     private Dictionary<BlockScript, List<BlockScript>> overlaps;
@@ -38,6 +39,7 @@ public class CoherencyManager: Singleton<CoherencyManager>
     }
     private void Traverse()
     {
+        ComponentCount = 0;
         Components = new Dictionary<BlockScript, BlockScript>();
         visited = new HashSet<BlockScript>();
         foreach(var bs in overlaps.Keys)
@@ -45,6 +47,7 @@ public class CoherencyManager: Singleton<CoherencyManager>
             if (!visited.Contains(bs))
             {
                 Step(bs, bs);
+                ComponentCount++;
             }
         }
     }

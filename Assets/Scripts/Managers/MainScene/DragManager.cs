@@ -8,6 +8,7 @@ public class DragManager : Singleton<DragManager>
     public System.Action dragContinuedEvent;
     public System.Action<GameObject> dragFinishedEvent;
     public System.Action<GameObject> turnFinishedEvent;
+    public System.Action newRotationPositionEvent;
 
     [SerializeField] float dragForce = 15;
     [SerializeField] private float maxForceDistance = 1;
@@ -21,6 +22,7 @@ public class DragManager : Singleton<DragManager>
     Vector2 turnStartPosition;
     int blockLayerMask;
     GameObject lastBlockTouched;
+    int lastRotationIndex;
 
     private void Awake()
     {
@@ -89,6 +91,10 @@ public class DragManager : Singleton<DragManager>
         var turnDrag = (turnStartPosition - worldPos);
         var rotationIndex = (int)( -turnDrag.y * turnSpeed) % 4;
         lastBlockTouched.transform.rotation = initialBlockRotation * Quaternion.Euler(0, 0, rotationIndex * 90);
+        if(rotationIndex != lastRotationIndex)
+        {
+            newRotationPositionEvent();
+        }
     }
     void EndBlockTurn()
     {

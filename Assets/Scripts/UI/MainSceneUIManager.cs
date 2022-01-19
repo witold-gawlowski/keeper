@@ -11,12 +11,15 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     public System.Action levelFailedConfirmPressedEvent;
     public System.Action verdictPressedEvent;
 
-    [SerializeField] GameObject levelCompletedBox;
-    [SerializeField] GameObject levelFailedBox;
-    [SerializeField] UnityEngine.UI.Image bin;
-    [SerializeField] UnityEngine.UI.Slider scoreSlider;
-    [SerializeField] UnityEngine.UI.Button verdictButton;
-    [SerializeField] UnityEngine.UI.Button surrenderButton;
+    [SerializeField] private GameObject tickIcon;
+    [SerializeField] private GameObject crossIcon;
+    [SerializeField] private TMP_Text componentCountText;
+    [SerializeField] private GameObject levelCompletedBox;
+    [SerializeField] private GameObject levelFailedBox;
+    [SerializeField] private UnityEngine.UI.Image bin;
+    [SerializeField] private UnityEngine.UI.Slider scoreSlider;
+    [SerializeField] private UnityEngine.UI.Button verdictButton;
+    [SerializeField] private UnityEngine.UI.Button surrenderButton;
 
     private Vector2 binPositionWorld;
 
@@ -24,6 +27,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     void Start()
     {
         SetBinPosition();
+        SetComponentCount(0);
     }
     void Update()
     {
@@ -60,6 +64,20 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     public void OnSurrenderPressed()
     {
         surrenderPressedEvent();
+    }
+    public void SetComponentCount(int val)
+    {
+        componentCountText.text = val + " component" + (val == 1 ? "" : "s");
+        if(val == 1)
+        {
+            tickIcon.SetActive(true);
+            crossIcon.SetActive(false);
+        }
+        else
+        {
+            tickIcon.SetActive(false);
+            crossIcon.SetActive(true);
+        }
     }
     #endregion
     #region Custom private functions

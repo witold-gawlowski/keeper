@@ -44,7 +44,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnTapMaxDuration: 0.1
+  spawnTapMaxLength: 0.1
   colors:
+  - {fileID: 11400000, guid: 1ab85ec5b93c1b84ca2fd6097bb05103, type: 2}
   - {fileID: 11400000, guid: 67a5326814a3b7043995db01cc986180, type: 2}
   - {fileID: 11400000, guid: 4c92f3745edac1a478a74c40a87366cb, type: 2}
-  - {fileID: 11400000, guid: 1ab85ec5b93c1b84ca2fd6097bb05103, type: 2}
+  - {fileID: 11400000, guid: c059398151d1bb841b5839ce937a8062, type: 2}
+  - {fileID: 11400000, guid: 724fc4483193bd64ea6b4ecec5166acd, type: 2}
+  - {fileID: 11400000, guid: 7a4748e87c15d3a4185e0ed5906038e3, type: 2}
+  - {fileID: 11400000, guid: bc64cdac8d643894cb0a3a8d03e3db8e, type: 2}
+  - {fileID: 11400000, guid: 8e185284f8d436a409e298e0a47a813c, type: 2}
+  - {fileID: 11400000, guid: fc32ab229e5e76d46948a54ec0d6ff3e, type: 2}

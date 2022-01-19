@@ -6,18 +6,20 @@ using ComponentIndex = BlockScript;
 public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
-    public List<BlockScript> Blocks { get; private set; }
+    public List<BlockScript> BlockScripts { get; private set; }
 
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
     [SerializeField] private float spawnTapMaxLength = 0.1f;
-    private Dictionary<ComponentIndex, ColorSO> componentColors;
     [SerializeField] private List<ColorSO> colors;
+    private Dictionary<ComponentIndex, ColorSO> componentColors;
     private Dictionary<BlockScript, BlockSO> blockTypes;
+    private Dictionary<BlockScript, ColorSO> blockColorMap;
     private bool isFreezed;
     public void Init()
     {
         GenerateBlockPool();
         SetFreezeBlocks(false);
+        GenerateBlockColorMap();
     }
     private void OnEnable()
     {
@@ -28,7 +30,7 @@ public class BlockManager : Singleton<BlockManager>
     public Dictionary<BlockSO, int> GetUsedBlocks()
     {
         var result = new Dictionary<BlockSO, int>();
-        foreach(var bs in Blocks)
+        foreach(var bs in BlockScripts)
         {
             if (bs.gameObject.activeSelf)
             {
@@ -45,23 +47,12 @@ public class BlockManager : Singleton<BlockManager>
     public void RepaintBlocks()
     {
         var components = CoherencyManager.Instance.Components;
-        componentColors = new Dictionary<ComponentIndex, ColorSO>();
-        var freeColors = new Stack<ColorSO>(colors);
-        foreach(var b in Blocks)
+        foreach(var b in BlockScripts)
         {
             if (b.gameObject.activeSelf)
             {
                 var component = components[b];
-                var color = ScriptableObject.CreateInstance<ColorSO>();
-                if (componentColors.ContainsKey(component))
-                {
-                    color = componentColors[component];
-                }
-                else
-                {
-                    color = freeColors.Pop();
-                    componentColors.Add(component, color);
-                }
+                var color = blockColorMap[component];
                 b.SetColor(color.value);
             }
         }
@@ -91,7 +82,7 @@ public class BlockManager : Singleton<BlockManager>
     {
         blockTypes = new Dictionary<BlockScript, BlockSO>();
         var inventory = InventoryManager.Instance.GetBlocks();
-        Blocks = new List<BlockScript>();
+        BlockScripts = new List<BlockScript>();
         foreach (var item in inventory)
         {
             for (int i = 0; i < item.Value; i++)
@@ -100,13 +91,13 @@ public class BlockManager : Singleton<BlockManager>
                 var script = block.GetComponent<BlockScript>();
                 blockTypes.Add(script, item.Key);
                 block.SetActive(false);
-                Blocks.Add(script);
+                BlockScripts.Add(script);
             }
         }
     }
     void Spawn(Vector2 position)
     {
-        foreach (var bs in Blocks)
+        foreach (var bs in BlockScripts)
         {
             var go = bs.gameObject;
             if (!go.activeSelf)
@@ -128,7 +119,22 @@ public class BlockManager : Singleton<BlockManager>
     }
     void SetBlockAsLast(BlockScript block)
     {
-        Blocks.Remove(block);
-        Blocks.Add(block);
+        BlockScripts.Remove(block);
+        BlockScripts.Add(block);
+    }
+    void GenerateBlockColorMap()
+    {
+        blockColorMap = new Dictionary<ComponentIndex, ColorSO>();
+        IEnumerator<ColorSO> currentColor = colors.GetEnumerator();
+        foreach (var bs in BlockScripts)
+        {
+            var hasElem = currentColor.MoveNext();
+            if (!hasElem)
+            {
+                currentColor.Reset();
+                currentColor.MoveNext();
+            }
+            blockColorMap.Add(bs, currentColor.Current);
+        }
     }
 }

@@ -18,7 +18,7 @@ public class CoherencyManager: Singleton<CoherencyManager>
     public void CalculateNeighborhood()
     {
         var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
-        var blocks = BlockManager.Instance.Blocks;
+        var blocks = BlockManager.Instance.BlockScripts;
         overlaps = new Dictionary<BlockScript, List<BlockScript>>();
         foreach (var b in blocks)
         {

@@ -14,6 +14,7 @@ public class InputManager : Singleton<InputManager>
     Vector3 pointerPositionScreen;
     Camera mainCamera;
     Touch touch;
+
     private void Start()
     {
         rPressed = false;

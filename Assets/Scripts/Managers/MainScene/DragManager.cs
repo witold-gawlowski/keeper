@@ -94,6 +94,7 @@ public class DragManager : Singleton<DragManager>
         if(rotationIndex != lastRotationIndex)
         {
             newRotationPositionEvent();
+            lastRotationIndex = rotationIndex;
         }
     }
     void EndBlockTurn()

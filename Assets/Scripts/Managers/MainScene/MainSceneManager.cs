@@ -67,10 +67,9 @@ public class MainSceneManager : Singleton<MainSceneManager>
     IEnumerator HandleBlockSpawnedCoroutine(GameObject block)
     {
         LastBlockTouched = block;
-        yield return new WaitForFixedUpdate();
+        yield return null;
         OnColliderPositionUpdate();
         StartCoroutine(CheckForLevelCompletion());
-        yield return null;
     }
 
     void HandleDragFinished(GameObject block)
@@ -84,6 +83,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     void OnColliderPositionUpdate()
     {
+        Physics2D.SyncTransforms();
         CoherencyManager.Instance.CalculateNeighborhood();
         CoherencyManager.Instance.CalculateComponents();
         var componentCount = CoherencyManager.Instance.ComponentCount;

@@ -15,13 +15,14 @@ MonoBehaviour:
   length: 5
   mName: Welcome
   maps:
-  - {fileID: 11400000, guid: 485ba27c7720a2244b296450f2fe2974, type: 2}
+  - {fileID: 11400000, guid: f2ba564072622ab44afbf95c04f09f74, type: 2}
   - {fileID: 11400000, guid: 1a62b265679573043a92446700b827a7, type: 2}
   - {fileID: 11400000, guid: bd2b1c52e5ef2254a869f50d65ebb219, type: 2}
   - {fileID: 11400000, guid: 501284df91770834caea079e099dccee, type: 2}
   - {fileID: 11400000, guid: c38c4c670fe4f7b479605c21625ba9f5, type: 2}
   - {fileID: 11400000, guid: a0562c29ecc1d384d8f521d898d7b688, type: 2}
   - {fileID: 11400000, guid: 2a74c7fd82111e94d80d724fac86a897, type: 2}
+  - {fileID: 11400000, guid: a7d30d4db2edffd4d9fe57142820c888, type: 2}
   rewardBlocks:
   - rarity: 0
     blockSO: {fileID: 11400000, guid: 5b5f814752b61f4468646c80e59c6bbe, type: 2}

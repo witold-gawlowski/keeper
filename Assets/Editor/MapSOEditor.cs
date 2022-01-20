@@ -9,20 +9,24 @@ public class MapSOEditor : Editor
     public override Texture2D RenderStaticPreview(string assetPath, UnityEngine.Object[] subAssets, int width, int height)
     {
         MapSO map = target as MapSO;
-        var sprite = map.prefab.GetComponent<SpriteRenderer>().sprite;
-        var rect = sprite.rect;
-        var x = (int)rect.x;
-        var y = (int)rect.y;
-        var rWidth = (int)rect.width;
-        var rHeight = (int)rect.height;
-        var pixData = sprite.texture.GetPixels(x, y, rWidth, rHeight);
-        var newTex = new Texture2D((int)rect.width, (int)rect.height);
-        var scaleFactor = Mathf.Min(width / rWidth, height / rHeight);
-        newTex.SetPixels(pixData);
-        newTex.filterMode = FilterMode.Point;
-        newTex.Apply();
-        newTex = ScaleTexture(newTex, rWidth * scaleFactor, rHeight* scaleFactor);
-        return newTex;
+        if (map.prefab != null)
+        {
+            var sprite = map.prefab.GetComponent<SpriteRenderer>().sprite;
+            var rect = sprite.rect;
+            var x = (int)rect.x;
+            var y = (int)rect.y;
+            var rWidth = (int)rect.width;
+            var rHeight = (int)rect.height;
+            var pixData = sprite.texture.GetPixels(x, y, rWidth, rHeight);
+            var newTex = new Texture2D((int)rect.width, (int)rect.height);
+            var scaleFactor = Mathf.Min(width / rWidth, height / rHeight);
+            newTex.SetPixels(pixData);
+            newTex.filterMode = FilterMode.Point;
+            newTex.Apply();
+            newTex = ScaleTexture(newTex, rWidth * scaleFactor, rHeight * scaleFactor);
+            return newTex;
+        }
+        return null;
     }
     private Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
     {

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179c620157824664285a897e6b6b7812, type: 3}
   m_Name: MediumMap4
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 4898223440751860699, guid: dec18fa482c0e5d45bbcfdbea58190bf, type: 3}
   targetCompletionFraction: 0.65
-  maxNumberOfHits: 0
   mapSize: 1

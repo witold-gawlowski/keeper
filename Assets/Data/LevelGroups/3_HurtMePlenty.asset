@@ -37,11 +37,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2074fdc169944c44e9a949ebc091af7e, type: 2}
   rewardBlocks:
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 691d738f11cff7d43a0c4eba5d8c4cd1, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: eeae0f5947e18f746bf2830497fa7f14, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 449be8b60a22a9445abe6d146c0e6762, type: 2}
   - rarity: 0
     blockSO: {fileID: 0}
   - rarity: 0

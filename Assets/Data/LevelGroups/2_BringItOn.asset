@@ -37,20 +37,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: adacb6e8d513ded4a98749c010b1efb4, type: 2}
   rewardBlocks:
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: b0241ba432eb65a41ae27582eead3039, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 98cdd9ffa75f60148b9d875797913109, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 9c95440f0f9cb7041961e8d074d4a632, type: 2}
   - rarity: 0
     blockSO: {fileID: 0}
   - rarity: 0
     blockSO: {fileID: 0}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 8d5ee41267281c14dab89e0cf2353de6, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 87f6a349172522245b178a60ab57ee3f, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
-  - rarity: 0
-    blockSO: {fileID: 0}
-  - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 1971a2023b714c5449b100a6581bb23f, type: 2}
   diggerDistribution: 000000000000000001000000
   mapsPerLevel: 2

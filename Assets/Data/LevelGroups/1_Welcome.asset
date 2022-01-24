@@ -37,18 +37,44 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2a74c7fd82111e94d80d724fac86a897, type: 2}
   rewardBlocks:
   - rarity: 0
-    blockSO: {fileID: 11400000, guid: 1f9c0288115f923449fcb30a5e31cd92, type: 2}
+    blockSO: {fileID: 11400000, guid: e55598af3191a8143b0715c47714a3a0, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 1fb19af6b6ec0bd4cb666fc6ede9778b, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 8daf432c78e61cf439a14d14a8ec4ac8, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: a96fcc20e2b4291449ae46846d64282d, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 87f6a349172522245b178a60ab57ee3f, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: a151ec0fe300b4b4ca809eb864c2504b, type: 2}
   - rarity: 0
-    blockSO: {fileID: 0}
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
+  - rarity: 0
+    blockSO: {fileID: 11400000, guid: 2cd437acbb91d6042b2f500b146c17c5, type: 2}
   diggerDistribution: 000000000000000001000000
   mapsPerLevel: 2

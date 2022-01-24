@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf8e140d433d0f4b9d54eb7702d8b73, type: 3}
   m_Name: StraightLong
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 1296690757006495376, guid: 96fa578acf5fbda4596e8fac7c8cab13, type: 3}
   initialCountInInventory: 0
   regularity: 0
   minRewardItemMultiplicity: 1

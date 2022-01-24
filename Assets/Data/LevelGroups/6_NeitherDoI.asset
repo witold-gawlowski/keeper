@@ -14,4 +14,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 5
   mName: Neither Do I
-  maps: []
+  maps:
+  - {fileID: 11400000, guid: f549429b5bf51264aac7462f9526ebf3, type: 2}
+  - {fileID: 11400000, guid: e4d4137341c72ec42ab59072633627c3, type: 2}
+  - {fileID: 11400000, guid: 9c692d887b77a47469dc55cdf5904715, type: 2}
+  - {fileID: 11400000, guid: fa2bc0f279dfd3a41beaed11f11e08be, type: 2}
+  - {fileID: 11400000, guid: db846ff903f008241bfbe15f156f5eea, type: 2}
+  - {fileID: 11400000, guid: 1f15658a90edd9b45b5b057ddab33bb8, type: 2}
+  - {fileID: 11400000, guid: b32b188f4b37421419e23bb5b2cd6c99, type: 2}
+  - {fileID: 11400000, guid: 882e3838c8fb22c45ac8948646d99d04, type: 2}
+  - {fileID: 11400000, guid: b50ecd64c35706b43ad002e996fc2491, type: 2}
+  - {fileID: 11400000, guid: da9f4422228c8824aa10a378d13015cc, type: 2}
+  - {fileID: 11400000, guid: 2d14347ac80eb0c4c9e68b58cbaf39d4, type: 2}
+  - {fileID: 11400000, guid: 527b25ee98bbc4c47b5c4e8a7a85b6ac, type: 2}
+  - {fileID: 11400000, guid: b8e3c28f32e8cc843913b67e9c94c952, type: 2}
+  - {fileID: 11400000, guid: c356777d55d24864e96767453b2d558d, type: 2}
+  - {fileID: 11400000, guid: 81010cc7bf889504bbacbf381010f531, type: 2}
+  - {fileID: 11400000, guid: d7dc76080cec6464a887e3c9e8271ac1, type: 2}
+  - {fileID: 11400000, guid: 73b198d88fc27194b80371308abb7d6f, type: 2}
+  - {fileID: 11400000, guid: 2895b2da6fe61474991a62b97b5746fa, type: 2}
+  - {fileID: 11400000, guid: aec50382b2ea29e4dbbcf76f34c09fc5, type: 2}
+  - {fileID: 11400000, guid: 1c22d959e5209604c9950ff5e6e4d2cd, type: 2}
+  rewardBlocks:
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  diggerDistribution: 000000000000000001000000
+  mapsPerLevel: 2

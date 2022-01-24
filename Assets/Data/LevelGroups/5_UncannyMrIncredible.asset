@@ -14,4 +14,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 5
   mName: Uncanny Mr Incredible
-  maps: []
+  maps:
+  - {fileID: 11400000, guid: 5ac3d46abaa6d6e44b84009de688d6eb, type: 2}
+  - {fileID: 11400000, guid: e5ec5c0d80850ae4698f0b001986537a, type: 2}
+  - {fileID: 11400000, guid: 0a31a5a56d0d4334a8e581082dade644, type: 2}
+  - {fileID: 11400000, guid: 11bba9a0ea56ce84ca8b4c98e3396484, type: 2}
+  - {fileID: 11400000, guid: 9ba83f83ba1b0454aab536230df0e9ea, type: 2}
+  - {fileID: 11400000, guid: cb5ede00c54872b43889c131fa733fa8, type: 2}
+  - {fileID: 11400000, guid: 3be719ce60cb2cb448b4da892ba6232a, type: 2}
+  - {fileID: 11400000, guid: 4025a7d2b0f64d94c9937ae7687fd1cd, type: 2}
+  - {fileID: 11400000, guid: d0087a89d3200944f8d86cb9118f42e8, type: 2}
+  - {fileID: 11400000, guid: eff48bec5db96b043989fd78d4a26da2, type: 2}
+  - {fileID: 11400000, guid: 02e13004f2a02544ab815732e49f0461, type: 2}
+  - {fileID: 11400000, guid: 9574d4b94dc5a834aaeb2334bcb61613, type: 2}
+  - {fileID: 11400000, guid: 3911e5793ef3e0b40a30f3b5731583cb, type: 2}
+  - {fileID: 11400000, guid: 16d5b1db22951e24792fe127109b99bc, type: 2}
+  - {fileID: 11400000, guid: e6f702a67302d244eb16f23c03b438ac, type: 2}
+  - {fileID: 11400000, guid: d801b05c1fae81c409ea65be28b0fa51, type: 2}
+  - {fileID: 11400000, guid: 13914189e01a442489703a8abe7f5f9d, type: 2}
+  - {fileID: 11400000, guid: 1964705ca63e9ed45ac0446c494c7246, type: 2}
+  - {fileID: 11400000, guid: 4cdc7d63a2c52154cb84a62e7255c419, type: 2}
+  - {fileID: 11400000, guid: b230c216db3373a4fa7b5902d5772403, type: 2}
+  rewardBlocks:
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  diggerDistribution: 000000000000000001000000
+  mapsPerLevel: 2

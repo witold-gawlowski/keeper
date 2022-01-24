@@ -14,4 +14,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 5
   mName: Requiem
-  maps: []
+  maps:
+  - {fileID: 11400000, guid: f2ba564072622ab44afbf95c04f09f74, type: 2}
+  - {fileID: 11400000, guid: 1c0bc3c3eac70e64287bcbe4f50915fc, type: 2}
+  - {fileID: 11400000, guid: 214ea968ff7957d41afac3912fd7de30, type: 2}
+  - {fileID: 11400000, guid: dce426b38a2b98f4c890a522ee355240, type: 2}
+  - {fileID: 11400000, guid: 01e0a5f43e79e384fb0d41e9c764bebc, type: 2}
+  - {fileID: 11400000, guid: 9de39b4804187e140a8c986f7273240c, type: 2}
+  - {fileID: 11400000, guid: 60933f777541e2b478b664024cfc738d, type: 2}
+  - {fileID: 11400000, guid: 7d2501bb2103e964f85b74eb41b3ae2b, type: 2}
+  - {fileID: 11400000, guid: 9a60935dc3c1b5b4b890f92f889b2e46, type: 2}
+  - {fileID: 11400000, guid: 4fb734de89a8fad4d9f9f486efa444f7, type: 2}
+  - {fileID: 11400000, guid: d962ec0e2c41b4d4fb975f429b6a58e9, type: 2}
+  - {fileID: 11400000, guid: 813804febd38c054ab41e0c6c581f99d, type: 2}
+  - {fileID: 11400000, guid: d939376301e41664fb08d676318dbdc1, type: 2}
+  - {fileID: 11400000, guid: 8f316a45db577f04eaba626c84c23012, type: 2}
+  - {fileID: 11400000, guid: d73ba7858bdd4494fafb06ca7932ace6, type: 2}
+  - {fileID: 11400000, guid: f3d652715b10e594d95513763792b002, type: 2}
+  - {fileID: 11400000, guid: 26d2f6067e1a29541ba5772a66d09057, type: 2}
+  - {fileID: 11400000, guid: 9c81f0ce681e9f744971fc27cfb9e6ff, type: 2}
+  - {fileID: 11400000, guid: b41dfd9972dcce642b66259e5c8999a1, type: 2}
+  - {fileID: 11400000, guid: 96bf03c260d198f429ff0ddf3b24294e, type: 2}
+  rewardBlocks:
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  diggerDistribution: 000000000000000001000000
+  mapsPerLevel: 2

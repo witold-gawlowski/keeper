@@ -14,4 +14,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 5
   mName: Bring It On
-  maps: []
+  maps:
+  - {fileID: 11400000, guid: a7d30d4db2edffd4d9fe57142820c888, type: 2}
+  - {fileID: 11400000, guid: f09d9dde28818ff4d8a07a7c660fe297, type: 2}
+  - {fileID: 11400000, guid: a4ee0197d8602bb48997b741c33e0392, type: 2}
+  - {fileID: 11400000, guid: ab681aa676492d040ab83199e101fec0, type: 2}
+  - {fileID: 11400000, guid: 1b3c69cbf97e12f48a134b493d1ad905, type: 2}
+  - {fileID: 11400000, guid: 17068f57c69508c40b3530ebaa25e7e4, type: 2}
+  - {fileID: 11400000, guid: 5fe1a7ab3943bc4449f05840407916f0, type: 2}
+  - {fileID: 11400000, guid: e55f314374fedc549bfa1d5c4d4fe586, type: 2}
+  - {fileID: 11400000, guid: 19ab3d8760c3fdc4e8b0ff473fb17100, type: 2}
+  - {fileID: 11400000, guid: 0a2ea7d011a1e204d9257be16aad93b0, type: 2}
+  - {fileID: 11400000, guid: e25faedbfe5468f44966354a36161d69, type: 2}
+  - {fileID: 11400000, guid: 577dca883341f5449a96271b9bc53244, type: 2}
+  - {fileID: 11400000, guid: dd91e397e5ea3f542a37a6de908a88c9, type: 2}
+  - {fileID: 11400000, guid: 18330f88612f456488da00266a8fbaa9, type: 2}
+  - {fileID: 11400000, guid: 925fddecb7c763841a355c3e8f240937, type: 2}
+  - {fileID: 11400000, guid: 13ae346cdb21b0940882e46405f67f2b, type: 2}
+  - {fileID: 11400000, guid: 304214966e0d9484089cc4884610ab48, type: 2}
+  - {fileID: 11400000, guid: 2c6ba576dcbffa1479cad5d7a7182a1f, type: 2}
+  - {fileID: 11400000, guid: 4b49c286a0a130547bafc96ea54e18a1, type: 2}
+  - {fileID: 11400000, guid: adacb6e8d513ded4a98749c010b1efb4, type: 2}
+  rewardBlocks:
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  diggerDistribution: 000000000000000001000000
+  mapsPerLevel: 2

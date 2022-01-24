@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf8e140d433d0f4b9d54eb7702d8b73, type: 3}
   m_Name: LongCorner
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 1289543493225924877, guid: fd64b20dcff21994d99bc46a548d92d9, type: 3}
   initialCountInInventory: 0
   regularity: 0
   minRewardItemMultiplicity: 1

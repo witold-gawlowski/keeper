@@ -14,4 +14,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 5
   mName: Hurt Me Plenty
-  maps: []
+  maps:
+  - {fileID: 11400000, guid: 82c9e642d46cfb74fbcb92a9830cc64b, type: 2}
+  - {fileID: 11400000, guid: 7e89bf630bcd981429bfd2f04a1666f0, type: 2}
+  - {fileID: 11400000, guid: 216b40e4eea26cc4ebdc70ab2f211021, type: 2}
+  - {fileID: 11400000, guid: de735ee67f9684842a8ca822f407c54e, type: 2}
+  - {fileID: 11400000, guid: 1f71217b8d446b74cb5d87517c533e27, type: 2}
+  - {fileID: 11400000, guid: f35edd313c9cd90449b15462054d576f, type: 2}
+  - {fileID: 11400000, guid: e8164bb90e3f8364b8eeef0e1317bd96, type: 2}
+  - {fileID: 11400000, guid: d83040654320b9b408bee596a77070bd, type: 2}
+  - {fileID: 11400000, guid: 9425a54a070c0094bb9f67f4db9a4029, type: 2}
+  - {fileID: 11400000, guid: 4c95abcbe143d0a458abc04486261de2, type: 2}
+  - {fileID: 11400000, guid: 0750006797dc75243abc04e7b4c8305f, type: 2}
+  - {fileID: 11400000, guid: a19a463056884c44b93bd11b6e30a428, type: 2}
+  - {fileID: 11400000, guid: 1c766e2417728db4c84d68c70c28371f, type: 2}
+  - {fileID: 11400000, guid: b4c193955d3bc9841995ebae72bee9fb, type: 2}
+  - {fileID: 11400000, guid: 71dbaf69465cf794385c3787043dcc22, type: 2}
+  - {fileID: 11400000, guid: 0fce0d68356bcb84a9ec4f9981cd81fb, type: 2}
+  - {fileID: 11400000, guid: cabba41b11f4e364bb66499eb7c41718, type: 2}
+  - {fileID: 11400000, guid: e042ecd1ed085b84e9de4986132ae0ad, type: 2}
+  - {fileID: 11400000, guid: 3638e9a99c4cfae4f92d6502e379ff7a, type: 2}
+  - {fileID: 11400000, guid: 2074fdc169944c44e9a949ebc091af7e, type: 2}
+  rewardBlocks:
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  diggerDistribution: 000000000000000001000000
+  mapsPerLevel: 2

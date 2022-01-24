@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf8e140d433d0f4b9d54eb7702d8b73, type: 3}
   m_Name: Battery
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 4009279470204399640, guid: 0bca80392574d5a4f946712231ab0932, type: 3}
   initialCountInInventory: 0
   regularity: 0
   minRewardItemMultiplicity: 1

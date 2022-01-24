@@ -14,4 +14,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 5
   mName: Judy Sais Stop
-  maps: []
+  maps:
+  - {fileID: 11400000, guid: 3c3d852b2622a184da3b48d2f1ac97b5, type: 2}
+  - {fileID: 11400000, guid: d465ecefb5aa2fb4d951041f753e103a, type: 2}
+  - {fileID: 11400000, guid: 68e0a17772be98b498abc2d3acb1fa7c, type: 2}
+  - {fileID: 11400000, guid: 1c7678be7456c1d43aee4ca6c1da1b93, type: 2}
+  - {fileID: 11400000, guid: c30cd330a00249640b508799c1f06500, type: 2}
+  - {fileID: 11400000, guid: e2ec92f2afe0ba5448fd20027409a72d, type: 2}
+  - {fileID: 11400000, guid: fccd07a35a4841444bf6628b211250da, type: 2}
+  - {fileID: 11400000, guid: 112d96c41ef825d4f8ef9c1034105400, type: 2}
+  - {fileID: 11400000, guid: dd2c68faae21c1943a31754b337bf7b3, type: 2}
+  - {fileID: 11400000, guid: bdb2ced39f30a084a8d3933def73fc50, type: 2}
+  - {fileID: 11400000, guid: 618ca83727f12dc488800e752b8811c9, type: 2}
+  - {fileID: 11400000, guid: 88937c6178290f844abe137ab85c8e67, type: 2}
+  - {fileID: 11400000, guid: 78c497b5507d8164ebe326d1874035ee, type: 2}
+  - {fileID: 11400000, guid: 99c413b43b804ba41b96d4e34c85cdac, type: 2}
+  - {fileID: 11400000, guid: 7c4cb18d1ac71c94daea3df289a8b9ca, type: 2}
+  - {fileID: 11400000, guid: 283a0c22d85cfd749a48764b1446a11d, type: 2}
+  - {fileID: 11400000, guid: a15fc54cba6e6c94ebc7783413d08354, type: 2}
+  - {fileID: 11400000, guid: 87509791510a23545b5b4a8448a46076, type: 2}
+  - {fileID: 11400000, guid: 43e156467af87e04595765ad5c0f3764, type: 2}
+  - {fileID: 11400000, guid: 30eab244f5a19b742aa41a29ad1612bb, type: 2}
+  rewardBlocks:
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  - rarity: 0
+    blockSO: {fileID: 0}
+  diggerDistribution: 000000000000000001000000
+  mapsPerLevel: 2

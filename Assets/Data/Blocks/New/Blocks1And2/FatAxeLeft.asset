@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf8e140d433d0f4b9d54eb7702d8b73, type: 3}
   m_Name: FatAxeLeft
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 4524384410778565851, guid: 56b0459f4f329384fb796d99036c244a, type: 3}
   initialCountInInventory: 0
   regularity: 0
   minRewardItemMultiplicity: 1

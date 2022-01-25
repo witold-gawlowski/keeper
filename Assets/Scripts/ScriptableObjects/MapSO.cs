@@ -5,6 +5,6 @@ using UnityEngine;
 public class MapSO : ScriptableObject
 {
     public GameObject prefab;
-    public float targetCompletionFraction;
-    public Constants.MapSize mapSize;
+    public float targetCompletionFraction = 0.5f;
+    public float difficulcy = 0.5f;
 }

@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5564217830543990682, guid: 43a2a501ea00f1941a4f45444a4c6058, type: 3}
   initialCountInInventory: 0
-  regularity: 0
-  minRewardItemMultiplicity: 1
-  maxRewardItemMultiplicity: 3
+  encounterProbabilityFactor: 1
+  rewardMultiplicityDistribution: 000000000300000006000000060000000400000002000000

@@ -8,8 +8,6 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
 
     [SerializeField] private List<LevelGroupSO> levelGroups;
 
-    [SerializeField] private int minRewardItemsCount = 1;
-    [SerializeField] private int maxRewardItemsCount = 3;
     private List<MapSO> allMapsSorted;
 
     protected override void SubscribeToMenuSceneEvents()
@@ -36,7 +34,7 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
         var levelGroup = GetLevelGroup();
         var currentLevelPool = levelGroup.maps;
         var currentLevel = GameStateManager.Instance.Level;
-        var mapsPerLevel = levelGroup.mapsPerLevel;
+        var mapsPerLevel = Helpers.GetIntFromDistribution(levelGroup.mapsPerLevelDistribution);
         var maps = Helpers.GetRandomSubset(currentLevelPool, mapsPerLevel);
         for (int i = 0; i < mapsPerLevel; i++)
         {
@@ -49,12 +47,11 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
     private List<IRewardItem> CreateReward(LevelGroupSO levelGroup)
     {
         var result = new List<IRewardItem>();
-        var count = Random.Range(minRewardItemsCount, maxRewardItemsCount);
+        var count = Helpers.GetIntFromDistribution(levelGroup.rewardCountDistribution);
         for(int i = 0; i<count; i++)
         {
             var rewardBlockSO = BlockDictionary.Instance.GetBlockWithRarity();
-            var rewardMultiplicity = 
-                Random.Range(rewardBlockSO.minRewardItemMultiplicity, rewardBlockSO.maxRewardItemMultiplicity);
+            var rewardMultiplicity = Helpers.GetIntFromDistribution(rewardBlockSO.rewardMultiplicityDistribution);
             var rewardItem = new BlockRewardItem(rewardBlockSO, rewardMultiplicity);
             result.Add(rewardItem);
         }

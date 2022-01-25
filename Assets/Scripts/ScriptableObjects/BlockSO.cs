@@ -7,8 +7,7 @@ public class BlockSO : ScriptableObject
     public GameObject prefab;
     public int initialCountInInventory = 0;
     public float encounterProbabilityFactor = 1;
-    public int minRewardItemMultiplicity = 1;
-    public int maxRewardItemMultiplicity = 3;
+    public List<int> rewardMultiplicityDistribution = new List<int>() {0, 3, 6, 6, 4, 2};
     public BlockScript PrefabBlockScript
     {
         get

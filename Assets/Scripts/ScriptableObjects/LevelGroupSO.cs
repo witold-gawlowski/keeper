@@ -7,6 +7,7 @@ public class LevelGroupSO : ScriptableObject
     public int length;
     public string mName;
     public List<MapSO> maps;
-    public int mapsPerLevel = 2;
+    public List<int> mapsPerLevelDistribution = new List<int>(){ 0, 0, 2, 3, 2, 1};
+    public List<int> rewardCountDistribution = new List<int>() { 1, 2, 4, 3, 2, 1 };
     public List<int> diggerDistribution;
 }

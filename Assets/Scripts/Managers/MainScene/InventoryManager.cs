@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InventoryManager : GlobalManager<InventoryManager>
 {
+    public int startingDiggerCount = 15;
+
     Dictionary<BlockSO, int> blockCounts;
     public int DiggerCount { get; private set; }
     protected override void Awake()
@@ -29,8 +31,13 @@ public class InventoryManager : GlobalManager<InventoryManager>
         MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += HandleLevelFailed;
         MainSceneUIManager.Instance.surrenderPressedEvent += HandleSurrender;
     }
+    protected override void SubscribeToMenuSceneEvents()
+    {
+        MainMenuUIManager.Instance.startNewGameEvent += HandleStartNewGame;
+    }
     void HandleLevelFailed() => ResetCounts();
     void HandleSurrender() => ResetCounts();
+    void HandleStartNewGame() => ResetCounts();
     void RemoveUsedBlocks()
     {
         var usedBlocks = BlockManager.Instance.GetUsedBlocks();
@@ -53,8 +60,7 @@ public class InventoryManager : GlobalManager<InventoryManager>
                 }
                 else
                 {
-                    Debug.Log(blockRewardItem.block.name);
-                    Debug.Log(blockCounts.Keys);
+                    blockCounts.Add(blockRewardItem.block, blockRewardItem.count);
                 }
             }
             else if(rewardItem is DiggerRewardItem)
@@ -75,6 +81,6 @@ public class InventoryManager : GlobalManager<InventoryManager>
                 blockCounts.Add(blockSO, blockSO.initialCountInInventory);
             }
         }
-        DiggerCount = 0;
+        DiggerCount = startingDiggerCount;
     }
 }

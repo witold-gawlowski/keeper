@@ -6,7 +6,7 @@ public class BlockSO : ScriptableObject
 {
     public GameObject prefab;
     public int initialCountInInventory = 0;
-    public float regularity;
+    public float encounterProbabilityFactor;
     public int minRewardItemMultiplicity = 1;
     public int maxRewardItemMultiplicity = 3;
     public BlockScript PrefabBlockScript

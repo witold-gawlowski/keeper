@@ -52,7 +52,7 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
         var count = Random.Range(minRewardItemsCount, maxRewardItemsCount);
         for(int i = 0; i<count; i++)
         {
-            var rewardBlockSO = levelGroup.GetBlock();
+            var rewardBlockSO = BlockDictionary.Instance.GetBlockWithRarity();
             var rewardMultiplicity = 
                 Random.Range(rewardBlockSO.minRewardItemMultiplicity, rewardBlockSO.maxRewardItemMultiplicity);
             var rewardItem = new BlockRewardItem(rewardBlockSO, rewardMultiplicity);

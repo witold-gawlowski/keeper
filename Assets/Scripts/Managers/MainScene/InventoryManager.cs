@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InventoryManager : GlobalManager<InventoryManager>
 {
-    [SerializeField] private List<BlockSO> blockSOs;
     Dictionary<BlockSO, int> blockCounts;
     public int DiggerCount { get; private set; }
     protected override void Awake()
@@ -67,8 +66,9 @@ public class InventoryManager : GlobalManager<InventoryManager>
     }
     void ResetCounts()
     {
+        var startingBlocks = BlockDictionary.Instance.GetStartingBlocks();
         blockCounts = new Dictionary<BlockSO, int>();
-        foreach (var blockSO in blockSOs)
+        foreach (var blockSO in startingBlocks)
         {
             if (blockSO != null)
             {

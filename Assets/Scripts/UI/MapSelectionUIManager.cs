@@ -17,6 +17,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     [SerializeField] GameObject inventoryPanel;
     [SerializeField] LootItemsUIScript rewardUIScript;
     [SerializeField] private LootItemsUIScript inventoryItemsUIScript;
+    [SerializeField] private TMP_Text areaToComplete;
     private void OnEnable()
     {
         MapManager.Instance.selectedMapChangedEvent += HandleSelectedMapChangedEvent;
@@ -43,6 +44,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     {
         UpdateSelectionButtonsInteractivity(currentMap);
         UpdateRewards(currentMap);
+        UpdatePercetnageToComplete(currentMap);
     }
     void UpdateSelectionButtonsInteractivity(int currentMap)
     {
@@ -61,6 +63,13 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
             previousMapButton.interactable = true;
             nextMapButton.interactable = true;
         }
+    }
+    void UpdatePercetnageToComplete(int currentMapIndex)
+    {
+        var levelData = LevelScheduler.Instance.CurrentLevelData;
+        var mapData = levelData[currentMapIndex];
+        var fraction = mapData.map.targetCompletionFraction;
+        areaToComplete.text = Mathf.RoundToInt(fraction * 100).ToString() + "%";
     }
     void HandlePreviousLevelButtonPress()
     {

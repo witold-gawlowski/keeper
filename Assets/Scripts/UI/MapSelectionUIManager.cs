@@ -68,7 +68,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     {
         var levelData = LevelScheduler.Instance.CurrentLevelData;
         var mapData = levelData[currentMapIndex];
-        var fraction = mapData.map.targetCompletionFraction;
+        var fraction = mapData.completionFraction;
         areaToComplete.text = Mathf.RoundToInt(fraction * 100).ToString() + "%";
     }
     void HandlePreviousLevelButtonPress()

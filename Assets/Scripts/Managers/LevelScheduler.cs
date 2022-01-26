@@ -16,7 +16,6 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
     }
     protected override void SubscribeToMainSceneEvents()
     {
-        MainSceneUIManager.Instance.surrenderPressedEvent += HandleLevelFinished;
         MainSceneManager.Instance.levelCompletedEvent += HandleLevelFinished;
     }
 
@@ -40,7 +39,9 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
         {
             var mapData = maps[i];
             var rewards = CreateReward(levelGroup);
-            var data = new MapData(mapData, rewards);
+            var completionFraction = 
+                Random.Range(mapData.minTargetCompletionFraction, mapData.maxTargetCompletionFraction);
+            var data = new MapData(mapData, rewards, completionFraction);
             CurrentLevelData.Add(data);
         }
     }

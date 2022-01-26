@@ -4,5 +4,11 @@ public class MapData
 {
     public MapSO map;
     public List<IRewardItem> reward;
-    public MapData(MapSO map, List<IRewardItem> reward) { this.map = map; this.reward = reward; }
+    public float completionFraction;
+    public MapData(MapSO map, List<IRewardItem> reward, float completionFraction)
+    { 
+        this.map = map;
+        this.reward = reward;
+        this.completionFraction = completionFraction;
+    }
 }

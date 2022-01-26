@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1143337698939254040, guid: 469334808295c314da6b265b4c41d6d2, type: 3}
   targetCompletionFraction: 0.75
+  minTargetCompletionFraction: 0.686
+  maxTargetCompletionFraction: 0.856
   difficulcy: 0.5

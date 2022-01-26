@@ -92,7 +92,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     private IEnumerator CheckForLevelCompletion()
     {
-        float targetCompletionFraction = mapData.map.targetCompletionFraction;
+        float targetCompletionFraction = mapData.completionFraction;
         yield return FillManager.Instance.CalculateCoveredAreaFraction();
         bool isAreaCovered = FillManager.Instance.AreaFractionCovered >= targetCompletionFraction;
         bool isSingleComponent = CoherencyManager.Instance.ComponentCount == 1;

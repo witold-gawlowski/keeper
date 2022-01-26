@@ -29,14 +29,12 @@ public class InventoryManager : GlobalManager<InventoryManager>
     protected override void SubscribeToMainSceneEvents()
     {
         MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += HandleLevelFailed;
-        MainSceneUIManager.Instance.surrenderPressedEvent += HandleSurrender;
     }
     protected override void SubscribeToMenuSceneEvents()
     {
         MainMenuUIManager.Instance.startNewGameEvent += HandleStartNewGame;
     }
     void HandleLevelFailed() => ResetCounts();
-    void HandleSurrender() => ResetCounts();
     void HandleStartNewGame() => ResetCounts();
     void RemoveUsedBlocks()
     {

@@ -22,7 +22,6 @@ public class GameStateManager : GlobalManager<GameStateManager>
     protected override void SubscribeToMainSceneEvents()
     {
         MainSceneUIManager.Instance.levelFailedConfirmPressedEvent += HandleGameEnded;
-        MainSceneUIManager.Instance.surrenderPressedEvent += HandleGameEnded;
         MainSceneManager.Instance.levelFailedEvent += HandleGameEnded;
     }
     #region Handlers

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using ComponentIndex = BlockScript;
 public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
@@ -10,16 +9,13 @@ public class BlockManager : Singleton<BlockManager>
 
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
     [SerializeField] private float spawnTapMaxLength = 0.1f;
-    [SerializeField] private List<ColorSO> colors;
-    private Dictionary<ComponentIndex, ColorSO> componentColors;
     private Dictionary<BlockScript, BlockSO> blockTypes;
-    private Dictionary<BlockScript, ColorSO> blockColorMap;
     private bool isFreezed;
-    public void Init()
+    public void Start()
     {
         GenerateBlockPool();
         SetFreezeBlocks(false);
-        GenerateBlockColorMap();
+        BlockColorManager.Instance.GenerateBlockColorMap();
     }
     private void OnEnable()
     {
@@ -30,7 +26,7 @@ public class BlockManager : Singleton<BlockManager>
     public Dictionary<BlockSO, int> GetUsedBlocks()
     {
         var result = new Dictionary<BlockSO, int>();
-        foreach(var bs in BlockScripts)
+        foreach (var bs in BlockScripts)
         {
             if (bs.gameObject.activeSelf)
             {
@@ -44,35 +40,31 @@ public class BlockManager : Singleton<BlockManager>
         }
         return result;
     }
-    public void RepaintBlocks()
-    {
-        var components = CoherencyManager.Instance.Components;
-        foreach(var b in BlockScripts)
-        {
-            if (b.gameObject.activeSelf)
-            {
-                var component = components[b];
-                var color = blockColorMap[component];
-                b.SetColor(color.value);
-            }
-        }
-    }
     void HandleVerdictStartedEvent()
     {
         SetFreezeBlocks(true);
     }
-    void HandlerPointerReleasedEvent(Vector2 initialWorldosition, Vector2 worldPos, float tapTimeSpan)
+    void HandlerPointerReleasedEvent(Vector2 initialWorldPosition, Vector2 worldPos, float tapTimeSpan)
     {
-        var drag = initialWorldosition - worldPos;
+        var spawnConditionsMet = CheckSpawnConditionsOnPointerReleased(initialWorldPosition, worldPos, tapTimeSpan);
+        if (spawnConditionsMet)
+        {
+            Spawn(worldPos);
+        }
+    }
+    bool CheckSpawnConditionsOnPointerReleased(Vector2 initialWorldPosition, Vector2 worldPos, float tapTimeSpan)
+    {
+        var drag = initialWorldPosition - worldPos;
         if (drag.magnitude < spawnTapMaxLength && tapTimeSpan < spawnTapMaxDuration)
         {
             var blockMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
             var hit = Physics2D.OverlapPoint(worldPos, blockMask);
             if (!isFreezed && hit == null)
             {
-                Spawn(worldPos);
+                return true;
             }
         }
+        return false;
     }
     void SetFreezeBlocks(bool value)
     {
@@ -122,19 +114,5 @@ public class BlockManager : Singleton<BlockManager>
         BlockScripts.Remove(block);
         BlockScripts.Add(block);
     }
-    void GenerateBlockColorMap()
-    {
-        blockColorMap = new Dictionary<ComponentIndex, ColorSO>();
-        IEnumerator<ColorSO> currentColor = colors.GetEnumerator();
-        foreach (var bs in BlockScripts)
-        {
-            var hasElem = currentColor.MoveNext();
-            if (!hasElem)
-            {
-                currentColor.Reset();
-                currentColor.MoveNext();
-            }
-            blockColorMap.Add(bs, currentColor.Current);
-        }
-    }
+   
 }

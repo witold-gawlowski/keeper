@@ -88,7 +88,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
         CoherencyManager.Instance.CalculateComponents();
         var componentCount = CoherencyManager.Instance.ComponentCount;
         MainSceneUIManager.Instance.SetComponentCount(componentCount);
-        BlockManager.Instance.RepaintBlocks();
+        BlockColorManager.Instance.RepaintBlocks();
     }
     private IEnumerator CheckForLevelCompletion()
     {

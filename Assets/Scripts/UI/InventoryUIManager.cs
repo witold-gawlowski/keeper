@@ -24,7 +24,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     {
         inventoryItemsUIScript.Clear();
         var inventory = InventoryManager.Instance;
-        foreach (var i in inventory.GetBlocks())
+        foreach (var i in inventory.BlockCounts)
         {
             if (i.Value > 0)
             {

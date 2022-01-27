@@ -1,21 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Assertions;
 public class InventoryManager : GlobalManager<InventoryManager>
 {
     public int startingDiggerCount = 15;
 
-    Dictionary<BlockSO, int> blockCounts;
+    public Dictionary<BlockSO, int> BlockCounts { get; private set; }
     public int DiggerCount { get; private set; }
     protected override void Awake()
     {
         base.Awake();
         ResetCounts();
-    }
-    public Dictionary<BlockSO, int> GetBlocks()
-    {
-        return blockCounts;
     }
     public void OnLevelCompleted()
     {
@@ -41,7 +37,12 @@ public class InventoryManager : GlobalManager<InventoryManager>
         var usedBlocks = BlockManager.Instance.GetUsedBlocks();
         foreach(var usedItem in usedBlocks)
         {
-            blockCounts[usedItem.Key] -= usedItem.Value;
+            BlockCounts[usedItem.Key] -= usedItem.Value;
+            Assert.IsTrue(BlockCounts[usedItem.Key] >= 0);
+            if(BlockCounts[usedItem.Key] == 0)
+            {
+                BlockCounts.Remove(usedItem.Key);
+            }
         }
     }
     void AddReward()
@@ -52,13 +53,13 @@ public class InventoryManager : GlobalManager<InventoryManager>
             if (rewardItem is BlockRewardItem)
             {
                 var blockRewardItem = rewardItem as BlockRewardItem;
-                if (blockCounts.ContainsKey(blockRewardItem.block))
+                if (BlockCounts.ContainsKey(blockRewardItem.block))
                 {
-                    blockCounts[blockRewardItem.block] += blockRewardItem.count;
+                    BlockCounts[blockRewardItem.block] += blockRewardItem.count;
                 }
                 else
                 {
-                    blockCounts.Add(blockRewardItem.block, blockRewardItem.count);
+                    BlockCounts.Add(blockRewardItem.block, blockRewardItem.count);
                 }
             }
             else if(rewardItem is DiggerRewardItem)
@@ -71,12 +72,12 @@ public class InventoryManager : GlobalManager<InventoryManager>
     void ResetCounts()
     {
         var startingBlocks = BlockDictionary.Instance.GetStartingBlocks();
-        blockCounts = new Dictionary<BlockSO, int>();
+        BlockCounts = new Dictionary<BlockSO, int>();
         foreach (var blockSO in startingBlocks)
         {
             if (blockSO != null)
             {
-                blockCounts.Add(blockSO, blockSO.initialCountInInventory);
+                BlockCounts.Add(blockSO, blockSO.initialCountInInventory);
             }
         }
         DiggerCount = startingDiggerCount;

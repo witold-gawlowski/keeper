@@ -6,7 +6,6 @@ public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
     public List<BlockScript> BlockScripts { get; private set; }
-
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
     [SerializeField] private float spawnTapMaxLength = 0.1f;
     private Dictionary<BlockScript, BlockSO> blockTypes;
@@ -15,6 +14,7 @@ public class BlockManager : Singleton<BlockManager>
     {
         GenerateBlockPool();
         SetFreezeBlocks(false);
+        BlockSupplyManager.Instance.Init();
         BlockColorManager.Instance.GenerateBlockColorMap();
     }
     private void OnEnable()
@@ -66,6 +66,7 @@ public class BlockManager : Singleton<BlockManager>
         }
         return false;
     }
+
     void SetFreezeBlocks(bool value)
     {
         isFreezed = value;
@@ -73,7 +74,7 @@ public class BlockManager : Singleton<BlockManager>
     void GenerateBlockPool()
     {
         blockTypes = new Dictionary<BlockScript, BlockSO>();
-        var inventory = InventoryManager.Instance.GetBlocks();
+        var inventory = InventoryManager.Instance.BlockCounts;
         BlockScripts = new List<BlockScript>();
         foreach (var item in inventory)
         {
@@ -87,32 +88,35 @@ public class BlockManager : Singleton<BlockManager>
             }
         }
     }
+
     void Spawn(Vector2 position)
     {
+        var selectedToSpawn = BlockSupplyManager.Instance.SelectedBlockToSpawn;
         foreach (var bs in BlockScripts)
         {
             var go = bs.gameObject;
             if (!go.activeSelf)
             {
-                go.SetActive(true);
-                bs.transform.position = position;
-                if (blockSpawnedEvent != null)
+                var blockType = blockTypes[bs];
+                if (blockType == selectedToSpawn)
                 {
-                    blockSpawnedEvent(go);
+                    go.SetActive(true);
+                    bs.transform.position = position;
+                    BlockSupplyManager.Instance.ConsumeSelected();
+                    if (blockSpawnedEvent != null)
+                    {
+                        blockSpawnedEvent(go);
+                    }
+                    return;
                 }
-                return;
             }
         }
     }
     void Despawn(BlockScript block)
     {
         block.gameObject.SetActive(false);
-        SetBlockAsLast(block);
-    }
-    void SetBlockAsLast(BlockScript block)
-    {
-        BlockScripts.Remove(block);
-        BlockScripts.Add(block);
+        var blockType = blockTypes[block];
+        BlockSupplyManager.Instance.RecoverBlock(blockType);
     }
    
 }

@@ -14,12 +14,17 @@ public class SceneLoader : GlobalManager<SceneLoader>
     #region Custom Private Functions
     protected override void SubscribeToMenuSceneEvents()
     {
-        MainMenuUIManager.Instance.startNewGameEvent += LoadMapSelectionScene;
-        MainMenuUIManager.Instance.continueGameEvent += LoadMapSelectionScene;
+        MainMenuUIManager.Instance.startNewGameEvent += LoadInventoryScene;
+        MainMenuUIManager.Instance.continueGameEvent += LoadInventoryScene;
+    }
+    protected override void SubscribeToInventorySceneEvents()
+    {
+        InventoryUIManager.Instance.continuePressedEvent += LoadMapSelectionScene;
+        InventoryUIManager.Instance.backPressedEvent += LoadMenuScene;
     }
     protected override void SubscribeToMapSelectionEvents()
     {
-        MapSelectionUIManager.Instance.BackButtonPressedEvent += LoadMenuScene;
+        MapSelectionUIManager.Instance.BackButtonPressedEvent += LoadInventoryScene;
         MapManager.Instance.mapConfirmedEvent += (MapData _) => LoadMainScene();
     }
     protected override void SubscribeToMainSceneEvents()
@@ -31,6 +36,7 @@ public class SceneLoader : GlobalManager<SceneLoader>
     #endregion
     #region Handlers
     void LoadMenuScene() => SceneManager.LoadScene(Constants.MenuSceneName);
+    void LoadInventoryScene() => SceneManager.LoadScene(Constants.InventorySceneName);
     void LoadMapSelectionScene() => SceneManager.LoadScene(Constants.MapSelectionSceneName);
     void LoadMainScene() => SceneManager.LoadScene(Constants.MainSceneName);
     #endregion

@@ -24,14 +24,16 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
         var obj = this.name;
         sceneLoadedHandlers = new Dictionary<string, System.Action>()
         {
-            { Constants.MenuSceneName, SubscribeToMenuSceneEvents},
-            { Constants.MapSelectionSceneName,  SubscribeToMapSelectionEvents},
+            { Constants.MenuSceneName, SubscribeToMenuSceneEvents },
+            { Constants.InventorySceneName, SubscribeToInventorySceneEvents },
+            { Constants.MapSelectionSceneName,  SubscribeToMapSelectionEvents },
             { Constants.MainSceneName, SubscribeToMainSceneEvents },
         };
         sceneUnloadedHandlers = new Dictionary<string, System.Action>()
         {
-            { Constants.MenuSceneName, UnsubscribeFromMenuSceneEvents},
-            { Constants.MapSelectionSceneName,  UnsubscribeFromLevelSelectionEvents},
+            { Constants.MenuSceneName, UnsubscribeFromMenuSceneEvents },
+            { Constants.InventorySceneName, UnsubscribeFromInventorySceneEvents },
+            { Constants.MapSelectionSceneName,  UnsubscribeFromLevelSelectionEvents },
             { Constants.MainSceneName,  UnsubscribeFromMainSceneEvents },
         };
     }
@@ -53,6 +55,9 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
     protected virtual void SubscribeToMenuSceneEvents()
     {
     }
+    protected virtual void SubscribeToInventorySceneEvents()
+    {
+    }
     protected virtual void SubscribeToMapSelectionEvents()
     {
     }
@@ -62,11 +67,15 @@ public class GlobalManager<T> : Singleton<T> where T: MonoBehaviour
     protected virtual void UnsubscribeFromMenuSceneEvents()
     {
     }
+    protected virtual void UnsubscribeFromInventorySceneEvents()
+    {
+    }
     protected virtual void UnsubscribeFromLevelSelectionEvents()
     {
     }
     protected virtual void UnsubscribeFromMainSceneEvents()
     {
+
     }
     protected virtual void OnDisable()
     {

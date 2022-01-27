@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: C2
   m_EditorClassIdentifier: 
   prefab: {fileID: 5158626130760463461, guid: 601efd5e57d2e99479a3ef7872f783b1, type: 3}
-  initialCountInInventory: 0
+  initialCountInInventory: 3
   encounterProbabilityFactor: 1
   rewardMultiplicityDistribution: 00000000000000000000000064000000000000001e000000000000000a000000000000000000000005000000

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: FatAxeRight
   m_EditorClassIdentifier: 
   prefab: {fileID: 5007591965178970878, guid: e7dd95456d87a2f4c9fbdc12dbf53c32, type: 3}
-  initialCountInInventory: 0
+  initialCountInInventory: 2
   encounterProbabilityFactor: 1
   rewardMultiplicityDistribution: 00000000000000000000000064000000000000001e000000000000000a000000000000000000000005000000

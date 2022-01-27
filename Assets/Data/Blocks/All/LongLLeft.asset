@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: LongLLeft
   m_EditorClassIdentifier: 
   prefab: {fileID: 7521377450167832258, guid: 2ac1a72684de8074ead1167569936313, type: 3}
-  initialCountInInventory: 0
+  initialCountInInventory: 2
   encounterProbabilityFactor: 1
   rewardMultiplicityDistribution: 00000000000000000000000064000000000000001e000000000000000a000000000000000000000005000000

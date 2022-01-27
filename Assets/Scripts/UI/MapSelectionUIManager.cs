@@ -16,7 +16,6 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     [SerializeField] TMP_Text levelText;
     [SerializeField] GameObject inventoryPanel;
     [SerializeField] LootItemsUIScript rewardUIScript;
-    [SerializeField] private LootItemsUIScript inventoryItemsUIScript;
     [SerializeField] private TMP_Text areaToComplete;
     private void OnEnable()
     {
@@ -27,7 +26,6 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     {
         levelText.text = "Level " + GameStateManager.Instance.Level;
         HandleSelectedMapChangedEvent(0);
-        UpdateInventory();
     }
     public void HandleInventoryTogglePress()
     {
@@ -106,21 +104,4 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
             }
         }
     }
-    private void UpdateInventory()
-    {
-        inventoryItemsUIScript.Clear();
-        var inventory = InventoryManager.Instance;
-        foreach (var i in inventory.GetBlocks())
-        {
-            if (i.Value > 0)
-            {
-                var blockPrefab = i.Key.PrefabBlockScript;
-                var sprite = blockPrefab.GetSprite();
-                inventoryItemsUIScript.AddBlockItem(sprite, i.Value);
-            }
-        }
-        var diggerCount = inventory.DiggerCount;
-        inventoryItemsUIScript.AddDiggerItem(diggerCount);
-    }
-
 }

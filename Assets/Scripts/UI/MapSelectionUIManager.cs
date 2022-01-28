@@ -14,7 +14,6 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     [SerializeField] Button previousMapButton;
     [SerializeField] Button nextMapButton;
     [SerializeField] TMP_Text levelText;
-    [SerializeField] GameObject inventoryPanel;
     [SerializeField] LootItemsUIScript rewardUIScript;
     [SerializeField] private TMP_Text areaToComplete;
     private void OnEnable()
@@ -26,17 +25,6 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     {
         levelText.text = "Level " + GameStateManager.Instance.Level;
         HandleSelectedMapChangedEvent(0);
-    }
-    public void HandleInventoryTogglePress()
-    {
-        if (inventoryPanel.activeSelf)
-        {
-            inventoryPanel.SetActive(false);
-        }
-        else
-        {
-            inventoryPanel.SetActive(true);
-        }
     }
     void HandleSelectedMapChangedEvent(int currentMap)
     {

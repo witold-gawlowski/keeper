@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DynamicInventoryUIScript : Singleton<DynamicInventoryUIScript>
+public class MainSceneInventoryUIScript : Singleton<MainSceneInventoryUIScript>
 {
-    [SerializeField] BlockInventoryItemPanelScript itemsScript;
-    private Dictionary<BlockSO, InventoryItemUIScript> blockTypeToUIElemMap;
-    private void Start()
+    [SerializeField] InventoryItemPanelScript itemsScript;
+    private Dictionary<BlockSO, MainSceneInventoryButtonScript> blockTypeToUIItemMap;
+    public void Init()
     {
         itemsScript.Clear();
         CreateInitialUIBlockCounts();
@@ -15,21 +15,26 @@ public class DynamicInventoryUIScript : Singleton<DynamicInventoryUIScript>
     {
         BlockSupplyManager.Instance.blockCountChangedEvent += SetCount;
     }
+    public List<MainSceneInventoryButtonScript> GetIneventoryButtons()
+    {
+        return new List<MainSceneInventoryButtonScript>(blockTypeToUIItemMap.Values);
+    }
     private void CreateInitialUIBlockCounts()
     {
-        blockTypeToUIElemMap = new Dictionary<BlockSO, InventoryItemUIScript>();
+        blockTypeToUIItemMap = new Dictionary<BlockSO, MainSceneInventoryButtonScript>();
         var startingCounts = InventoryManager.Instance.BlockCounts;
         foreach (var countData in startingCounts)
         {
             var blockSO = countData.Key;
             var count = countData.Value;
             var inventoryUIItem = CreateBlockCountItem(blockSO, count);
-            blockTypeToUIElemMap.Add(countData.Key, inventoryUIItem);
+            inventoryUIItem.Init(blockSO);
+            blockTypeToUIItemMap.Add(countData.Key, inventoryUIItem);
         }
     }
     public void SetCount(BlockSO block, int count)
     {
-        var itemGO = blockTypeToUIElemMap[block].gameObject;
+        var itemGO = blockTypeToUIItemMap[block].gameObject;
         var itemScript = itemGO.GetComponent<InventoryItemUIScript>();
         if (count == 0)
         {
@@ -41,10 +46,11 @@ public class DynamicInventoryUIScript : Singleton<DynamicInventoryUIScript>
             itemScript.SetCount(count);
         }
     }
-    private InventoryItemUIScript CreateBlockCountItem(BlockSO block, int initialCount)
+    private MainSceneInventoryButtonScript CreateBlockCountItem(BlockSO block, int initialCount)
     {
         var blockPrefab = block.PrefabBlockScript;
         var sprite = blockPrefab.GetSprite();
-        return itemsScript.AddBlockItem(sprite, initialCount);
+        var blockUIItem = itemsScript.AddBlockItem(sprite, initialCount);
+        return blockUIItem as MainSceneInventoryButtonScript;
     }
 }

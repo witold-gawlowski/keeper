@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LootItemsUIScript : BlockInventoryItemPanelScript
+public class LootItemsUIScript : InventoryItemPanelScript
 {
     [SerializeField] private Sprite diggerIcon;
     [SerializeField] private Color diggerIconColor;

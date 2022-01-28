@@ -14,6 +14,14 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
         CreateBlockOrder();
         SetInitialSelectedBlock();
     }
+    public void ListenToInventoryButtonEvents()
+    {
+        var buttons = MainSceneInventoryUIScript.Instance.GetIneventoryButtons();
+        foreach(var b in buttons)
+        {
+            b.blockSelectedEvent += HandleBlockButtonPressed;
+        }
+    }
     public void ConsumeSelected()
     {
         var oldCount = availableBlocks[SelectedBlockToSpawn];
@@ -29,6 +37,10 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
     {
         availableBlocks[type]++;
         blockCountChangedEvent(type, availableBlocks[type]);
+    }
+    private void HandleBlockButtonPressed(BlockSO b)
+    {
+        SelectedBlockToSpawn = b;
     }
     void SetInitialSelectedBlock()
     {

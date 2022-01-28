@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockInventoryItemPanelScript : MonoBehaviour
+public class InventoryItemPanelScript : MonoBehaviour
 {
     [SerializeField] protected Color blockIconColor;
     [SerializeField] protected Transform itemsParent;

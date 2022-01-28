@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BlockSupplyManager : Singleton<BlockSupplyManager>
 {
+    public System.Action<BlockSO, int> blockCountChangedEvent;
     private Dictionary<BlockSO, int> availableBlocks;
     private List<BlockSO> blockOrder;
     public BlockSO SelectedBlockToSpawn { get; private set; }
@@ -15,8 +16,11 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
     }
     public void ConsumeSelected()
     {
-        availableBlocks[SelectedBlockToSpawn]--;
-        if (availableBlocks[SelectedBlockToSpawn] == 0)
+        var oldCount = availableBlocks[SelectedBlockToSpawn];
+        var newCount = oldCount - 1;
+        availableBlocks[SelectedBlockToSpawn] = newCount;
+        blockCountChangedEvent(SelectedBlockToSpawn, newCount);
+        if (newCount == 0)
         {
             SelectedBlockToSpawn = GetNextAvailableBlockSO(SelectedBlockToSpawn);
         }
@@ -24,6 +28,7 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
     public void RecoverBlock(BlockSO type)
     {
         availableBlocks[type]++;
+        blockCountChangedEvent(type, availableBlocks[type]);
     }
     void SetInitialSelectedBlock()
     {
@@ -59,5 +64,14 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
     void CreateBlockOrder()
     {
         blockOrder = new List<BlockSO>(availableBlocks.Keys);
+        //LogOrder();
+    }
+    void LogOrder()
+    {
+        Debug.Log("order:");
+        foreach (var b in blockOrder)
+        {
+            Debug.Log(b.name);
+        }
     }
 }

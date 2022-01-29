@@ -4,14 +4,21 @@ using UnityEngine;
 using UnityEditor;
 public class BlockColliderShrinkerScript : MonoBehaviour
 {
+    //unifinished, needs PrefabUtility functions
     public BlockSO blockToShrink;
-    public void Shrink(BlockSO b)
+    public void Shrink()
     {
-        var collider = b.PrefabBlockScript.GetComponent<PolygonCollider2D>();
-        
-        var newPoints = new Vector2[100];
+        var b = blockToShrink;
+        var originalCollider = b.PrefabBlockScript.GetLinkingCollider();
+        var pathCount = originalCollider.pathCount;
+        var newCollider = b.PrefabBlockScript.GetBlockingCollider();
+        for(int i=0; i<pathCount; i++)
+        {
+            var newPath = ShrinkPath(originalCollider, i).ToArray();
+            newCollider.SetPath(i, newPath);
+        }
     }
-    private List<Vector2> ShrinkPath(int pathIndex, PolygonCollider2D collider)
+    private List<Vector2> ShrinkPath(PolygonCollider2D collider, int pathIndex)
     {
         var result = new List<Vector2>();
         var pathPoints = collider.GetPath(pathIndex);
@@ -23,7 +30,7 @@ public class BlockColliderShrinkerScript : MonoBehaviour
             var n = pathPoints[(i + 1) % len]; //next
             var pNorm = (p - c).normalized;
             var nNorm = (p - n).normalized;
-            var candidateDisplacement = (pNorm + nNorm) * 0.1f;
+            var candidateDisplacement = (pNorm + nNorm) * 0.005f;
             var newCornerCandidate1 = c + candidateDisplacement;
             var newCornerCandidate2 = c - candidateDisplacement;
             bool cand1Inside = IsPointInsideCollider(collider, newCornerCandidate1);

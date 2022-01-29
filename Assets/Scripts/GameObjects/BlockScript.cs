@@ -5,19 +5,14 @@ using UnityEngine;
 public class BlockScript : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer sr;
-    [SerializeField] private PolygonCollider2D linkingCollider;
-    [SerializeField] private PolygonCollider2D blockingCollider;
+    [SerializeField] private PolygonCollider2D collider;
     public Sprite GetSprite()
     {
         return sr.sprite;
     }
-    public PolygonCollider2D GetLinkingCollider()
+    public PolygonCollider2D GetCollider()
     {
-        return linkingCollider;
-    }
-    public PolygonCollider2D GetBlockingCollider()
-    {
-        return blockingCollider;
+        return collider;
     }
     public void SetColor(Color c)
     {

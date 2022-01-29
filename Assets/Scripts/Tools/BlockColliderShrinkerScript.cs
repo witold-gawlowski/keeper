@@ -9,14 +9,14 @@ public class BlockColliderShrinkerScript : MonoBehaviour
     public void Shrink()
     {
         var b = blockToShrink;
-        var originalCollider = b.PrefabBlockScript.GetLinkingCollider();
+        var originalCollider = b.PrefabBlockScript.GetCollider();
         var pathCount = originalCollider.pathCount;
-        var newCollider = b.PrefabBlockScript.GetBlockingCollider();
-        for(int i=0; i<pathCount; i++)
-        {
-            var newPath = ShrinkPath(originalCollider, i).ToArray();
-            newCollider.SetPath(i, newPath);
-        }
+        //var newCollider = b.PrefabBlockScript.GetBlockingCollider();
+        //for(int i=0; i<pathCount; i++)
+        //{
+        //    var newPath = ShrinkPath(originalCollider, i).ToArray();
+        //    newCollider.SetPath(i, newPath);
+        //}
     }
     private List<Vector2> ShrinkPath(PolygonCollider2D collider, int pathIndex)
     {

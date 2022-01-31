@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4455121270992291194}
   - component: {fileID: 6153432046274669124}
   m_Layer: 0
-  m_Name: ProbeCollider
+  m_Name: Probe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,7 +134,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 87217c242acc7c94ba1c4da4a876ee13, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.2784314}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.0627451}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -192,5 +192,6 @@ MonoBehaviour:
   maxForceDistance: 20
   turnSpeed: 10
   overlapForce: 40
+  probeParent: {fileID: 1806589564923830306}
   probeCollider: {fileID: 6153432046274669124}
   probeSprite: {fileID: 802315054429147706}

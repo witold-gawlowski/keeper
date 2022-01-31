@@ -14,6 +14,7 @@ public class DragManager : Singleton<DragManager>
     [SerializeField] private float maxForceDistance = 1;
     [SerializeField] private float turnSpeed = 10;
     [SerializeField] private float overlapForce = 40.0f;
+    [SerializeField] private GameObject probeParent;
     [SerializeField] private PolygonCollider2D probeCollider;
     [SerializeField] private SpriteRenderer probeSprite;
 
@@ -96,7 +97,9 @@ public class DragManager : Singleton<DragManager>
     {
         var turnDrag = (turnStartPosition - worldPos);
         var rotationIndex = (int)(-turnDrag.y * turnSpeed) % 4;
-        lastBlockTouched.transform.rotation = initialBlockRotation * Quaternion.Euler(0, 0, rotationIndex * 90);
+        var newRotation = initialBlockRotation * Quaternion.Euler(0, 0, rotationIndex * 90);
+        lastBlockTouched.transform.rotation = newRotation;
+        probeParent.transform.rotation = newRotation;
         if (rotationIndex != lastRotationIndex)
         {
             newRotationPositionEvent();
@@ -118,6 +121,7 @@ public class DragManager : Singleton<DragManager>
             draggedBlock = block.gameObject;
             ReplicateColliderToProbe(block);
             probeSprite.sprite = block.GetSprite();
+            probeParent.transform.rotation = block.transform.rotation;
             pointerOffset = (Vector2)draggedBlock.transform.position - worldPos;
             dragStartedEvent?.Invoke();
         }
@@ -131,7 +135,7 @@ public class DragManager : Singleton<DragManager>
         yield return new WaitForFixedUpdate();
         if (!isFreezed && draggedBlock)
         {
-            probeCollider.transform.position = worldPos + pointerOffset;
+            probeParent.transform.position = worldPos + pointerOffset;
             var colliding = CheckProbeColliding();
             if (colliding)
             {

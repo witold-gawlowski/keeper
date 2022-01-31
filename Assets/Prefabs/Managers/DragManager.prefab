@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4455121270992291194}
   - component: {fileID: 6153432046274669124}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Probe
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -15,6 +15,15 @@ public class CoherencyManager: Singleton<CoherencyManager>
     {
         Traverse();
     }
+    public void CreateNoCoherencyComponents()
+    {
+        Components = new Dictionary<ComponentIndex, ComponentIndex>();
+        var blocks = BlockManager.Instance.BlockScripts;
+        foreach (var b in blocks)
+        {
+            Components.Add(b, b);
+        }
+    }
     public void CalculateNeighborhood()
     {
         var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
@@ -28,10 +37,10 @@ public class CoherencyManager: Singleton<CoherencyManager>
                 var blockCollider = b.GetComponent<Collider2D>();
                 Physics2D.OverlapCollider(blockCollider, filter, colliders);
                 var collidingScripts = new List<BlockScript>();
-                foreach(var c in colliders)
+                foreach (var c in colliders)
                 {
                     var cScript = c.GetComponent<BlockScript>();
-                    collidingScripts.Add(cScript);   
+                    collidingScripts.Add(cScript);
                 }
                 overlaps.Add(b, collidingScripts);
             }

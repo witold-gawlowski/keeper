@@ -83,11 +83,12 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     void OnColliderPositionUpdate()
     {
-        Physics2D.SyncTransforms();
-        CoherencyManager.Instance.CalculateNeighborhood();
-        CoherencyManager.Instance.CalculateComponents();
-        var componentCount = CoherencyManager.Instance.ComponentCount;
-        MainSceneUIManager.Instance.SetComponentCount(componentCount);
+        //Physics2D.SyncTransforms();
+        //CoherencyManager.Instance.CalculateNeighborhood();
+        //CoherencyManager.Instance.CalculateComponents();
+        //var componentCount = CoherencyManager.Instance.ComponentCount;
+        //MainSceneUIManager.Instance.SetComponentCount(componentCount);
+        CoherencyManager.Instance.CreateNoCoherencyComponents();
         BlockColorManager.Instance.RepaintBlocks();
     }
     private IEnumerator CheckForLevelCompletion()

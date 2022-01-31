@@ -24,11 +24,11 @@ public class CoherencyManager: Singleton<CoherencyManager>
         {
             if (b.gameObject.activeSelf)
             {
-                var collidingColliders = new List<Collider2D>();
+                var colliders = new List<Collider2D>();
                 var blockCollider = b.GetComponent<Collider2D>();
-                Physics2D.OverlapCollider(blockCollider, filter, collidingColliders);
+                Physics2D.OverlapCollider(blockCollider, filter, colliders);
                 var collidingScripts = new List<BlockScript>();
-                foreach(var c in collidingColliders)
+                foreach(var c in colliders)
                 {
                     var cScript = c.GetComponent<BlockScript>();
                     collidingScripts.Add(cScript);   

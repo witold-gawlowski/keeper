@@ -10,13 +10,16 @@ public class DragManager : Singleton<DragManager>
     public System.Action<GameObject> turnFinishedEvent;
     public System.Action newRotationPositionEvent;
 
-    [SerializeField] float dragForce = 15;
+    [SerializeField] private float dragForce = 15;
     [SerializeField] private float maxForceDistance = 1;
     [SerializeField] private float turnSpeed = 10;
+    [SerializeField] private PolygonCollider2D probeCollider;
 
     bool turnStarted;
     bool isFreezed;
     GameObject draggedBlock;
+    Rigidbody2D draggedRigidbody;
+    Collider2D draggedCollider;
     Quaternion initialBlockRotation;
     Vector2 pointerOffset;
     Vector2 turnStartPosition;
@@ -106,16 +109,36 @@ public class DragManager : Singleton<DragManager>
     {
         if (!isFreezed && block)
         {
+            draggedRigidbody = block.GetComponent<Rigidbody2D>();
+            draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            draggedCollider = block.GetComponent<PolygonCollider2D>();
             draggedBlock = block.gameObject;
+            ReplicateColliderToProbe(block);
             pointerOffset = (Vector2)draggedBlock.transform.position - worldPos;
             dragStartedEvent?.Invoke();
         }
     }
     void ContinueBlockDrag(Vector2 worldPos)
     {
+        StartCoroutine(ContinueBlockDragCoroutine(worldPos));
+    }
+    IEnumerator ContinueBlockDragCoroutine(Vector2 worldPos)
+    {
         if (!isFreezed && draggedBlock)
         {
-            draggedBlock.transform.position = worldPos + pointerOffset;
+            probeCollider.transform.position = worldPos + pointerOffset;
+            yield return new WaitForFixedUpdate();
+            var colliding = CheckProbeColliding();
+            if (colliding)
+            {
+                draggedRigidbody.AddForce((worldPos + pointerOffset - (Vector2)draggedBlock.transform.position) * 100.0f);
+                //draggedRigidbody.MovePosition(worldPos + pointerOffset);
+            }
+            else
+            {
+                Debug.Log("not colliding");
+                draggedBlock.transform.position = worldPos + pointerOffset;
+            }
             dragContinuedEvent();
         }
     }
@@ -128,8 +151,33 @@ public class DragManager : Singleton<DragManager>
             {
                 dragFinishedEvent(draggedBlock);
             }
+            draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
             draggedBlock = null;
         }
+    }
+    void ReplicateColliderToProbe(GameObject block)
+    {
+        var collider = block.GetComponent<PolygonCollider2D>();
+        probeCollider.pathCount = collider.pathCount;
+        for(int i=0; i<probeCollider.pathCount; i++)
+        {
+            probeCollider.SetPath(i, collider.GetPath(i));
+        }
+    }
+    bool CheckProbeColliding()
+    {
+        var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
+        var colliders = new List<Collider2D>();
+        Physics2D.OverlapCollider(probeCollider, filter, colliders);
+        if(colliders.Count > 1 || (colliders.Count == 1 && colliders[0] != draggedCollider))
+        {
+            return true;
+        }
+        foreach(var c in colliders)
+        {
+            Debug.Log(c.name);
+        }
+        return false;
     }
 
 }

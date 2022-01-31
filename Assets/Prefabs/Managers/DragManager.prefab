@@ -108,4 +108,5 @@ MonoBehaviour:
   dragForce: 200
   maxForceDistance: 20
   turnSpeed: 10
+  overlapForce: 40
   probeCollider: {fileID: 6153432046274669124}

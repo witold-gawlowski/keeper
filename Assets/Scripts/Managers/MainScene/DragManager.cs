@@ -13,13 +13,13 @@ public class DragManager : Singleton<DragManager>
     [SerializeField] private float dragForce = 15;
     [SerializeField] private float maxForceDistance = 1;
     [SerializeField] private float turnSpeed = 10;
+    [SerializeField] private float overlapForce = 40.0f;
     [SerializeField] private PolygonCollider2D probeCollider;
 
     bool turnStarted;
     bool isFreezed;
     GameObject draggedBlock;
     Rigidbody2D draggedRigidbody;
-    Collider2D draggedCollider;
     Quaternion initialBlockRotation;
     Vector2 pointerOffset;
     Vector2 turnStartPosition;
@@ -92,9 +92,9 @@ public class DragManager : Singleton<DragManager>
     void ContinueBlockTurn(Vector2 worldPos)
     {
         var turnDrag = (turnStartPosition - worldPos);
-        var rotationIndex = (int)( -turnDrag.y * turnSpeed) % 4;
+        var rotationIndex = (int)(-turnDrag.y * turnSpeed) % 4;
         lastBlockTouched.transform.rotation = initialBlockRotation * Quaternion.Euler(0, 0, rotationIndex * 90);
-        if(rotationIndex != lastRotationIndex)
+        if (rotationIndex != lastRotationIndex)
         {
             newRotationPositionEvent();
             lastRotationIndex = rotationIndex;
@@ -111,7 +111,6 @@ public class DragManager : Singleton<DragManager>
         {
             draggedRigidbody = block.GetComponent<Rigidbody2D>();
             draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
-            draggedCollider = block.GetComponent<PolygonCollider2D>();
             draggedBlock = block.gameObject;
             ReplicateColliderToProbe(block);
             pointerOffset = (Vector2)draggedBlock.transform.position - worldPos;
@@ -131,12 +130,13 @@ public class DragManager : Singleton<DragManager>
             var colliding = CheckProbeColliding();
             if (colliding)
             {
-                draggedRigidbody.AddForce((worldPos + pointerOffset - (Vector2)draggedBlock.transform.position) * 100.0f);
-                //draggedRigidbody.MovePosition(worldPos + pointerOffset);
+                var target = worldPos + pointerOffset;
+                var currentPosition = (Vector2)draggedBlock.transform.position;
+                var pointingVector = (target - currentPosition);
+                draggedRigidbody.AddForce(pointingVector * overlapForce);
             }
             else
             {
-                Debug.Log("not colliding");
                 draggedBlock.transform.position = worldPos + pointerOffset;
             }
             dragContinuedEvent();
@@ -159,7 +159,7 @@ public class DragManager : Singleton<DragManager>
     {
         var collider = block.GetComponent<PolygonCollider2D>();
         probeCollider.pathCount = collider.pathCount;
-        for(int i=0; i<probeCollider.pathCount; i++)
+        for (int i = 0; i < probeCollider.pathCount; i++)
         {
             probeCollider.SetPath(i, collider.GetPath(i));
         }
@@ -169,13 +169,9 @@ public class DragManager : Singleton<DragManager>
         var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
         var colliders = new List<Collider2D>();
         Physics2D.OverlapCollider(probeCollider, filter, colliders);
-        if(colliders.Count > 1 || (colliders.Count == 1 && colliders[0] != draggedCollider))
+        if (colliders.Count > 1 || (colliders.Count == 1 && colliders[0].gameObject != draggedBlock))
         {
             return true;
-        }
-        foreach(var c in colliders)
-        {
-            Debug.Log(c.name);
         }
         return false;
     }

@@ -28,6 +28,7 @@ public class BlockScriptEditor : Editor
     }
     private List<Vector2> ShrinkPath(PolygonCollider2D collider, int pathIndex)
     {
+        BlockScript script = target as BlockScript;
         var result = new List<Vector2>();
         var pathPoints = collider.GetPath(pathIndex);
         var len = pathPoints.Length;
@@ -39,9 +40,11 @@ public class BlockScriptEditor : Editor
             var pNorm = (c - p).normalized;
             var nNorm = (n - c).normalized;
             var testDisplacement = (pNorm - nNorm) * 0.01f;
+            var refPos = (Vector2)script.transform.position;
             var cornerDirectionTest = c + testDisplacement;
-            bool testInside = IsPointInsideCollider(collider, cornerDirectionTest);
-            var newPoint = c + (pNorm - nNorm) * 0.003f * (testInside ? 1 : -1);
+            Debug.DrawLine(refPos + c, refPos + cornerDirectionTest, Color.red, 0.5f);
+            bool testInside = IsPointInsideCollider(collider, refPos + cornerDirectionTest);
+            var newPoint = c + (pNorm - nNorm) * 0.0015f * (testInside ? 1 : -1);
             result.Add(newPoint);
         }
         return result;

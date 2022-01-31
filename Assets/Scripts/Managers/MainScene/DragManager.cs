@@ -15,6 +15,7 @@ public class DragManager : Singleton<DragManager>
     [SerializeField] private float turnSpeed = 10;
     [SerializeField] private float overlapForce = 40.0f;
     [SerializeField] private PolygonCollider2D probeCollider;
+    [SerializeField] private SpriteRenderer probeSprite;
 
     bool turnStarted;
     bool isFreezed;
@@ -26,6 +27,7 @@ public class DragManager : Singleton<DragManager>
     int blockLayerMask;
     GameObject lastBlockTouched;
     int lastRotationIndex;
+    bool detached;
 
     private void Awake()
     {
@@ -50,7 +52,8 @@ public class DragManager : Singleton<DragManager>
         Collider2D hit = Physics2D.OverlapPoint(worldPos, blockLayerMask);
         if (hit)
         {
-            StartBlockDrag(worldPos, hit.gameObject);
+            var blockScript = hit.GetComponent<BlockScript>();
+            StartBlockDrag(worldPos, blockScript);
         }
         else if (hit == null && lastBlockTouched != null)
         {
@@ -105,14 +108,16 @@ public class DragManager : Singleton<DragManager>
         turnStarted = false;
         turnFinishedEvent?.Invoke(lastBlockTouched);
     }
-    void StartBlockDrag(Vector2 worldPos, GameObject block)
+    void StartBlockDrag(Vector2 worldPos, BlockScript block)
     {
         if (!isFreezed && block)
         {
-            draggedRigidbody = block.GetComponent<Rigidbody2D>();
+            detached = false;
+            draggedRigidbody = block.GetRigidbody();
             draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
             draggedBlock = block.gameObject;
             ReplicateColliderToProbe(block);
+            probeSprite.sprite = block.GetSprite();
             pointerOffset = (Vector2)draggedBlock.transform.position - worldPos;
             dragStartedEvent?.Invoke();
         }
@@ -123,13 +128,19 @@ public class DragManager : Singleton<DragManager>
     }
     IEnumerator ContinueBlockDragCoroutine(Vector2 worldPos)
     {
+        yield return new WaitForFixedUpdate();
         if (!isFreezed && draggedBlock)
         {
             probeCollider.transform.position = worldPos + pointerOffset;
-            yield return new WaitForFixedUpdate();
             var colliding = CheckProbeColliding();
             if (colliding)
             {
+                if(detached == false)
+                {
+                    Debug.Log("setting on");
+                    detached = true;
+                    probeSprite.gameObject.SetActive(true);
+                }
                 var target = worldPos + pointerOffset;
                 var currentPosition = (Vector2)draggedBlock.transform.position;
                 var pointingVector = (target - currentPosition);
@@ -137,6 +148,11 @@ public class DragManager : Singleton<DragManager>
             }
             else
             {
+                if(detached == true)
+                {
+                    detached = false;
+                    probeSprite.gameObject.SetActive(false);
+                }
                 draggedBlock.transform.position = worldPos + pointerOffset;
             }
             dragContinuedEvent();
@@ -152,12 +168,13 @@ public class DragManager : Singleton<DragManager>
                 dragFinishedEvent(draggedBlock);
             }
             draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            probeSprite.gameObject.SetActive(false);
             draggedBlock = null;
         }
     }
-    void ReplicateColliderToProbe(GameObject block)
+    void ReplicateColliderToProbe(BlockScript block)
     {
-        var collider = block.GetComponent<PolygonCollider2D>();
+        var collider = block.GetCollider();
         probeCollider.pathCount = collider.pathCount;
         for (int i = 0; i < probeCollider.pathCount; i++)
         {

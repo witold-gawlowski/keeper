@@ -13,7 +13,28 @@ public class BlockScriptEditor : Editor
         {
             Shrink();
         }
+        if (GUILayout.Button("x10"))
+        {
+            Enlarge();
+        }
         DrawDefaultInspector();
+    }
+    private void Enlarge()
+    {
+        BlockScript script = target as BlockScript;
+        var collider = script.GetCollider();
+        var pathCount = collider.pathCount;
+        for (int i = 0; i < pathCount; i++)
+        {
+            var path = collider.GetPath(i);
+            var newPath = new List<Vector2>();
+            foreach(var p in path)
+            {
+                var newPoint = new Vector2(p.x * 10, p.y * 10);
+                newPath.Add(newPoint);
+            }
+            
+        }
     }
     public void Shrink()
     {

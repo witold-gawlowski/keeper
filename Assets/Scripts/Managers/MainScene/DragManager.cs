@@ -29,6 +29,7 @@ public class DragManager : Singleton<DragManager>
     GameObject lastBlockTouched;
     int lastRotationIndex;
     bool detached;
+    Vector2 positionPreviousFrame;
 
     private void Awake()
     {
@@ -139,10 +140,11 @@ public class DragManager : Singleton<DragManager>
             var colliding = CheckProbeColliding();
             if (colliding)
             {
-                if(detached == false)
+                if (detached == false)
                 {
                     detached = true;
                     probeSprite.gameObject.SetActive(true);
+                    draggedRigidbody.velocity = (worldPos - positionPreviousFrame) / Time.deltaTime;
                 }
                 var target = worldPos + pointerOffset;
                 var currentPosition = (Vector2)draggedBlock.transform.position;
@@ -151,12 +153,13 @@ public class DragManager : Singleton<DragManager>
             }
             else
             {
-                if(detached == true)
+                if (detached == true)
                 {
                     detached = false;
                     probeSprite.gameObject.SetActive(false);
                 }
                 draggedBlock.transform.position = worldPos + pointerOffset;
+                positionPreviousFrame = worldPos;
             }
             dragContinuedEvent();
         }
@@ -189,9 +192,9 @@ public class DragManager : Singleton<DragManager>
         var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
         var colliders = new List<Collider2D>();
         Physics2D.OverlapCollider(probeCollider, filter, colliders);
-        foreach(var c in colliders)
+        foreach (var c in colliders)
         {
-            if(c.gameObject != draggedBlock)
+            if (c.gameObject != draggedBlock)
             {
                 return true;
             }

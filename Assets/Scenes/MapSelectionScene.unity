@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 0.75
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2432,7 +2432,6 @@ MonoBehaviour:
   previousMapButton: {fileID: 2047895014}
   nextMapButton: {fileID: 1429418485}
   levelText: {fileID: 1218250344}
-  inventoryPanel: {fileID: 0}
   rewardUIScript: {fileID: 315972779}
   areaToComplete: {fileID: 1677009151}
 --- !u!1001 &4994528824351746160

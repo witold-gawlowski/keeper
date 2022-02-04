@@ -30,10 +30,10 @@ public class BlockScriptEditor : Editor
             var newPath = new List<Vector2>();
             foreach(var p in path)
             {
-                var newPoint = new Vector2(p.x * 10, p.y * 10);
+                var newPoint = new Vector2(p.x * 20, p.y * 20);
                 newPath.Add(newPoint);
             }
-            
+            collider.SetPath(i, newPath);
         }
     }
     public void Shrink()

@@ -132,16 +132,15 @@ public class DragManager : Singleton<DragManager>
     }
     IEnumerator ContinueBlockDragCoroutine(Vector2 worldPos)
     {
+        probeParent.transform.position = worldPos + pointerOffset;
         yield return new WaitForFixedUpdate();
         if (!isFreezed && draggedBlock)
         {
-            probeParent.transform.position = worldPos + pointerOffset;
             var colliding = CheckProbeColliding();
             if (colliding)
             {
                 if(detached == false)
                 {
-                    Debug.Log("setting on");
                     detached = true;
                     probeSprite.gameObject.SetActive(true);
                 }
@@ -190,9 +189,12 @@ public class DragManager : Singleton<DragManager>
         var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
         var colliders = new List<Collider2D>();
         Physics2D.OverlapCollider(probeCollider, filter, colliders);
-        if (colliders.Count > 1 || (colliders.Count == 1 && colliders[0].gameObject != draggedBlock))
+        foreach(var c in colliders)
         {
-            return true;
+            if(c.gameObject != draggedBlock)
+            {
+                return true;
+            }
         }
         return false;
     }

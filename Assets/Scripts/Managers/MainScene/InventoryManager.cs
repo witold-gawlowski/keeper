@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.Assertions;
 public class InventoryManager : GlobalManager<InventoryManager>
 {
-    public int startingDiggerCount = 15;
+    [SerializeField] private int startingDiggerCount = 15;
+    [SerializeField] private int startingComponentOrbCount = 5;
 
     public Dictionary<BlockSO, int> BlockCounts { get; private set; }
     public int DiggerCount { get; private set; }
+    public int ComponentOrbCount { get; private set; }
     protected override void Awake()
     {
         base.Awake();
@@ -84,5 +86,6 @@ public class InventoryManager : GlobalManager<InventoryManager>
             }
         }
         DiggerCount = startingDiggerCount;
+        ComponentOrbCount = startingComponentOrbCount;
     }
 }

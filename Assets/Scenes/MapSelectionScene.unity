@@ -528,6 +528,8 @@ MonoBehaviour:
   itemsParent: {fileID: 315972777}
   diggerIcon: {fileID: 21300000, guid: 09731ff3e9fd01b4a8ad69adadfae924, type: 3}
   diggerIconColor: {r: 0, g: 0, b: 0, a: 1}
+  componentOrbIcon: {fileID: 21300000, guid: 7b81b705339178a4d983268dffebfedb, type: 3}
+  componentOrbColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1001 &328250730
 PrefabInstance:
   m_ObjectHideFlags: 0

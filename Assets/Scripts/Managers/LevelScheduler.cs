@@ -64,6 +64,12 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
             var diggerReward = new DiggerRewardItem(diggerCount);
             result.Add(diggerReward);
         }
+        var componentOrbCount = Helpers.GetIntFromDistribution(levelGroup.componentOrbDistribution);
+        if(componentOrbCount > 0)
+        {
+            var componentOrbReward = new ComponentOrbRewardItem(componentOrbCount);
+            result.Add(componentOrbReward);
+        }
         return result;
     }
     private LevelGroupSO GetLevelGroup()

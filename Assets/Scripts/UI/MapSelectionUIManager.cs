@@ -111,6 +111,11 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
                 var diggerReward = r as DiggerRewardItem;
                 rewardUIScript.AddDiggerItem(diggerReward.count);
             }
+            else if(r is ComponentOrbRewardItem)
+            {
+                var componentOrbReward = r as ComponentOrbRewardItem;
+                rewardUIScript.AddComponentOrbCountItem(componentOrbReward.count);
+            }
         }
     }
 }

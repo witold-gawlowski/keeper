@@ -34,7 +34,9 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
             }
         }
         var diggerCount = inventory.DiggerCount;
+        var componentOrbCount = inventory.ComponentOrbCount;
         inventoryItemsUIScript.AddDiggerItem(diggerCount);
+        inventoryItemsUIScript.AddComponentOrbCountItem(componentOrbCount);
     }
 }
 

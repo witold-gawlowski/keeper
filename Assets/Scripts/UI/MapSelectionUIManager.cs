@@ -17,6 +17,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     [SerializeField] LootItemsUIScript rewardUIScript;
     [SerializeField] private TMP_Text areaToComplete;
     [SerializeField] Button startButton;
+    [SerializeField] TMP_Text mapIndexText;
     private void OnEnable()
     {
         MapManager.Instance.selectedMapChangedEvent += HandleSelectedMapChangedEvent;
@@ -33,6 +34,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
         UpdateRewards(currentMap);
         UpdatePercetnageToComplete(currentMap);
         UpdateStartButtonInteractibility(currentMap);
+        UpdateIndexText(currentMap);
     }
     void UpdateSelectionButtonsInteractivity(int currentMap)
     {
@@ -74,6 +76,10 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     void HandleBackPress()
     {
         BackButtonPressedEvent();
+    }
+    void UpdateIndexText(int currentMapIndex)
+    {
+        mapIndexText.text = (currentMapIndex+1) + "/" + LevelScheduler.Instance.CurrentLevelData.Count;
     }
     void UpdateStartButtonInteractibility(int currentMapIndex)
     {

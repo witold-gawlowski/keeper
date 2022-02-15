@@ -21,6 +21,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     [SerializeField] private UnityEngine.UI.Button verdictButton;
     [SerializeField] private UnityEngine.UI.Button surrenderButton;
     [SerializeField] private UnityEngine.UI.Image timeLeftImage;
+    [SerializeField] private UnityEngine.UI.Image nextBLockImage;
 
     private Vector2 binPositionWorld;
 
@@ -43,6 +44,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
         BlockManager.Instance.blockSpawnedEvent += DisableVerdict;
         MainSceneManager.Instance.levelCompletedEvent += HandleLevelCompleted;
         MainSceneManager.Instance.levelFailedEvent += HandleLevelFailed;
+        BlockSupplyManager.Instance.selectedBlockUpdatedEvent += HandleSelectedBlockUpdated;
     }
     #endregion
     #region Custom public functions
@@ -111,6 +113,12 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
         surrenderButton.gameObject.SetActive(false);
         verdictButton.gameObject.SetActive(false);
         bin.gameObject.SetActive(false);
+    }
+    void HandleSelectedBlockUpdated()
+    {
+        var script = BlockSupplyManager.Instance.SelectedBlockToSpawn.PrefabBlockScript;
+        var sprite = script.GetSprite();
+        nextBLockImage.sprite = sprite;
     }
     void DisableVerdict(GameObject _)
     {

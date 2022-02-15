@@ -5,16 +5,13 @@ using UnityEngine;
 public class BlockSupplyManager : Singleton<BlockSupplyManager>
 {
     public System.Action<BlockSO, int> blockCountChangedEvent;
+    public System.Action selectedBlockUpdatedEvent;
     public BlockSO SelectedBlockToSpawn { get; private set; }
 
     [SerializeField] private float maxTimeToUseBlock = 3;
     private Dictionary<BlockSO, int> availableBlocks;
     private List<BlockSO> blockOrder;
     private float timeToUseBlock;
-    public void Update()
-    {
-        
-    }
     public void Init()
     {
         InitAvailableBlocks();
@@ -39,6 +36,7 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
         {
             SelectedBlockToSpawn = GetNextAvailableBlockSO(SelectedBlockToSpawn);
         }
+        selectedBlockUpdatedEvent?.Invoke();
     }
     public void RecoverBlock(BlockSO type)
     {
@@ -52,6 +50,7 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
     void SetInitialSelectedBlock()
     {
         SelectedBlockToSpawn = blockOrder[0];
+        selectedBlockUpdatedEvent?.Invoke();
     }
     BlockSO GetNextAvailableBlockSO(BlockSO current)
     {

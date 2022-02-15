@@ -8,8 +8,6 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
 
     [SerializeField] private List<LevelGroupSO> levelGroups;
 
-    private List<MapSO> allMapsSorted;
-
     protected override void SubscribeToMenuSceneEvents()
     {
         MainMenuUIManager.Instance.startNewGameEvent += HandleNewGameStartedEvent;
@@ -18,7 +16,6 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
     {
         MainSceneManager.Instance.levelCompletedEvent += HandleLevelFinished;
         MainSceneManager.Instance.levelFailedEvent += HandleLevelFailed;
-        MainSceneUIManager.Instance.surrenderPressedEvent += HandleLevelFailed;
     }
     private void HandleLevelFailed()
     {

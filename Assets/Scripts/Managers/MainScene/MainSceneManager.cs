@@ -27,6 +27,11 @@ public class MainSceneManager : Singleton<MainSceneManager>
         DragManager.Instance.newRotationPositionEvent += HandleNewRotationPosition;
         DragManager.Instance.turnFinishedEvent += HandleTurnFinished;
         this.levelCompletedEvent += HandleLevelCompleted;
+        MainSceneUIManager.Instance.surrenderPressedEvent += test;
+    }
+    void test()
+    {
+        levelFailedEvent();
     }
     void HandleVerdictFinished(int hits)
     {
@@ -39,6 +44,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
         }
         levelFailedEvent?.Invoke();
     }
+    //TODO: move theese calls to coresponding managers
     void HandleLevelCompleted()
     {
         GameStateManager.Instance.OnLevelCompleted();

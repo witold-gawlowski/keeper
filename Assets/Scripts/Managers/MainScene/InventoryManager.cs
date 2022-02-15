@@ -72,6 +72,11 @@ public class InventoryManager : GlobalManager<InventoryManager>
                 var diggerRewardItem = rewardItem as DiggerRewardItem;
                 DiggerCount += diggerRewardItem.count;
             }
+            else if (rewardItem is ComponentOrbRewardItem)
+            {
+                var componentOrbRewardItem = rewardItem as ComponentOrbRewardItem;
+                ComponentOrbCount += componentOrbRewardItem.count;
+            }
         }
     }
     void ResetCounts()

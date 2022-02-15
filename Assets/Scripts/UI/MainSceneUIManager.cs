@@ -70,8 +70,9 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     }
     public void SetComponentCount(int val)
     {
-        componentCountText.text = val + " component" + (val == 1 ? "" : "s");
-        if(val == 1)
+        var componentOrbs = InventoryManager.Instance.ComponentOrbCount;
+        componentCountText.text = val + "/" + componentOrbs;
+        if(val <= componentOrbs)
         {
             tickIcon.SetActive(true);
             crossIcon.SetActive(false);

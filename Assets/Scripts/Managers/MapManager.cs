@@ -67,6 +67,6 @@ public class MapManager : Singleton<MapManager>
     void HandleMapSelectedConfirm()
     {
         var selectedMapData = LevelScheduler.Instance.CurrentLevelData[selectedMapIndex];
-        mapConfirmedEvent(selectedMapData);        
+        mapConfirmedEvent?.Invoke(selectedMapData);        
     }
 }

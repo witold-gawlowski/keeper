@@ -16,6 +16,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     [SerializeField] TMP_Text levelText;
     [SerializeField] LootItemsUIScript rewardUIScript;
     [SerializeField] private TMP_Text areaToComplete;
+    [SerializeField] Button startButton;
     private void OnEnable()
     {
         MapManager.Instance.selectedMapChangedEvent += HandleSelectedMapChangedEvent;
@@ -31,6 +32,7 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
         UpdateSelectionButtonsInteractivity(currentMap);
         UpdateRewards(currentMap);
         UpdatePercetnageToComplete(currentMap);
+        UpdateStartButtonInteractibility(currentMap);
     }
     void UpdateSelectionButtonsInteractivity(int currentMap)
     {
@@ -73,12 +75,25 @@ public class MapSelectionUIManager : Singleton<MapSelectionUIManager>
     {
         BackButtonPressedEvent();
     }
+    void UpdateStartButtonInteractibility(int currentMapIndex)
+    {
+        var levelData = LevelScheduler.Instance.CurrentLevelData;
+        var selectedMap = levelData[currentMapIndex];
+        if (selectedMap.Surrendered)
+        {
+            startButton.interactable = false;
+        }
+        else
+        {
+            startButton.interactable = true;
+        }
+    }
     void UpdateRewards(int currentMapIndex)
     {
         rewardUIScript.Clear();
         var levelData = LevelScheduler.Instance.CurrentLevelData;
-        var selectedMapRewards = levelData[currentMapIndex];
-        foreach (var r in selectedMapRewards.reward)
+        var selectedMap = levelData[currentMapIndex];
+        foreach (var r in selectedMap.reward)
         {
             if (r is BlockRewardItem)
             {

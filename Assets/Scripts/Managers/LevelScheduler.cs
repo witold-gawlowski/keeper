@@ -17,8 +17,13 @@ public class LevelScheduler : GlobalManager<LevelScheduler>
     protected override void SubscribeToMainSceneEvents()
     {
         MainSceneManager.Instance.levelCompletedEvent += HandleLevelFinished;
+        MainSceneManager.Instance.levelFailedEvent += HandleLevelFailed;
+        MainSceneUIManager.Instance.surrenderPressedEvent += HandleLevelFailed;
     }
-
+    private void HandleLevelFailed()
+    {
+        GameStateManager.Instance.SelectedMapData.Surrendered = true;
+    }
     private void HandleNewGameStartedEvent()
     {
         CreateCurrentLevelData();

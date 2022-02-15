@@ -2434,6 +2434,7 @@ MonoBehaviour:
   levelText: {fileID: 1218250344}
   rewardUIScript: {fileID: 315972779}
   areaToComplete: {fileID: 1677009151}
+  startButton: {fileID: 1079760431}
 --- !u!1001 &4994528824351746160
 PrefabInstance:
   m_ObjectHideFlags: 0

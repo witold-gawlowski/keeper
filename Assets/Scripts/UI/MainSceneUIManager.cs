@@ -20,6 +20,7 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
     [SerializeField] private UnityEngine.UI.Slider scoreSlider;
     [SerializeField] private UnityEngine.UI.Button verdictButton;
     [SerializeField] private UnityEngine.UI.Button surrenderButton;
+    [SerializeField] private UnityEngine.UI.Image timeLeftImage;
 
     private Vector2 binPositionWorld;
 
@@ -78,6 +79,10 @@ public class MainSceneUIManager : Singleton<MainSceneUIManager>
             tickIcon.SetActive(false);
             crossIcon.SetActive(true);
         }
+    }
+    public void SetTimeLeft(float val)
+    {
+        timeLeftImage.fillAmount = val;
     }
     #endregion
     #region Custom private functions

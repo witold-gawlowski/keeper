@@ -19,7 +19,7 @@ public class BlockManager : Singleton<BlockManager>
     }
     private void OnEnable()
     {
-        InputManager.Instance.pointerReleased += HandlerPointerReleasedEvent;
+        InputManager.Instance.pointerPressedEvent += HandlePointerPressedEvent;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStartedEvent;
     }
@@ -44,6 +44,14 @@ public class BlockManager : Singleton<BlockManager>
     {
         SetFreezeBlocks(true);
     }
+    void HandlePointerPressedEvent(Vector2 worldPos)
+    {
+        var spawnConditionsMet = CheckSpawnConditionsOnPointerPressed(worldPos);
+        if (spawnConditionsMet)
+        {
+            Spawn(worldPos);
+        }
+    }
     void HandlerPointerReleasedEvent(Vector2 initialWorldPosition, Vector2 worldPos, float tapTimeSpan)
     {
         var spawnConditionsMet = CheckSpawnConditionsOnPointerReleased(initialWorldPosition, worldPos, tapTimeSpan);
@@ -51,6 +59,16 @@ public class BlockManager : Singleton<BlockManager>
         {
             Spawn(worldPos);
         }
+    }
+    bool CheckSpawnConditionsOnPointerPressed(Vector2 worldPos)
+    {
+        var blockMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
+        var hit = Physics2D.OverlapPoint(worldPos, blockMask);
+        if (!isFreezed && hit == null)
+        {
+            return true;
+        }
+        return false;
     }
     bool CheckSpawnConditionsOnPointerReleased(Vector2 initialWorldPosition, Vector2 worldPos, float tapTimeSpan)
     {
@@ -118,5 +136,5 @@ public class BlockManager : Singleton<BlockManager>
         var blockType = blockTypes[block];
         BlockSupplyManager.Instance.RecoverBlock(blockType);
     }
-   
+
 }

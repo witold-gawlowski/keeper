@@ -5,9 +5,16 @@ using UnityEngine;
 public class BlockSupplyManager : Singleton<BlockSupplyManager>
 {
     public System.Action<BlockSO, int> blockCountChangedEvent;
+    public BlockSO SelectedBlockToSpawn { get; private set; }
+
+    [SerializeField] private float maxTimeToUseBlock = 3;
     private Dictionary<BlockSO, int> availableBlocks;
     private List<BlockSO> blockOrder;
-    public BlockSO SelectedBlockToSpawn { get; private set; }
+    private float timeToUseBlock;
+    public void Update()
+    {
+        
+    }
     public void Init()
     {
         InitAvailableBlocks();
@@ -17,7 +24,7 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
     public void ListenToInventoryButtonEvents()
     {
         var buttons = MainSceneInventoryUIScript.Instance.GetIneventoryButtons();
-        foreach(var b in buttons)
+        foreach (var b in buttons)
         {
             b.blockSelectedEvent += HandleBlockButtonPressed;
         }
@@ -27,7 +34,7 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
         var oldCount = availableBlocks[SelectedBlockToSpawn];
         var newCount = oldCount - 1;
         availableBlocks[SelectedBlockToSpawn] = newCount;
-        blockCountChangedEvent(SelectedBlockToSpawn, newCount);
+        blockCountChangedEvent?.Invoke(SelectedBlockToSpawn, newCount);
         if (newCount == 0)
         {
             SelectedBlockToSpawn = GetNextAvailableBlockSO(SelectedBlockToSpawn);

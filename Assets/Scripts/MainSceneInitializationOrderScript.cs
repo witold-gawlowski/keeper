@@ -6,7 +6,7 @@ public class MainSceneInitializationOrderScript : MonoBehaviour
 {
     private void Start()
     {
-        MainSceneInventoryUIScript.Instance.Init();
-        BlockSupplyManager.Instance.ListenToInventoryButtonEvents();
+        //MainSceneInventoryUIScript.Instance.Init();
+        //BlockSupplyManager.Instance.ListenToInventoryButtonEvents();
     }
 }

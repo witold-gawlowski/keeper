@@ -40,13 +40,19 @@ public class DragManager : Singleton<DragManager>
     private void OnEnable()
     {
         MainSceneManager.Instance.verdictStartedEvent += VerdictStartedHandler;
-        InputManager.Instance.pointerPressedEvent += HandlePointerPressed;
+        //InputManager.Instance.pointerPressedEvent += HandlePointerPressed;
         InputManager.Instance.pointerReleased += HandlePointerReleased;
         InputManager.Instance.pointerDownEvent += HandlePointerDown;
+        BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawned;
     }
     void VerdictStartedHandler()
     {
         isFreezed = true;
+    }
+    void HandleBlockSpawned(GameObject block)
+    {
+        var blockScript = block.GetComponent<BlockScript>();
+        StartBlockDrag(block.transform.position, blockScript);
     }
     void HandlePointerPressed(Vector2 worldPos)
     {

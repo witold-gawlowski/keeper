@@ -38,7 +38,7 @@ public class InputManager : Singleton<InputManager>
             else if (PointerReleased())
             {
                 var dragTimespan = Time.time - currentDragStartTime;
-                pointerReleased(currentDragStartPositionWorld, pointerPositionWorld, dragTimespan);
+                pointerReleased?.Invoke(currentDragStartPositionWorld, pointerPositionWorld, dragTimespan);
             }
             pointerDownEvent?.Invoke(pointerPositionWorld);
         }

@@ -26,7 +26,7 @@ public class BlockScript : MonoBehaviour
     }
     public void SetColor(Color c)
     {
-        var newColor = isFinalized ? Helpers.GetDarkenedColor(c, 0.7f) : c;
+        var newColor = isFinalized ? Helpers.GetDarkenedColor(c, 0.9f) : c;
         spriteRenderer.color = newColor;
     }
     public void Finalize()

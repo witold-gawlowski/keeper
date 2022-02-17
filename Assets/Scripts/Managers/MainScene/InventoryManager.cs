@@ -17,6 +17,7 @@ public class InventoryManager : GlobalManager<InventoryManager>
     }
     public void OnLevelCompleted()
     {
+        RemoveUsedComponents();
         RemoveUsedBlocks();
         AddReward();
     }
@@ -35,6 +36,7 @@ public class InventoryManager : GlobalManager<InventoryManager>
     void HandleLevelFailed()
     {
         RemoveUsedBlocks();
+        RemoveUsedComponents();
     }
     void HandleStartNewGame() => ResetCounts();
     void RemoveUsedBlocks()
@@ -49,6 +51,11 @@ public class InventoryManager : GlobalManager<InventoryManager>
                 BlockCounts.Remove(usedItem.Key);
             }
         }
+    }
+    void RemoveUsedComponents()
+    {
+        var usedCOmponents = CoherencyManager.Instance.ComponentCount;
+        ComponentOrbCount -= usedCOmponents;
     }
     void AddReward()
     {

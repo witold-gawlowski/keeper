@@ -60,7 +60,7 @@ public class DragManager : Singleton<DragManager>
         Collider2D hit = Physics2D.OverlapPoint(worldPos, blockLayerMask);
         if (hit)
         {
-            if (BlockManager.Instance.LastBlockSpawned.gameObject == hit.gameObject)
+            if (BlockManager.Instance.LastBlockSpawned == hit.gameObject)
             {
                 var blockScript = hit.GetComponent<BlockScript>();
                 StartBlockDrag(worldPos, blockScript);

@@ -6,7 +6,7 @@ public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
     public List<BlockScript> BlockScripts { get; private set; }
-    public BlockScript LastBlockSpawned { get; private set; }
+    public GameObject LastBlockSpawned { get; private set; }
 
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
     [SerializeField] private float spawnTapMaxLength = 0.1f;
@@ -127,14 +127,21 @@ public class BlockManager : Singleton<BlockManager>
                     if (blockSpawnedEvent != null)
                     {
                         blockSpawnedEvent(go);
-                        LastBlockSpawned?.Finalize();
-                        var lastBlockSpawnedScript = go.GetComponent<BlockScript>();
-                        LastBlockSpawned = lastBlockSpawnedScript;
+                        if (LastBlockSpawned != null)
+                        {
+                            Finalize(LastBlockSpawned);
+                        }
+                        LastBlockSpawned = go;
                     }
                     return;
                 }
             }
         }
+    }
+    void Finalize(GameObject block)
+    {
+        var lastBlockSpawnedScript = block.GetComponent<BlockScript>();
+        lastBlockSpawnedScript.Finalize();
     }
     void Despawn(BlockScript block)
     {

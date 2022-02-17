@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3703a2884c6046942bdfe43ce9a9fb62, type: 3}
   m_Name: Color 2
   m_EditorClassIdentifier: 
-  value: {r: 0.38163576, g: 0.5, b: 0.3514151, a: 1}
+  value: {r: 0.7578125, g: 1, b: 0.703125, a: 1}

@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0558ba3dc64cca149b9a09533f612052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxTimeToUseBlock: 3
 --- !u!1 &1329316434
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,5 +142,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c02ab4f3d978084bab3a5c77b3ab9e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnTapMaxDuration: 0.1
+  spawnTapMaxDuration: 0.2
   spawnTapMaxLength: 0.1

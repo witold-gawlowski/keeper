@@ -10,6 +10,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     public System.Action levelFailedEvent;
     public GameObject LevelObject { get; private set; }
     public GameObject LastBlockTouched { get; private set; }
+    public float LastManipulationFinishTime { get; private set; }
     private MapData mapData; 
     private void Awake()
     {
@@ -72,6 +73,7 @@ public class MainSceneManager : Singleton<MainSceneManager>
     }
     IEnumerator HandleBlockSpawnedCoroutine(GameObject block)
     {
+        LastManipulationFinishTime = Time.time;
         LastBlockTouched = block;
         yield return null;
         OnColliderPositionUpdate();
@@ -80,11 +82,13 @@ public class MainSceneManager : Singleton<MainSceneManager>
 
     void HandleDragFinished(GameObject block)
     {
+        LastManipulationFinishTime = Time.time;
         LastBlockTouched = block;
         StartCoroutine(CheckForLevelCompletion());
     }
     void HandleTurnFinished(GameObject _)
     {
+        LastManipulationFinishTime = Time.time;
         StartCoroutine(CheckForLevelCompletion());
     }
     void OnColliderPositionUpdate()

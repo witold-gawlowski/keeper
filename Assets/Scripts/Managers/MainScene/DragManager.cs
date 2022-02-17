@@ -18,7 +18,7 @@ public class DragManager : Singleton<DragManager>
     [SerializeField] private PolygonCollider2D probeCollider;
     [SerializeField] private SpriteRenderer probeSprite;
 
-    bool turnStarted;
+    bool isTurning;
     bool isFreezed;
     public GameObject draggedBlock;
     Rigidbody2D draggedRigidbody;
@@ -30,10 +30,11 @@ public class DragManager : Singleton<DragManager>
     int lastRotationIndex;
     bool detached;
     Vector2 positionPreviousFrame;
+    float timeOfLastManipulation;
 
     private void Awake()
     {
-        turnStarted = false;
+        isTurning = false;
         isFreezed = false;
         blockLayerMask = Helpers.GetSingleLayerMask(Constants.blockLayer);
     }
@@ -44,6 +45,10 @@ public class DragManager : Singleton<DragManager>
         InputManager.Instance.pointerReleasedEvent += HandlePointerReleased;
         InputManager.Instance.pointerDownEvent += HandlePointerDown;
         BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawned;
+    }
+    public bool IsBlockManipulated()
+    {
+        return draggedBlock || isTurning;
     }
     void VerdictStartedHandler()
     {
@@ -78,7 +83,7 @@ public class DragManager : Singleton<DragManager>
         }
         else if (draggedBlock == null && lastBlockTouched != null)
         {
-            if (turnStarted)
+            if (isTurning)
             {
                 ContinueBlockTurn(worldPos);
             }
@@ -90,7 +95,7 @@ public class DragManager : Singleton<DragManager>
         {
             FinishBlockDrag(initialDragPosition, finalDragPosition, timeSpan);
         }
-        else if (turnStarted)
+        else if (isTurning)
         {
             EndBlockTurn();
         }
@@ -98,7 +103,7 @@ public class DragManager : Singleton<DragManager>
     void StartBlockTurn(Vector2 worldPos)
     {
         lastBlockTouched = MainSceneManager.Instance.LastBlockTouched;
-        turnStarted = true;
+        isTurning = true;
         turnStartPosition = worldPos;
         initialBlockRotation = lastBlockTouched.transform.rotation;
     }
@@ -117,7 +122,7 @@ public class DragManager : Singleton<DragManager>
     }
     void EndBlockTurn()
     {
-        turnStarted = false;
+        isTurning = false;
         turnFinishedEvent?.Invoke(lastBlockTouched);
     }
     void StartBlockDrag(Vector2 worldPos, BlockScript block)

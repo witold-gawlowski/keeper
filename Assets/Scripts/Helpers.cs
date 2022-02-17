@@ -15,7 +15,7 @@ public static class Helpers
     }
     public static Color GetDarkenedColor(Color c, float factor)
     {
-        return new Color(c.r * factor, c.g * factor, c.b * factor);
+        return new Color(c.r * factor, c.g * factor, c.b * factor, c.a);
     }
     public static ContactFilter2D GetSingleLayerMaskContactFilter(string name)
     {

@@ -147,7 +147,7 @@ public class BlockManager : Singleton<BlockManager>
     {
         block.gameObject.SetActive(false);
         var blockType = blockTypes[block];
-        BlockSupplyManager.Instance.RecoverBlock(blockType);
+        //BlockSupplyManager.Instance.RecoverBlock(blockType);
     }
 
 }

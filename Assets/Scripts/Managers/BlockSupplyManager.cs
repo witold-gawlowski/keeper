@@ -18,6 +18,10 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
         CreateBlockOrder();
         SetInitialSelectedBlock();
     }
+    private void OnEnable()
+    {
+        MainSceneUIManager.Instance.blockSelectedForDeletionEvent += HandleBlockSelectedForDeletion;
+    }
     public void ListenToInventoryButtonEvents()
     {
         var buttons = MainSceneInventoryUIScript.Instance.GetIneventoryButtons();
@@ -28,8 +32,7 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
     }
     public void ConsumeSelected()
     {
-        var oldCount = availableBlocks[SelectedBlockToSpawn];
-        var newCount = oldCount - 1;
+        var newCount = availableBlocks[SelectedBlockToSpawn] - 1;
         availableBlocks[SelectedBlockToSpawn] = newCount;
         blockCountChangedEvent?.Invoke(SelectedBlockToSpawn, newCount);
         if (newCount == 0)
@@ -42,6 +45,10 @@ public class BlockSupplyManager : Singleton<BlockSupplyManager>
     {
         availableBlocks[type]++;
         blockCountChangedEvent(type, availableBlocks[type]);
+    }
+    private void HandleBlockSelectedForDeletion(BlockScript script)
+    {
+
     }
     private void HandleBlockButtonPressed(BlockSO b)
     {

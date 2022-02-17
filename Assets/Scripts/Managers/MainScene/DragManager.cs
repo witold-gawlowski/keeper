@@ -20,7 +20,7 @@ public class DragManager : Singleton<DragManager>
 
     bool turnStarted;
     bool isFreezed;
-    GameObject draggedBlock;
+    public GameObject draggedBlock;
     Rigidbody2D draggedRigidbody;
     Quaternion initialBlockRotation;
     Vector2 pointerOffset;
@@ -52,7 +52,6 @@ public class DragManager : Singleton<DragManager>
     void HandleBlockSpawned(GameObject block)
     {
         var blockScript = block.GetComponent<BlockScript>();
-        StartBlockDrag(block.transform.position, blockScript);
     }
     void HandlePointerPressed(Vector2 worldPos)
     {

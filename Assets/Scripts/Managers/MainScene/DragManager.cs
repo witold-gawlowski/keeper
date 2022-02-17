@@ -40,8 +40,8 @@ public class DragManager : Singleton<DragManager>
     private void OnEnable()
     {
         MainSceneManager.Instance.verdictStartedEvent += VerdictStartedHandler;
-        //InputManager.Instance.pointerPressedEvent += HandlePointerPressed;
-        InputManager.Instance.pointerReleased += HandlePointerReleased;
+        InputManager.Instance.pointerPressedEvent += HandlePointerPressed;
+        InputManager.Instance.pointerReleasedEvent += HandlePointerReleased;
         InputManager.Instance.pointerDownEvent += HandlePointerDown;
         BlockManager.Instance.blockSpawnedEvent += HandleBlockSpawned;
     }
@@ -60,8 +60,11 @@ public class DragManager : Singleton<DragManager>
         Collider2D hit = Physics2D.OverlapPoint(worldPos, blockLayerMask);
         if (hit)
         {
-            var blockScript = hit.GetComponent<BlockScript>();
-            StartBlockDrag(worldPos, blockScript);
+            if (BlockManager.Instance.LastBlockSpawned.gameObject == hit.gameObject)
+            {
+                var blockScript = hit.GetComponent<BlockScript>();
+                StartBlockDrag(worldPos, blockScript);
+            }
         }
         else if (hit == null && lastBlockTouched != null)
         {

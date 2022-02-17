@@ -7,6 +7,11 @@ public class BlockScript : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private PolygonCollider2D mCollider;
     [SerializeField] private Rigidbody2D rigidBody;
+    private bool isFinalized;
+    private void Awake()
+    {
+        isFinalized = false;
+    }
     public Sprite GetSprite()
     {
         return spriteRenderer.sprite;
@@ -21,6 +26,11 @@ public class BlockScript : MonoBehaviour
     }
     public void SetColor(Color c)
     {
-        spriteRenderer.color = c;
+        var newColor = isFinalized ? Helpers.GetDarkenedColor(c, 0.7f) : c;
+        spriteRenderer.color = newColor;
+    }
+    public void Finalize()
+    {
+        isFinalized = true;
     }
 }

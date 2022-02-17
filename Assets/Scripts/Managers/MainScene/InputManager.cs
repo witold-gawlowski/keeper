@@ -6,7 +6,7 @@ public class InputManager : Singleton<InputManager>
 {
     public System.Action<Vector2> pointerPressedEvent;
     public System.Action<Vector2> pointerDownEvent;
-    public System.Action<Vector2, Vector2, float> pointerReleased;
+    public System.Action<Vector2, Vector2, float> pointerReleasedEvent;
 
     Vector2 currentDragStartPositionWorld;
     float currentDragStartTime;
@@ -38,7 +38,7 @@ public class InputManager : Singleton<InputManager>
             else if (PointerReleased())
             {
                 var dragTimespan = Time.time - currentDragStartTime;
-                pointerReleased?.Invoke(currentDragStartPositionWorld, pointerPositionWorld, dragTimespan);
+                pointerReleasedEvent?.Invoke(currentDragStartPositionWorld, pointerPositionWorld, dragTimespan);
             }
             pointerDownEvent?.Invoke(pointerPositionWorld);
         }

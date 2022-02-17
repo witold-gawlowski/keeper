@@ -6,6 +6,8 @@ public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
     public List<BlockScript> BlockScripts { get; private set; }
+    public BlockScript LastBlockSpawned { get; private set; }
+
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
     [SerializeField] private float spawnTapMaxLength = 0.1f;
     private Dictionary<BlockScript, BlockSO> blockTypes;
@@ -19,7 +21,8 @@ public class BlockManager : Singleton<BlockManager>
     }
     private void OnEnable()
     {
-        InputManager.Instance.pointerPressedEvent += HandlePointerPressedEvent;
+        //InputManager.Instance.pointerPressedEvent += HandlePointerPressedEvent;
+        InputManager.Instance.pointerReleasedEvent += HandlerPointerReleasedEvent;
         MainSceneUIManager.Instance.blockSelectedForDeletionEvent += Despawn;
         MainSceneManager.Instance.verdictStartedEvent += HandleVerdictStartedEvent;
     }
@@ -124,6 +127,9 @@ public class BlockManager : Singleton<BlockManager>
                     if (blockSpawnedEvent != null)
                     {
                         blockSpawnedEvent(go);
+                        LastBlockSpawned?.Finalize();
+                        var lastBlockSpawnedScript = go.GetComponent<BlockScript>();
+                        LastBlockSpawned = lastBlockSpawnedScript;
                     }
                     return;
                 }

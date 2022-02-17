@@ -13,6 +13,10 @@ public static class Helpers
         Debug.LogError("There is no layer \"" + name + "\"!");
         return 0;
     }
+    public static Color GetDarkenedColor(Color c, float factor)
+    {
+        return new Color(c.r * factor, c.g * factor, c.b * factor);
+    }
     public static ContactFilter2D GetSingleLayerMaskContactFilter(string name)
     {
         var result = new ContactFilter2D();

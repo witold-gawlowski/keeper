@@ -37,5 +37,4 @@ public class BlockColorManager : Singleton<BlockColorManager>
             }
         }
     }
-
 }

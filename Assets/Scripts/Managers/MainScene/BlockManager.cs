@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
+    public System.Action<BlockScript, Vector2> spawnFailedEvent;
     public List<BlockScript> BlockScripts { get; private set; }
     public GameObject LastBlockSpawned { get; private set; }
 
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
     [SerializeField] private float spawnTapMaxLength = 0.1f;
+    [SerializeField] private PolygonCollider2D spawiningProbe;
     private Dictionary<BlockScript, BlockSO> blockTypes;
     private bool isFreezed;
     public void Start()
@@ -52,7 +54,7 @@ public class BlockManager : Singleton<BlockManager>
         var spawnConditionsMet = CheckSpawnConditionsOnPointerPressed(worldPos);
         if (spawnConditionsMet)
         {
-            Spawn(worldPos);
+            StartCoroutine(TrySpawn(worldPos));
         }
     }
     void HandlerPointerReleasedEvent(Vector2 initialWorldPosition, Vector2 worldPos, float tapTimeSpan)
@@ -60,7 +62,7 @@ public class BlockManager : Singleton<BlockManager>
         var spawnConditionsMet = CheckSpawnConditionsOnPointerReleased(initialWorldPosition, worldPos, tapTimeSpan);
         if (spawnConditionsMet)
         {
-            Spawn(worldPos);
+            StartCoroutine(TrySpawn(worldPos));
         }
     }
     bool CheckSpawnConditionsOnPointerPressed(Vector2 worldPos)
@@ -110,7 +112,7 @@ public class BlockManager : Singleton<BlockManager>
         }
     }
 
-    void Spawn(Vector2 position)
+    IEnumerator TrySpawn(Vector2 position)
     {
         var selectedToSpawn = BlockSupplyManager.Instance.SelectedBlockToSpawn;
         foreach (var bs in BlockScripts)
@@ -121,22 +123,40 @@ public class BlockManager : Singleton<BlockManager>
                 var blockType = blockTypes[bs];
                 if (blockType == selectedToSpawn)
                 {
-                    go.SetActive(true);
-                    bs.transform.position = position;
-                    BlockSupplyManager.Instance.ConsumeSelected();
-                    if (blockSpawnedEvent != null)
+                    Helpers.ReplicateColliderToProbe(bs, spawiningProbe);
+                    spawiningProbe.transform.position = position;
+                    spawiningProbe.transform.rotation = bs.transform.rotation;
+                    yield return new WaitForFixedUpdate();
+                    var filter = Helpers.GetSingleLayerMaskContactFilter(Constants.blockLayer);
+                    var colliders = new List<Collider2D>();
+                    Physics2D.OverlapCollider(spawiningProbe, filter, colliders);
+                    if (colliders.Count > 0)
                     {
-                        blockSpawnedEvent(go);
-                        if (LastBlockSpawned != null)
-                        {
-                            Finalize(LastBlockSpawned);
-                        }
-                        LastBlockSpawned = go;
+                        spawnFailedEvent?.Invoke(bs, position);
+                        yield break;
                     }
-                    return;
+                    Spawn(bs, position);
+                    yield break;
                 }
             }
         }
+    }
+    private void Spawn(BlockScript bs, Vector2 position)
+    {
+        var go = bs.gameObject;
+        go.SetActive(true);
+        bs.transform.position = position;
+
+        BlockSupplyManager.Instance.ConsumeSelected();
+        if (blockSpawnedEvent != null)
+        {
+            blockSpawnedEvent(go);
+        }
+        if (LastBlockSpawned != null)
+        {
+            Finalize(LastBlockSpawned);
+        }
+        LastBlockSpawned = go;
     }
     void Finalize(GameObject block)
     {

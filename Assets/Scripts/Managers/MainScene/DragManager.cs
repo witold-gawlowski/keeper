@@ -133,7 +133,7 @@ public class DragManager : Singleton<DragManager>
             draggedRigidbody = block.GetRigidbody();
             draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
             draggedBlock = block.gameObject;
-            ReplicateColliderToProbe(block);
+            Helpers.ReplicateColliderToProbe(block, probeCollider);
             probeSprite.sprite = block.GetSprite();
             probeParent.transform.rotation = block.transform.rotation;
             pointerOffset = (Vector2)draggedBlock.transform.position - worldPos;
@@ -189,15 +189,6 @@ public class DragManager : Singleton<DragManager>
             draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
             probeSprite.gameObject.SetActive(false);
             draggedBlock = null;
-        }
-    }
-    void ReplicateColliderToProbe(BlockScript block)
-    {
-        var collider = block.GetCollider();
-        probeCollider.pathCount = collider.pathCount;
-        for (int i = 0; i < probeCollider.pathCount; i++)
-        {
-            probeCollider.SetPath(i, collider.GetPath(i));
         }
     }
     bool CheckProbeColliding()

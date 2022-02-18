@@ -25,6 +25,15 @@ public static class Helpers
         result.SetLayerMask(layerMask);
         return result;
     }
+    public static void ReplicateColliderToProbe(BlockScript sourceBlock, PolygonCollider2D targetCollider)
+    {
+        var collider = sourceBlock.GetCollider();
+        targetCollider.pathCount = collider.pathCount;
+        for (int i = 0; i < targetCollider.pathCount; i++)
+        {
+            targetCollider.SetPath(i, collider.GetPath(i));
+        }
+    }
     public static List<T> GetRandomSubset<T>(List<T> collection, int size)
     {
         var n = collection.Count;

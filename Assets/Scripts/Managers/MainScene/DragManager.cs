@@ -22,6 +22,7 @@ public class DragManager : Singleton<DragManager>
     bool isFreezed;
     public GameObject draggedBlock;
     Rigidbody2D draggedRigidbody;
+    Rigidbody2D rotatedRigidbody;
     Quaternion initialBlockRotation;
     Vector2 pointerOffset;
     Vector2 turnStartPosition;
@@ -106,8 +107,16 @@ public class DragManager : Singleton<DragManager>
         isTurning = true;
         turnStartPosition = worldPos;
         initialBlockRotation = lastBlockTouched.transform.rotation;
+        rotatedRigidbody = lastBlockTouched.GetComponent<Rigidbody2D>();
     }
     void ContinueBlockTurn(Vector2 worldPos)
+    {
+        var turnDrag = (turnStartPosition - worldPos);
+        var initialRotationAngle = initialBlockRotation.eulerAngles.z * 360;
+        var newAngle = initialRotationAngle + turnDrag.y * 20;
+        rotatedRigidbody.MoveRotation(newAngle);
+    }
+    void ContinueBlockTurnDiscrete(Vector2 worldPos)
     {
         var turnDrag = (turnStartPosition - worldPos);
         var rotationIndex = (int)(-turnDrag.y * turnSpeed) % 4;

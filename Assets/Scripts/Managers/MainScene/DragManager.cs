@@ -140,7 +140,7 @@ public class DragManager : Singleton<DragManager>
         {
             detached = false;
             draggedRigidbody = block.GetRigidbody();
-            draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            //draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
             draggedBlock = block.gameObject;
             Helpers.ReplicateColliderToProbe(block, probeCollider);
             probeSprite.sprite = block.GetSprite();
@@ -195,7 +195,7 @@ public class DragManager : Singleton<DragManager>
             {
                 dragFinishedEvent(draggedBlock);
             }
-            draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            //draggedRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
             probeSprite.gameObject.SetActive(false);
             draggedBlock = null;
         }

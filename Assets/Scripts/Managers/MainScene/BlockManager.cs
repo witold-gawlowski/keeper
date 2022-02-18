@@ -176,6 +176,8 @@ public class BlockManager : Singleton<BlockManager>
     void Finalize(GameObject block)
     {
         var lastBlockSpawnedScript = block.GetComponent<BlockScript>();
+        var rb = block.GetComponent<Rigidbody2D>();
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
         lastBlockSpawnedScript.Finalize();
     }
     void Despawn(BlockScript block)

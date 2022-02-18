@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 public class BlockManager : Singleton<BlockManager>
 {
     public System.Action<GameObject> blockSpawnedEvent;
-    public System.Action<BlockScript, Vector2> spawnFailedEvent;
     public List<BlockScript> BlockScripts { get; private set; }
     public GameObject LastBlockSpawned { get; private set; }
 
+    [SerializeField] private AnimationCurve probeFlashTransparencyCurve;
     [SerializeField] private float spawnTapMaxDuration = 0.1f;
     [SerializeField] private float spawnTapMaxLength = 0.1f;
     [SerializeField] private PolygonCollider2D spawiningProbe;
@@ -132,7 +132,7 @@ public class BlockManager : Singleton<BlockManager>
                     Physics2D.OverlapCollider(spawiningProbe, filter, colliders);
                     if (colliders.Count > 0)
                     {
-                        spawnFailedEvent?.Invoke(bs, position);
+                        StartCoroutine(FlashProbe(bs));
                         yield break;
                     }
                     Spawn(bs, position);
@@ -157,6 +157,21 @@ public class BlockManager : Singleton<BlockManager>
             Finalize(LastBlockSpawned);
         }
         LastBlockSpawned = go;
+    }
+    IEnumerator FlashProbe(BlockScript bs)
+    {
+        var probeSr = spawiningProbe.GetComponent<SpriteRenderer>();
+        probeSr.sprite = bs.GetSprite();
+        var startTime = Time.time;
+        var animFrameCount = probeFlashTransparencyCurve.length;
+        var animationLength = probeFlashTransparencyCurve[animFrameCount - 1].time;
+        var newColor = probeSr.color;
+        while (Time.time - startTime < animationLength)
+        {
+            newColor.a = probeFlashTransparencyCurve.Evaluate(Time.time - startTime);
+            probeSr.color = newColor;
+            yield return null;
+        }
     }
     void Finalize(GameObject block)
     {

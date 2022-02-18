@@ -256,6 +256,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c02ab4f3d978084bab3a5c77b3ab9e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  probeFlashTransparencyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.005065918
+      value: 1.0046387
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9949951
+      value: -0.004638672
+      inSlope: -0.042986393
+      outSlope: -0.042986393
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11085101
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   spawnTapMaxDuration: 0.2
   spawnTapMaxLength: 0.1
   spawiningProbe: {fileID: 492139103493059835}

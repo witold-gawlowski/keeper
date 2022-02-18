@@ -10,6 +10,7 @@ public class DragManager : Singleton<DragManager>
     public System.Action<GameObject> turnFinishedEvent;
     public System.Action newRotationPositionEvent;
 
+    [SerializeField] private float rotationSpeed = 20;
     [SerializeField] private float dragForce = 15;
     [SerializeField] private float maxForceDistance = 1;
     [SerializeField] private float turnSpeed = 10;
@@ -112,8 +113,8 @@ public class DragManager : Singleton<DragManager>
     void ContinueBlockTurn(Vector2 worldPos)
     {
         var turnDrag = (turnStartPosition - worldPos);
-        var initialRotationAngle = initialBlockRotation.eulerAngles.z * 360;
-        var newAngle = initialRotationAngle + turnDrag.y * 20;
+        var initialRotationAngle = initialBlockRotation.eulerAngles.z;
+        var newAngle = initialRotationAngle - turnDrag.y * rotationSpeed;
         rotatedRigidbody.MoveRotation(newAngle);
     }
     void ContinueBlockTurnDiscrete(Vector2 worldPos)
